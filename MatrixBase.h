@@ -11,7 +11,7 @@
 //
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Benjamin Minerd
+// Copyright (c) 2016 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@
 // Include files
 //------------------------------------------------------------------------------
 
-#include <Plat4m.h>
+#include <stdint.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
@@ -473,7 +473,7 @@ public:
     // N |C2| =  N |A21 A22| |B2| N2 = M
     //
     //--------------------------------------------------------------------------
-    template <unsigned int M2>
+    template <uint32_t M2>
     MatrixBase<ValueType, N, M2> operator*(
                                const MatrixBase<ValueType, M, M2>& matrix) const
     {

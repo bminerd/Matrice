@@ -46,7 +46,7 @@
 // Include files
 //------------------------------------------------------------------------------
 
-#include <MatrixBase.h>
+#include <Plat4m_Math/MatrixBase.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
@@ -83,6 +83,9 @@ public:
     RotationMatrix() :
         MatrixBase<ValueType, 3, 3>()
     {
+    	MatrixBase<ValueType, 3, 3>::setValue(0, 0, 1.0);
+    	MatrixBase<ValueType, 3, 3>::setValue(1, 1, 1.0);
+    	MatrixBase<ValueType, 3, 3>::setValue(2, 2, 1.0);
     }
 
     //--------------------------------------------------------------------------

@@ -39,15 +39,15 @@
 /// @brief Vector class header file.
 ///
 
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef PLAT4M_VECTOR_H
+#define PLAT4M_VECTOR_H
 
 //------------------------------------------------------------------------------
 // Include files
 //------------------------------------------------------------------------------
 
-#include <Plat4m.h>
-#include <Matrix.h>
+#include <Plat4m_Core/Plat4m.h>
+#include <Plat4m_Math/Matrix.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
@@ -124,4 +124,4 @@ public:
 
 }; // namespace Plat4m
 
-#endif // VECTOR_H
+#endif // PLAT4M_VECTOR_H
