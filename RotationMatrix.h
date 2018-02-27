@@ -101,7 +101,7 @@ public:
     // Assignment operator
     //--------------------------------------------------------------------------
     RotationMatrix<ValueType>& operator=(
-                                const RotationMatrix<ValueType>& rotationMatrix)
+                              const MatrixBase<ValueType, 3, 3>& rotationMatrix)
     {
         MatrixBase<ValueType, 3, 3>::operator=(rotationMatrix);
 
