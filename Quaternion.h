@@ -83,9 +83,44 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Quaternion(const ValueType values[4][1]) :
-        MatrixBase<ValueType, 4, 1>(values)
+    Quaternion(const ValueType w,
+               const ValueType x,
+               const ValueType y,
+               const ValueType z) :
+        MatrixBase<ValueType, 4, 1>()
     {
+        setValue(0, 0, x);
+        setValue(1, 0, y);
+        setValue(2, 0, z);
+        setValue(3, 0, w);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ValueType& x()
+    {
+        return MatrixBase<ValueType, 4, 1>::getValue(0, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& y()
+    {
+        return MatrixBase<ValueType, 4, 1>::getValue(1, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& z()
+    {
+        return MatrixBase<ValueType, 4, 1>::getValue(2, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& w()
+    {
+        return MatrixBase<ValueType, 4, 1>::getValue(3, 0);
     }
 
     //--------------------------------------------------------------------------
