@@ -1,14 +1,4 @@
 //------------------------------------------------------------------------------
-//       _______    __                           ___
-//      ||  ___ \  || |             __          //  |
-//      || |  || | || |   _______  || |__      //   |    _____  ___
-//      || |__|| | || |  // ___  | ||  __|    // _  |   ||  _ \/ _ \
-//      ||  ____/  || | || |  || | || |      // /|| |   || |\\  /\\ \
-//      || |       || | || |__|| | || |     // /_|| |_  || | || | || |
-//      || |       || |  \\____  | || |__  //_____   _| || | || | || |
-//      ||_|       ||_|       ||_|  \\___|       ||_|   ||_| ||_| ||_|
-//
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2016 Benjamin Minerd
@@ -39,8 +29,8 @@
 /// @brief MatrixBase class header file.
 ///
 
-#ifndef PLAT4M_MATH_MATRIX_BASE_H
-#define PLAT4M_MATH_MATRIX_BASE_H
+#ifndef MATRICE_MATRIX_BASE_H
+#define MATRICE_MATRIX_BASE_H
 
 //------------------------------------------------------------------------------
 // Include files
@@ -52,10 +42,7 @@
 // Namespaces
 //------------------------------------------------------------------------------
 
-namespace Plat4m
-{
-
-namespace Math
+namespace Matrice
 {
 
 //------------------------------------------------------------------------------
@@ -71,7 +58,7 @@ namespace Math
 /// @tparam M Number of matrix columns.
 /// @note Currently supports only row-major matrices.
 /// @note The underlying array indexing is done by incrementing pointers.
-/// Normally this approach is avoided in Plat4m due to poor readability, but the
+/// Normally this approach is avoided in Matrice due to poor readability, but the
 /// performance gains are ~10x versus using for-loops and standard indexing.
 ///
 template <typename ValueType, uint32_t N, uint32_t M>
@@ -722,8 +709,6 @@ private:
     ValueType myValues[N][M];
 };
 
-}; // namespace Math
+}; // namespace Matrice
 
-}; // namespace Plat4m
-
-#endif // PLAT4M_MATH_MATRIX_BASE_H
+#endif // MATRICE_MATRIX_BASE_H

@@ -1,17 +1,7 @@
 //------------------------------------------------------------------------------
-//       _______    __                           ___
-//      ||  ___ \  || |             __          //  |
-//      || |  || | || |   _______  || |__      //   |    _____  ___
-//      || |__|| | || |  // ___  | ||  __|    // _  |   ||  _ \/ _ \
-//      ||  ____/  || | || |  || | || |      // /|| |   || |\\  /\\ \
-//      || |       || | || |__|| | || |     // /_|| |_  || | || | || |
-//      || |       || |  \\____  | || |__  //_____   _| || | || | || |
-//      ||_|       ||_|       ||_|  \\___|       ||_|   ||_| ||_| ||_|
-//
-//
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Benjamin Minerd
+// Copyright (c) 2020 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,14 +23,14 @@
 //------------------------------------------------------------------------------
 
 ///
-/// @file Plat4mMath.h
+/// @file Matrice.h
 /// @author Ben Minerd
 /// @date 8/29/2016
-/// @brief Plat4m::Math namespace functions.
+/// @brief Matrice namespace functions.
 ///
 
-#ifndef PLAT4M_MATH_H
-#define PLAT4M_MATH_H
+#ifndef MATRICE_H
+#define MATRICE_H
 
 //------------------------------------------------------------------------------
 // Include files
@@ -48,20 +38,17 @@
 
 #include <math.h>
 
-#include <Plat4m_Math/MatrixBase.h>
-#include <Plat4m_Math/Matrix.h>
-#include <Plat4m_Math/Vector.h>
-#include <Plat4m_Math/RotationMatrix.h>
-#include <Plat4m_Math/Quaternion.h>
+#include <Matrice/MatrixBase.h>
+#include <Matrice/Matrix.h>
+#include <Matrice/Vector.h>
+#include <Matrice/RotationMatrix.h>
+#include <Matrice/Quaternion.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
 //------------------------------------------------------------------------------
 
-namespace Plat4m
-{
-
-namespace Math
+namespace Matrice
 {
     //--------------------------------------------------------------------------
     // Functions
@@ -199,8 +186,6 @@ namespace Math
 
         return rotationMatrix;
     }
-}; // namespace Math
+}; // namespace Matrice
 
-}; // namespace Plat4m
-
-#endif // PLAT4M_MATH_H
+#endif // MATRICE_H
