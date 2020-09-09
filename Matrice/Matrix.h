@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Benjamin Minerd
+// Copyright (c) 2020 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,8 @@
 // Include files
 //------------------------------------------------------------------------------
 
-#include <Matrice/MatrixBase.h>
+#include <Matrice/Matrice.h>
+#include <Matrice/MatrixStorage.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
@@ -57,10 +58,17 @@ namespace Matrice
 /// @tparam N Number of matrix rows.
 /// @tparam M Number of matrix columns.
 ///
-template <typename ValueType, uint32_t N, uint32_t M>
-class Matrix : public MatrixBase<ValueType, N, M>
+template <typename ValueType,
+          uint32_t N,
+          uint32_t M,
+          Storage StorageOption = STORAGE_INTERNAL>
+class Matrix : public MatrixStorage<ValueType, N, M, StorageOption>
 {
 public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = N;
+    static const uint32_t columns = N;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -68,13 +76,30 @@ public:
 
     //--------------------------------------------------------------------------
     Matrix() :
-        MatrixBase<ValueType, N, M>()
+        MatrixStorage<ValueType, N, M, StorageOption>()
     {
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const ValueType values[N][M]) :
-        MatrixBase<ValueType, N, M>(values)
+    Matrix(const ValueType initializationValues[N][M]) :
+        MatrixStorage<ValueType, N, M, StorageOption>(initializationValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix(const MatrixStorage<ValueType, N, M, StorageOption2>& matrix) :
+        MatrixStorage<ValueType, N, M, StorageOption>()
+    {
+        MatrixStorage<ValueType, N, M, StorageOption>::operator=(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    virtual ~Matrix()
     {
     }
 
@@ -84,21 +109,56 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
-    Matrix<ValueType, N, M>& operator=(
-                                      const MatrixBase<ValueType, N, M>& matrix)
+    Matrix<ValueType, N, M, StorageOption>& operator=(
+                    const MatrixStorage<ValueType, N, M, StorageOption>& matrix)
     {
-        MatrixBase<ValueType, N, M>::operator=(matrix);
+        MatrixStorage<ValueType, N, M, StorageOption>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    template <Storage StorageOption2>
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, M, StorageOption>& operator=(
+                   const MatrixStorage<ValueType, N, M, StorageOption2>& matrix)
+    {
+        MatrixStorage<ValueType, N, M, StorageOption>::operator=(matrix);
 
         return (*this);
     }
 };
 
-// Add other Matrix definitions for 2x2, 3x3, etc.
-
-template <typename ValueType, uint32_t N>
-class Matrix<ValueType, N, N> : public MatrixBase<ValueType, N, N>
+template <typename ValueType, uint32_t N, uint32_t M>
+class Matrix<ValueType, N, M, STORAGE_EXTERNAL> :
+                         public MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>
 {
 public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = N;
+    static const uint32_t columns = M;
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(ValueType storageValues[N][M]) :
+        MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>(storageValues)
+    {
+    }
+};
+
+template <typename ValueType, uint32_t N, Storage StorageOption>
+class Matrix<ValueType, N, N, StorageOption> :
+                            public MatrixStorage<ValueType, N, N, StorageOption>
+{
+public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = N;
+    static const uint32_t columns = N;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -106,19 +166,46 @@ public:
 
     //--------------------------------------------------------------------------
     Matrix() :
-        MatrixBase<ValueType, N, N>()
+        MatrixStorage<ValueType, N, N, StorageOption>()
     {
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const ValueType values[N][N]) :
-        MatrixBase<ValueType, N, N>(values)
+    Matrix(const ValueType initializationValues[N][N]) :
+        MatrixStorage<ValueType, N, N, StorageOption>(initializationValues)
     {
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixBase<ValueType, N, N>& matrix) :
-        MatrixBase<ValueType, N, N>(matrix)
+    template <Storage StorageOption2>
+    Matrix(const MatrixStorage<ValueType, N, N, StorageOption2>& matrix) :
+        MatrixStorage<ValueType, N, N, StorageOption>()
+    {
+        MatrixStorage<ValueType, N, N, StorageOption>::operator=(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+};
+
+template <typename ValueType, uint32_t N>
+class Matrix<ValueType, N, N, STORAGE_EXTERNAL> :
+                         public MatrixStorage<ValueType, N, N, STORAGE_EXTERNAL>
+{
+public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = N;
+    static const uint32_t columns = N;
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(ValueType storageValues[N][N]) :
+        MatrixStorage<ValueType, N, N, STORAGE_EXTERNAL>(storageValues)
     {
     }
 
@@ -126,33 +213,14 @@ public:
     // Public methods
     //--------------------------------------------------------------------------
 
-    //--------------------------------------------------------------------------
-    ValueType determinant()
-    {
-        ValueType result;
-
-        return result;
-    }
-
-    //--------------------------------------------------------------------------
-    // Public overloaded operators
-    //--------------------------------------------------------------------------
 
     // Assignment operator
     //--------------------------------------------------------------------------
-    Matrix<ValueType, N, N>& operator=(
-                                      const MatrixBase<ValueType, N, N>& matrix)
+    template <Storage StorageOption2>
+    Matrix<ValueType, N, N, STORAGE_EXTERNAL>& operator=(
+                   const MatrixStorage<ValueType, N, N, StorageOption2>& matrix)
     {
-        MatrixBase<ValueType, N, N>::operator=(matrix);
-
-        return (*this);
-    }
-
-    // Assignment operator
-    //--------------------------------------------------------------------------
-    Matrix<ValueType, N, N>& operator=(MatrixBase<ValueType, N, N>& matrix)
-    {
-        MatrixBase<ValueType, N, N>::operator=(matrix);
+        MatrixStorage<ValueType, N, N, STORAGE_EXTERNAL>::operator=(matrix);
 
         return (*this);
     }

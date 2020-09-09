@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Benjamin Minerd
+// Copyright (c) 2020 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,9 @@
 // Include files
 //------------------------------------------------------------------------------
 
-#include <stdint.h>
+#include <cstdint>
+
+#include <Matrice/Matrice.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
@@ -54,44 +56,40 @@ namespace Matrice
 /// matrices) can be added by inheriting from this class.
 /// @tparam ValueType Type of value to be stored in this matrix (ex. double,
 /// float, uint32_t, etc.).
-/// @tparam N Number of matrix rows.
-/// @tparam M Number of matrix columns.
 /// @note Currently supports only row-major matrices.
 /// @note The underlying array indexing is done by incrementing pointers.
 /// Normally this approach is avoided in Matrice due to poor readability, but the
 /// performance gains are ~10x versus using for-loops and standard indexing.
 ///
-template <typename ValueType, uint32_t N, uint32_t M>
+template <typename ValueType>
 class MatrixBase
 {
-public:
+protected:
 
     //--------------------------------------------------------------------------
-    // Public constructors
+    // Protected constructors
     //--------------------------------------------------------------------------
-    
-    //--------------------------------------------------------------------------
-    MatrixBase() :
-        myValues()
-    {
-    }
 
     //--------------------------------------------------------------------------
-    MatrixBase(const ValueType values[N][M]) :
-        myValues()
+    MatrixBase(const uint32_t rows,
+               const uint32_t columns,
+               ValueType* valuesPointer) :
+        myRows(rows),
+        myColumns(columns),
+        myValuesPointer(valuesPointer)
     {
-        setValuesProtected(values);
     }
 
     //--------------------------------------------------------------------------
     MatrixBase(const MatrixBase& matrix) :
-        myValues()
+        myRows(matrix.myRows),
+        myColumns(matrix.myColumns),
+        myValuesPointer(matrix.myValuesPointer)
     {
-        setStaticValuesProtected(matrix.myValues);
     }
 
     //--------------------------------------------------------------------------
-    // Public destructors
+    // Protected destructors
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
@@ -108,7 +106,7 @@ public:
     {
         ValueType* value = 0;
 
-        if ((row <= N) && (column <= M))
+        if ((row <= myRows) && (column <= myColumns))
         {
             value = &getValueFast(row, column);
         }
@@ -122,7 +120,7 @@ public:
     {
         ValueType* value = 0;
 
-        if ((row <= N) && (column <= M))
+        if ((row <= myRows) && (column <= myColumns))
         {
             value = &getValueFast(row, column);
         }
@@ -141,7 +139,11 @@ public:
     //--------------------------------------------------------------------------
     ValueType& getValueFast(const uint32_t row, const uint32_t column)
     {
-        return (myValues[row][column]);
+        ValueType (& arrayReference)[myRows][myColumns] =
+                             *(ValueType (*)[myRows][myColumns]) myValuesPointer;
+
+        return (arrayReference[row][column]);
+        // return ((*(ValueType *[myRows][myColumns])myValuesPointer)[row][column]);
     }
 
     ///
@@ -156,7 +158,10 @@ public:
     const ValueType& getValueFast(const uint32_t row,
                                   const uint32_t column) const
     {
-        return (myValues[row][column]);
+        ValueType (& arrayReference)[myRows][myColumns] =
+                             *(ValueType (*)[myRows][myColumns]) myValuesPointer;
+
+        return (arrayReference[row][column]);
     }
 
     //--------------------------------------------------------------------------
@@ -164,75 +169,74 @@ public:
                   const uint32_t column,
                   const ValueType value)
     {
-        myValues[row][column] = value;
+        ValueType (* arrayPointer)[myColumns] =
+                                     (ValueType (*)[myColumns]) myValuesPointer;
+
+        arrayPointer[row][column] = value;
     }
 
     //--------------------------------------------------------------------------
     void setValues(const ValueType value)
     {
-        ValueType* myValuePointer = &(getValueFast(0, 0));
+        ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            (*myValuePointer++) = value;
+            (*thisValuePointer++) = value;
         }
     }
 
+    // //--------------------------------------------------------------------------
+    // void setValues(const ValueType* values)
+    // {
+    //     setValuesProtected(values);
+    // }
+
+    // //--------------------------------------------------------------------------
+    // void setStaticValues(const ValueType* values)
+    // {
+    //     setStaticValuesProtected(values);
+    // }
+
     //--------------------------------------------------------------------------
-    void setValues(const ValueType values[N][M])
+    void T(MatrixBase<ValueType>& matrix)
     {
-        setValuesProtected(values);
+        return transpose(matrix);
     }
 
     //--------------------------------------------------------------------------
-    void setStaticValues(const ValueType values[N][M])
+    void transpose(MatrixBase<ValueType>& matrix)
     {
-        setStaticValuesProtected(values);
-    }
-
-    //--------------------------------------------------------------------------
-    MatrixBase<ValueType, M, N> T()
-    {
-        return transpose();
-    }
-
-    //--------------------------------------------------------------------------
-    MatrixBase<ValueType, M, N> transpose()
-    {
-        MatrixBase<ValueType, M, N> matrix;
-
-        const ValueType* myValuePointer = &(getValueFast(0, 0));
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
 
         int32_t i = 0;
 
-        while (i != (N * M))
+        while (i != (myRows * myColumns))
         {
-            matrix.getValueFast((i % M), (i / M)) = (*myValuePointer++);
+            matrix.getValueFast((i % myColumns), (i / myColumns)) = (*thisValuePointer++);
 
             i++;
         }
-
-        return matrix;
     }
 
     //--------------------------------------------------------------------------
     ValueType maxValue() const
     {
-        const ValueType* myValuePointer = &(getValueFast(0, 0));
-        ValueType maxValue = (*myValuePointer);
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
+        ValueType maxValue = (*thisValuePointer);
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            if ((*myValuePointer) > maxValue)
+            if ((*thisValuePointer) > maxValue)
             {
-                maxValue = (*myValuePointer);
+                maxValue = (*thisValuePointer);
             }
 
-            myValuePointer++;
+            thisValuePointer++;
         }
 
         return maxValue;
@@ -241,19 +245,19 @@ public:
     //--------------------------------------------------------------------------
     ValueType minValue() const
     {
-        const ValueType* myValuePointer = &(getValueFast(0, 0));
-        ValueType minValue = (*myValuePointer);
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
+        ValueType minValue = (*thisValuePointer);
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            if ((*myValuePointer) < minValue)
+            if ((*thisValuePointer) < minValue)
             {
-                minValue = (*myValuePointer);
+                minValue = (*thisValuePointer);
             }
 
-            myValuePointer++;
+            thisValuePointer++;
         }
 
         return minValue;
@@ -263,58 +267,58 @@ public:
     void limitValues(const ValueType lowerLimitValue,
                      const ValueType upperLimitValue)
     {
-        ValueType* myValuePointer = &(getValueFast(0, 0));
+        ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            if ((*myValuePointer) < lowerLimitValue)
+            if ((*thisValuePointer) < lowerLimitValue)
             {
-                (*myValuePointer) = lowerLimitValue;
+                (*thisValuePointer) = lowerLimitValue;
             }
-            else if ((*myValuePointer) > upperLimitValue)
+            else if ((*thisValuePointer) > upperLimitValue)
             {
-                (*myValuePointer) = upperLimitValue;
+                (*thisValuePointer) = upperLimitValue;
             }
 
-            myValuePointer++;
+            thisValuePointer++;
         }
     }
 
     //--------------------------------------------------------------------------
     void limitUpperValue(const ValueType limitValue)
     {
-        ValueType* myValuePointer = &(getValueFast(0, 0));
+        ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            if ((*myValuePointer) > limitValue)
+            if ((*thisValuePointer) > limitValue)
             {
-                (*myValuePointer) = limitValue;
+                (*thisValuePointer) = limitValue;
             }
 
-            myValuePointer++;
+            thisValuePointer++;
         }
     }
 
     //--------------------------------------------------------------------------
     void limitLowerValue(const ValueType limitValue)
     {
-        ValueType* myValuePointer = &(getValueFast(0, 0));
+        ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            if ((*myValuePointer) < limitValue)
+            if ((*thisValuePointer) < limitValue)
             {
-                (*myValuePointer) = limitValue;
+                (*thisValuePointer) = limitValue;
             }
 
-            myValuePointer++;
+            thisValuePointer++;
         }
     }
 
@@ -324,10 +328,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, M>& operator=(
-                                      const MatrixBase<ValueType, N, M>& matrix)
+    MatrixBase<ValueType>& operator=(const MatrixBase<ValueType>& matrix)
     {
-        setStaticValuesProtected(matrix.myValues);
+        setValuesProtected(matrix.myValuesPointer);
 
         return (*this);
     }
@@ -348,82 +351,66 @@ public:
 
     // Unary plus operator
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, M> operator+() const
+    void operatorUnaryPlus(MatrixBase<ValueType>& matrix) const
     {
-        MatrixBase<ValueType, N, M> matrix;
-
-        const ValueType* myValuePointer = &(getValueFast(0, 0));
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            (*valuePointer++) = +(*myValuePointer++);
+            (*valuePointer++) = +(*thisValuePointer++);
         }
-
-        return matrix;
     }
     
     // Unary minus operator
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, M> operator-() const
+    void operatorUnaryMinus(MatrixBase<ValueType>& matrix) const
     {
-        MatrixBase<ValueType, N, M> matrix;
-
-        const ValueType* myValuePointer = &(getValueFast(0, 0));
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            (*valuePointer++) = -(*myValuePointer++);
+            (*valuePointer++) = -(*thisValuePointer++);
         }
-
-        return matrix;
     }
 
     // Addition operator
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, M> operator+(
-                                const MatrixBase<ValueType, N, M>& matrix) const
+    void operatorAdd(const MatrixBase<ValueType>& matrix,
+                     MatrixBase<ValueType>& resultMatrix) const
     {
-        MatrixBase<ValueType, N, M> resultMatrix;
-
-        const ValueType* myValuePointer = &(getValueFast(0, 0));
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
         const ValueType* valuePointer = &(matrix.getValueFast(0, 0));
         ValueType* resultValuePointer = &(resultMatrix.getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            (*resultValuePointer++) = (*myValuePointer++) + (*valuePointer++);
+            (*resultValuePointer++) = (*thisValuePointer++) + (*valuePointer++);
         }
-
-        return resultMatrix;
     }
 
     // Subtraction operator
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, M> operator-(
-                                const MatrixBase<ValueType, N, M>& matrix) const
+    void operatorSubtract(const MatrixBase<ValueType>& matrix,
+                          MatrixBase<ValueType>& resultMatrix) const
     {
-        MatrixBase<ValueType, N, M> resultMatrix;
-
-        const ValueType* myValuePointer = &(getValueFast(0, 0));
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
         const ValueType* valuePointer = &(matrix.getValueFast(0, 0));
         ValueType* resultValuePointer = &(resultMatrix.getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            (*resultValuePointer++) = (*myValuePointer++) - (*valuePointer++);
+            (*resultValuePointer++) = (*thisValuePointer++) - (*valuePointer++);
         }
-
-        return resultMatrix;
     }
 
     // Multiplication operator
@@ -435,7 +422,7 @@ public:
     //
     // Algorithm:
     //
-    // Loop through every element in the resulting N * M2 matrix. For every
+    // Loop through every element in the resulting myRows * myColumns2 matrix. For every
     // element, perform the sum of the current row of the left matrix times the
     // current column of the right matrix.
     //
@@ -460,67 +447,63 @@ public:
     // N |C2| =  N |A21 A22| |B2| N2 = M
     //
     //--------------------------------------------------------------------------
-    template <uint32_t M2>
-    MatrixBase<ValueType, N, M2> operator*(
-                               const MatrixBase<ValueType, M, M2>& matrix) const
+    void operatorMultiplyNByM(const MatrixBase<ValueType>& matrix,
+                              MatrixBase<ValueType>& resultMatrix) const
     {
-        MatrixBase<ValueType, N, M2> resultMatrix;
-
         const ValueType* leftPointer  = &(getValueFast(0, 0));
         const ValueType* rightPointer = &(matrix.getValueFast(0, 0));
         ValueType* resultPointer = &(resultMatrix.getValueFast(0, 0));
 
-        int32_t i = 0;
+        uint32_t i = 0;
 
-        // Loop through every element (N * M2) in the resulting Matrix starting
+        const uint32_t resultColumns = resultMatrix.myColumns;
+        const uint32_t resultSize = myRows * resultColumns;
+
+        // Loop through every element (myRows * myColumns2) in the resulting Matrix starting
         // at (1, 1) moving left-to-right, top-to-bottom until (N, M2)
-        while (i++ < (N * M2))
+        while (i++ < resultSize)
         {
-            int32_t rowSize = M;
+            int32_t rowSize = (int32_t) myColumns;
 
             // Loop
             while (rowSize--)
             {
                 (*resultPointer) += (*leftPointer++) * (*rightPointer);
 
-                rightPointer += M2;
+                rightPointer += resultColumns;
             }
 
             resultPointer++;
 
             //
-            // Integer divide i / M2 gives the first element in the current row
-            // of the left matrix
+            // Integer divide i / resultColumns gives the first element in the
+            // current row of the left matrix
             //
-            leftPointer = &(getValueFast((i / M2), 0));
+            leftPointer = &(getValueFast((i / resultColumns), 0));
 
             //
-            // Integer modulo i % M2 gives the first element in the current
-            // column of the right matrix
+            // Integer modulo i % resultColumns gives the first element in the
+            // current column of the right matrix
             //
-            rightPointer = &(matrix.getValueFast(0, (i % M2)));
+            rightPointer = &(matrix.getValueFast(0, (i % resultColumns)));
         }
-
-        return resultMatrix;
     }
 
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, 1> operator*(
-                               const MatrixBase<ValueType, M, 1>& matrix) const
+    void operatorMultiplyNBy1(const MatrixBase<ValueType>& matrix,
+                              MatrixBase<ValueType>& resultMatrix) const
     {
-        MatrixBase<ValueType, N, 1> resultMatrix;
-
         const ValueType* leftPointer  = &(getValueFast(0, 0));
         const ValueType* rightPointer = &(matrix.getValueFast(0, 0));
         ValueType* resultPointer = &(resultMatrix.getValueFast(0, 0));
 
-        int32_t i = N;
+        int32_t i = myColumns;
 
         // Loop through every element (N) in the resulting Vector starting
         // at (1) moving top-to-bottom until (N)
         while (i--)
         {
-            int32_t rowSize = M;
+            int32_t rowSize = (int32_t) myColumns;
 
             // Loop
             while (rowSize--)
@@ -535,164 +518,120 @@ public:
             //
             rightPointer = &(matrix.getValueFast(0, 0));
         }
-
-        return resultMatrix;
     }
 
     // Addition operator (scalar)
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, M> operator+(const ValueType scalar) const
+    void operatorAddScalar(MatrixBase<ValueType>& matrix,
+                           const ValueType scalar) const
     {
-        MatrixBase<ValueType, N, M> matrix;
-
-        const ValueType* myValuePointer = &(getValueFast(0, 0));
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            (*valuePointer++) = (*myValuePointer++) + scalar;
+            (*valuePointer++) = (*thisValuePointer++) + scalar;
         }
-
-        return matrix;
     }
 
     // Addition-equals operator (scalar)
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, M>& operator+=(const ValueType scalar)
+    void operatorAddEqualsScalar(const ValueType scalar)
     {
-        ValueType* myValuePointer = &(getValueFast(0, 0));
+        ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
-            (*myValuePointer++) += scalar;
+            (*thisValuePointer++) += scalar;
         }
-
-        return (*this);
     }
 
     // Subtraction operator (scalar)
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, M> operator-(const ValueType scalar) const
+    void operatorSubtractScalar(MatrixBase<ValueType>& matrix,
+                                const ValueType scalar) const
     {
-        MatrixBase<ValueType, N, M> matrix;
-
-        const ValueType* myValuePointer = &(getValueFast(0, 0));
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = (int32_t) (myRows * myColumns);
 
         while (i--)
         {
-            (*valuePointer++) = (*myValuePointer++) - scalar;
+            (*valuePointer++) = (*thisValuePointer++) - scalar;
         }
-
-        return matrix;
     }
 
     // Subtraction-equals operator (scalar)
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, M>& operator-=(const ValueType scalar)
+    void operatorSubtractEqualsScalar(const ValueType scalar)
     {
-        ValueType* myValuePointer = &(getValueFast(0, 0));
+        ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = (int32_t) (myRows * myColumns);
 
         while (i--)
         {
-            (*myValuePointer++) -= scalar;
+            (*thisValuePointer++) -= scalar;
         }
-
-        return (*this);
     }
 
     // Multiplication operator (scalar)
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, M> operator*(const ValueType scalar) const
+    void operatorMultiplyScalar(MatrixBase<ValueType>& matrix,
+                                const ValueType scalar) const
     {
-        MatrixBase<ValueType, N, M> matrix;
-
-        const ValueType* myValuePointer = &(getValueFast(0, 0));
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = (int32_t) (myRows * myColumns);
 
         while (i--)
         {
-            (*valuePointer++) = (*myValuePointer++) * scalar;
+            (*valuePointer++) = (*thisValuePointer++) * scalar;
         }
-
-        return matrix;
     }
 
     // Multiplication-equals operator (scalar)
     //--------------------------------------------------------------------------
-    MatrixBase<ValueType, N, M> operator*=(const ValueType scalar)
+    void operatorMultiplyEqualsScalar(const ValueType scalar)
     {
-        ValueType* myValuePointer = &(getValueFast(0, 0));
+        ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = N * M;
+        int32_t i = (int32_t) (myRows * myColumns);
 
         while (i--)
         {
-            (*myValuePointer++) *= scalar;
+            (*thisValuePointer++) *= scalar;
         }
-
-        return (*this);
     }
 
 protected:
 
     //--------------------------------------------------------------------------
-    inline void setValuesProtected(const ValueType values[][M])
+    inline void setValuesProtected(ValueType values[])
     {
-        int32_t i;
-        int32_t j;
-
-        for (i = 0; i < N; i++)
-        {
-            for (j = 0; j < M; j++)
-            {
-                myValues[i][j] = values[i][j];
-            }
-        }
+        myValuesPointer = values;
     }
 
     //--------------------------------------------------------------------------
-    inline void setValuesProtected(const ValueType values[N])
+    inline void setValuesProtected(const ValueType values[])
     {
-        int32_t i;
-
-        for (i = 0; i < N; i++)
-        {
-            myValues[i][0] = values[i];
-        }
+        myValuesPointer = values;
     }
 
     //--------------------------------------------------------------------------
-    inline void setStaticValuesProtected(const ValueType values[][M])
+    inline void copyValuesProtected(const MatrixBase<ValueType>& matrix)
     {
-        ValueType* myValuePointer = &(getValueFast(0, 0));
-        const ValueType* valuePointer = &(values[0][0]);
+        ValueType* myValuePointer =
+                                   &(MatrixBase<ValueType>::getValueFast(0, 0));
+        const ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = N * M;
-
-        while (i--)
-        {
-            (*myValuePointer++) = (*valuePointer++);
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    inline void setStaticValuesProtected(const ValueType values[N])
-    {
-        ValueType* myValuePointer = &(getValueFast(0, 0));
-        const ValueType* valuePointer = &(values[0]);
-
-        int32_t i = N * M;
+        int32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -706,7 +645,11 @@ private:
     // Private data members
     //--------------------------------------------------------------------------
 
-    ValueType myValues[N][M];
+    const uint32_t myRows;
+
+    const uint32_t myColumns;
+
+    ValueType* myValuesPointer;
 };
 
 }; // namespace Matrice

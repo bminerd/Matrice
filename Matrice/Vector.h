@@ -36,6 +36,7 @@
 // Include files
 //------------------------------------------------------------------------------
 
+#include <Matrice/Matrice.h>
 #include <Matrice/Matrix.h>
 
 //------------------------------------------------------------------------------
@@ -49,10 +50,16 @@ namespace Matrice
 // Classes
 //------------------------------------------------------------------------------
 
-template <typename ValueType, uint32_t N>
-class Vector : public MatrixBase<ValueType, N, 1>
+template <typename ValueType,
+          uint32_t N,
+          Storage StorageOption = STORAGE_INTERNAL>
+class Vector : public MatrixStorage<ValueType, N, 1, StorageOption>
 {
 public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = N;
+    static const uint32_t columns = 1;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -60,15 +67,15 @@ public:
     
     //--------------------------------------------------------------------------
     Vector() :
-        MatrixBase<ValueType, N, 1>()
+        Matrix<ValueType, N, 1, StorageOption>()
     {
     }
 
     //--------------------------------------------------------------------------
     Vector(const ValueType values[N]) :
-        MatrixBase<ValueType, N, 1>()
+        Matrix<ValueType, N, 1, StorageOption>()
     {
-        MatrixBase<ValueType, N, 1>::setValuesProtected(values);
+        Matrix<ValueType, N, 1>::setValuesProtected(values);
     }
 
     //--------------------------------------------------------------------------
@@ -84,25 +91,16 @@ public:
     // Public methods
     //--------------------------------------------------------------------------
 
-    // Assignment operator
-    //--------------------------------------------------------------------------
-    Vector<ValueType, N>& operator=(const MatrixBase<ValueType, N, 1>& matrix)
-    {
-        MatrixBase<ValueType, N, 1>::operator=(matrix);
-
-        return (*this);
-    }
-
     //--------------------------------------------------------------------------
     ValueType& operator()(const uint32_t row)
     {
-        return (MatrixBase<ValueType, N, 1>::getValue(row, 0));
+        return (Matrix<ValueType, N, 1, StorageOption>::getValue(row, 0));
     }
 
     //--------------------------------------------------------------------------
     const ValueType& operator()(const uint32_t row) const
     {
-        return (MatrixBase<ValueType, N, 1>::getValue(row, 0));
+        return (Matrix<ValueType, N, 1, StorageOption>::getValue(row, 0));
     }
 };
 
