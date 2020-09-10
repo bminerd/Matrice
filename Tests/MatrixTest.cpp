@@ -108,19 +108,6 @@ bool MatrixTest::test1()
     // Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
     Map< Matrix<float, 3, 3> > matrix2(values2);
 
-    Matrix<float, 3, 3> result1;
-    Matrix<float, 3, 3> result2;
-    Matrix<float, 3, 3> result3;
-    Matrix<float, 3, 3> result4;
-    Matrix<float, 3, 3> result5;
-    Matrix<float, 3, 3> result6;
-    Matrix<float, 3, 3> result7;
-    Matrix<float, 3, 3> result8;
-    Matrix<float, 3, 3> result9;
-    Matrix<float, 3, 3> result10;
-    Matrix<float, 3, 3> result11;
-    Matrix<float, 3, 3> result12;
-
     // Test
 
     Matrix<float, 3, 3> result1 = matrix1 + 1;
