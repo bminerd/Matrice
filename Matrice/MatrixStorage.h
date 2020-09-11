@@ -99,7 +99,8 @@ public:
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
-    MatrixStorage(const MatrixStorage<ValueType, N, M, StorageOption2>& matrix) :
+    MatrixStorage(
+                 const MatrixStorage<ValueType, N, M, StorageOption2>& matrix) :
         MatrixBase<ValueType>(N, M, (ValueType*) myValues)
     {
         operator=(matrix);
@@ -154,8 +155,7 @@ public:
 
     // Addition operator (scalar)
     //--------------------------------------------------------------------------
-    MatrixStorage<ValueType, N, M> operator+(
-                                                   const ValueType scalar) const
+    MatrixStorage<ValueType, N, M> operator+(const ValueType scalar) const
     {
         MatrixStorage<ValueType, N, M> matrix;
 
@@ -211,8 +211,7 @@ public:
 
     // Subtraction operator (scalar)
     //--------------------------------------------------------------------------
-    MatrixStorage<ValueType, N, M> operator-(
-                                                   const ValueType scalar) const
+    MatrixStorage<ValueType, N, M> operator-(const ValueType scalar) const
     {
         MatrixStorage<ValueType, N, M> matrix;
 
@@ -233,8 +232,7 @@ public:
 
     // Multiplication operator (scalar)
     //--------------------------------------------------------------------------
-    MatrixStorage<ValueType, N, M> operator*(
-                                                   const ValueType scalar) const
+    MatrixStorage<ValueType, N, M> operator*(const ValueType scalar) const
     {
         MatrixStorage<ValueType, N, M> matrix;
 
@@ -247,7 +245,7 @@ public:
     //--------------------------------------------------------------------------
     template <uint32_t M2, Storage StorageOption2>
     MatrixStorage<ValueType, N, M2> operator*(
-             const MatrixStorage<ValueType, M, M2, StorageOption2>& matrix) const
+            const MatrixStorage<ValueType, M, M2, StorageOption2>& matrix) const
     {
         MatrixStorage<ValueType, N, M2> resultMatrix;
 
@@ -548,7 +546,7 @@ public:
 
         return (*this);
     }
-    
+
 protected:
 
     using MatrixBase<ValueType>::getValueFast;
