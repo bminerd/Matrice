@@ -53,13 +53,21 @@ namespace Matrice
 //------------------------------------------------------------------------------
 
 ///
-/// @brief Base class for all matrix-based classes. Specializations (ex. 3x3
-/// matrices) can be added by inheriting from this class.
+/// @brief Parent class for all outer API matrix-based classes. Specializations
+/// (ex. 3x1 Matrix / Vector) can be added by inheriting from this class.
 /// @tparam ValueType Type of value to be stored in this matrix (ex. double,
 /// float, uint32_t, etc.).
+/// @tparam N Number of rows.
+/// @tparam M Number of columns.
+/// @tparam StorageOption Where underlying matrix storage should be located.
+/// Options are STORAGE_INTERNAL (default here) and STORAGE_EXTERNAL.
+/// @note Since the partial template specialization below specifies
+/// STORAGE_EXTERNAL for StorageOption and there are only two entries in
+/// the StorageOption eunmerated type, the StorageOption parameter here will
+/// always be STORAGE_INTERNAL.
 /// @note Currently supports only row-major matrices.
 /// @note The underlying array indexing is done by incrementing pointers.
-/// Normally this approach is avoided in Matrice due to poor readability, but the
+/// Normally this approach is avoided due to poor readability, but the
 /// performance gains are ~10x versus using for-loops and standard indexing.
 ///
 template <typename ValueType,
@@ -88,14 +96,6 @@ public:
     {
         setValuesProtected(initializationValues);
     }
-
-    // //--------------------------------------------------------------------------
-    // MatrixStorage(const MatrixStorage& matrix) :
-    //     MatrixBase<ValueType>(N, M, (ValueType*) myValues),
-    //     myValues()
-    // {
-    //     setStaticValuesProtected(matrix.myValues);
-    // }
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
@@ -129,14 +129,12 @@ public:
         return (*this);
     }
 
-    //
     //--------------------------------------------------------------------------
     ValueType& operator()(const uint32_t row, const uint32_t column)
     {
         return MatrixBase<ValueType>::getValue(row, column);
     }
 
-    //
     //--------------------------------------------------------------------------
     const ValueType& operator()(const uint32_t row, const uint32_t column) const
     {
@@ -152,66 +150,6 @@ public:
         MatrixBase<ValueType>::operatorUnaryPlus(matrix);
 
         return matrix;
-    }
-    
-    // Unary minus operator
-    //--------------------------------------------------------------------------
-    MatrixStorage<ValueType, N, M> operator-() const
-    {
-        MatrixStorage<ValueType, N, M> matrix;
-
-        MatrixBase<ValueType>::operatorUnaryMinus(matrix);
-
-        return matrix;
-    }
-
-    // Addition operator
-    //--------------------------------------------------------------------------
-    MatrixStorage<ValueType, N, M> operator+(
-              const MatrixStorage<ValueType, N, M, StorageOption>& matrix) const
-    {
-        MatrixStorage<ValueType, N, M> resultMatrix;
-
-        MatrixBase<ValueType>::operatorAdd(matrix, resultMatrix);
-
-        return resultMatrix;
-    }
-
-    // Subtraction operator
-    //--------------------------------------------------------------------------
-    MatrixStorage<ValueType, N, M> operator-(
-              const MatrixStorage<ValueType, N, M, StorageOption>& matrix) const
-    {
-        MatrixStorage<ValueType, N, M> resultMatrix;
-
-        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
-
-        return resultMatrix;
-    }
-
-    // Multiplication operator
-    //--------------------------------------------------------------------------
-    template <uint32_t M2, Storage StorageOption2>
-    MatrixStorage<ValueType, N, M2> operator*(
-             const MatrixStorage<ValueType, M, M2, StorageOption2>& matrix) const
-    {
-        MatrixStorage<ValueType, N, M2> resultMatrix;
-
-        MatrixBase<ValueType>::operatorMultiplyNByM(matrix, resultMatrix);
-        
-        return resultMatrix;
-    }
-
-    //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
-    MatrixStorage<ValueType, N, 1> operator*(
-             const MatrixStorage<ValueType, M, 1, StorageOption2>& matrix) const
-    {
-        MatrixStorage<ValueType, N, 1> resultMatrix;
-
-        MatrixBase<ValueType>::operatorMultiplyNBy1(matrix, resultMatrix);
-
-        return resultMatrix;
     }
 
     // Addition operator (scalar)
@@ -234,6 +172,41 @@ public:
         MatrixBase<ValueType>::operatorAddEquals(scalar);
 
         return (*this);
+    }
+
+    // Addition operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, M> operator+(
+              const MatrixStorage<ValueType, N, M, StorageOption>& matrix) const
+    {
+        MatrixStorage<ValueType, N, M> resultMatrix;
+
+        MatrixBase<ValueType>::operatorAdd(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Unary minus operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, M> operator-() const
+    {
+        MatrixStorage<ValueType, N, M> matrix;
+
+        MatrixBase<ValueType>::operatorUnaryMinus(matrix);
+
+        return matrix;
+    }
+
+    // Subtraction operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, M> operator-(
+              const MatrixStorage<ValueType, N, M, StorageOption>& matrix) const
+    {
+        MatrixStorage<ValueType, N, M> resultMatrix;
+
+        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
+
+        return resultMatrix;
     }
 
     // Subtraction operator (scalar)
@@ -268,6 +241,32 @@ public:
         MatrixBase<ValueType>::operatorMultiplyScalar(matrix, scalar);
 
         return matrix;
+    }
+
+    // Multiplication operator (N by M)
+    //--------------------------------------------------------------------------
+    template <uint32_t M2, Storage StorageOption2>
+    MatrixStorage<ValueType, N, M2> operator*(
+             const MatrixStorage<ValueType, M, M2, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, N, M2> resultMatrix;
+
+        MatrixBase<ValueType>::operatorMultiplyNByM(matrix, resultMatrix);
+        
+        return resultMatrix;
+    }
+
+    // Multiplication operator (N by 1)
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, 1> operator*(
+             const MatrixStorage<ValueType, M, 1, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, N, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorMultiplyNBy1(matrix, resultMatrix);
+
+        return resultMatrix;
     }
 
     // Multiplication-equals operator (scalar)
@@ -351,6 +350,19 @@ private:
     ValueType myValues[N][M];
 };
 
+///
+/// @brief Partial template specialization for
+/// MatrixStorage<ValueType, N, M, StorageOption> where StorageOption is
+/// STORAGE_EXTERNAL and the class doesn't contain a 2-D array data member.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+/// @tparam N Number of rows.
+/// @tparam M Number of columns.
+/// @note Currently supports only row-major matrices.
+/// @note The underlying array indexing is done by incrementing pointers.
+/// Normally this approach is avoided due to poor readability, but the
+/// performance gains are ~10x versus using for-loops and standard indexing.
+///
 template <typename ValueType, uint32_t N, uint32_t M>
 class MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL> :
                                                     public MatrixBase<ValueType>
@@ -367,23 +379,15 @@ public:
     {
     }
 
-
     //--------------------------------------------------------------------------
-    MatrixStorage(ValueType storageValues[N][M],
-                  const ValueType initializationValues[N][M]) :
-        MatrixBase<ValueType>(N, M, (ValueType*) storageValues)
-    {
-        setValuesProtected(initializationValues);
-    }
-
-    //--------------------------------------------------------------------------
-    MatrixStorage(const MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>& matrix) :
+    MatrixStorage(
+               const MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>& matrix) :
         MatrixBase<ValueType>(N, M, matrix)
     {
     }
 
     //--------------------------------------------------------------------------
-    // Public methods
+    // Public overloaded operators
     //--------------------------------------------------------------------------
 
     // Assignment operator
@@ -392,9 +396,43 @@ public:
     MatrixStorage<ValueType, N, M, StorageOption1>& operator=(
                    const MatrixStorage<ValueType, N, M, StorageOption2>& matrix)
     {
-       MatrixBase<ValueType>::copyValuesProtected(matrix);
+        MatrixBase<ValueType>::copyValuesProtected(matrix);
 
         return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& operator()(const uint32_t row, const uint32_t column)
+    {
+        return MatrixBase<ValueType>::getValue(row, column);
+    }
+
+    //--------------------------------------------------------------------------
+    const ValueType& operator()(const uint32_t row, const uint32_t column) const
+    {
+        return MatrixBase<ValueType>::getValue(row, column);
+    }
+
+    // Unary plus operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, M> operator+() const
+    {
+        MatrixStorage<ValueType, N, M> matrix;
+
+        MatrixBase<ValueType>::operatorUnaryPlus(matrix);
+
+        return matrix;
+    }
+
+    // Addition operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, M> operator+(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, N, M> matrix;
+
+        MatrixBase<ValueType>::operatorAddScalar(matrix, scalar);
+
+        return matrix;
     }
 
     // Addition operator
@@ -410,43 +448,6 @@ public:
         return resultMatrix;
     }
 
-    // Subtraction operator
-    //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
-    MatrixStorage<ValueType, N, M> operator-(
-             const MatrixStorage<ValueType, N, M, StorageOption2>& matrix) const
-    {
-        MatrixStorage<ValueType, N, M> resultMatrix;
-
-        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
-
-        return resultMatrix;
-    }
-
-    //--------------------------------------------------------------------------
-    template <uint32_t M2, Storage StorageOption2>
-    MatrixStorage<ValueType, N, M2> operator*(
-            const MatrixStorage<ValueType, M, M2, StorageOption2>& matrix) const
-    {
-        MatrixStorage<ValueType, N, M2> resultMatrix;
-
-        MatrixBase<ValueType>::operatorMultiplyNByM(matrix, resultMatrix);
-        
-        return resultMatrix;
-    }
-
-
-    // Addition operator (scalar)
-    //--------------------------------------------------------------------------
-    MatrixStorage<ValueType, N, M> operator+(const ValueType scalar) const
-    {
-        MatrixStorage<ValueType, N, M> matrix;
-
-        MatrixBase<ValueType>::operatorAddScalar(matrix, scalar);
-
-        return matrix;
-    }
-
     // Addition-equals operator (scalar)
     //--------------------------------------------------------------------------
     MatrixStorage<ValueType, N, M> operator+=(const ValueType scalar)
@@ -454,6 +455,17 @@ public:
         MatrixBase<ValueType>::operatorAddEquals(*this, scalar);
 
         return (*this);
+    }
+
+    // Unary minus operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, M> operator-() const
+    {
+        MatrixStorage<ValueType, N, M> matrix;
+
+        MatrixBase<ValueType>::operatorUnaryMinus(matrix);
+
+        return matrix;
     }
 
     // Subtraction operator (scalar)
@@ -465,6 +477,19 @@ public:
         MatrixBase<ValueType>::operatorSubtractScalar(matrix, scalar);
         
         return matrix;
+    }
+
+    // Subtraction operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, M> operator-(
+             const MatrixStorage<ValueType, N, M, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, N, M> resultMatrix;
+
+        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
+
+        return resultMatrix;
     }
 
     // Subtraction-equals operator (scalar)
@@ -488,6 +513,32 @@ public:
         return matrix;
     }
 
+    // Multiplication operator (N by M)
+    //--------------------------------------------------------------------------
+    template <uint32_t M2, Storage StorageOption2>
+    MatrixStorage<ValueType, N, M2> operator*(
+            const MatrixStorage<ValueType, M, M2, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, N, M2> resultMatrix;
+
+        MatrixBase<ValueType>::operatorMultiplyNByM(matrix, resultMatrix);
+        
+        return resultMatrix;
+    }
+
+    // Multiplication operator (N by 1)
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, 1> operator*(
+             const MatrixStorage<ValueType, M, 1, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, N, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorMultiplyNBy1(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
     // Multiplication-equals operator (scalar)
     //--------------------------------------------------------------------------
     MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>& operator*=(
@@ -497,7 +548,7 @@ public:
 
         return (*this);
     }
-
+    
 protected:
 
     using MatrixBase<ValueType>::getValueFast;
