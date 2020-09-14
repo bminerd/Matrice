@@ -37,6 +37,8 @@
 //------------------------------------------------------------------------------
 
 #include <cstdint>
+#include <limits>
+#include <algorithm>
 
 #include <Matrice/Matrice.h>
 
@@ -188,18 +190,6 @@ protected:
         }
     }
 
-    // //--------------------------------------------------------------------------
-    // void setValues(const ValueType* values)
-    // {
-    //     setValuesProtected(values);
-    // }
-
-    // //--------------------------------------------------------------------------
-    // void setStaticValues(const ValueType* values)
-    // {
-    //     setStaticValuesProtected(values);
-    // }
-
     //--------------------------------------------------------------------------
     void T(MatrixBase<ValueType>& matrix)
     {
@@ -215,7 +205,8 @@ protected:
 
         while (i != (myRows * myColumns))
         {
-            matrix.getValueFast((i % myColumns), (i / myColumns)) = (*thisValuePointer++);
+            matrix.getValueFast((i % myColumns), (i / myColumns)) =
+                                                          (*thisValuePointer++);
 
             i++;
         }
@@ -347,6 +338,29 @@ protected:
     const ValueType& operator()(const uint32_t row, const uint32_t column) const
     {
         return getValue(row, column);
+    }
+
+    //--------------------------------------------------------------------------
+    bool operatorEquals(const MatrixBase<ValueType>& matrix)
+    {
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
+        const ValueType* valuePointer = &(matrix.getValueFast(0, 0));
+        const ValueType epsilon = std::numeric_limits<ValueType>::epsilon();
+
+        int32_t i = myRows * myColumns;
+
+        while (i--)
+        {
+            ValueType value1 = (*thisValuePointer++);
+            ValueType value2 = (*valuePointer++);
+
+            if (fabs(value1 - value2) > epsilon)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // Unary plus operator
