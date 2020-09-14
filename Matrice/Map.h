@@ -52,16 +52,6 @@ namespace Matrice
 // Classes
 //------------------------------------------------------------------------------
 
-///
-/// @brief Base class for all matrix-based classes. Specializations (ex. 3x3
-/// matrices) can be added by inheriting from this class.
-/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
-/// float, uint32_t, etc.).
-/// @note Currently supports only row-major matrices.
-/// @note The underlying array indexing is done by incrementing pointers.
-/// Normally this approach is avoided in Matrice due to poor readability, but the
-/// performance gains are ~10x versus using for-loops and standard indexing.
-///
 template <class MatriceType>
 class Map : public MatrixStorage<typename MatriceType::ValueT,
                                  MatriceType::rows,
@@ -69,10 +59,6 @@ class Map : public MatrixStorage<typename MatriceType::ValueT,
                                  STORAGE_EXTERNAL>
 {
 public:
-
-    // typedef typename MatriceType::rows N;
-
-    // typedef typename MatriceType::columns M;
 
     //--------------------------------------------------------------------------
     // Public constructors
