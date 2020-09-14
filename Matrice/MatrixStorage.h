@@ -103,7 +103,7 @@ public:
                  const MatrixStorage<ValueType, N, M, StorageOption2>& matrix) :
         MatrixBase<ValueType>(N, M, (ValueType*) myValues)
     {
-        operator=(matrix);
+        MatrixBase<ValueType>::copyValuesProtected(matrix);
     }
 
     //--------------------------------------------------------------------------
@@ -116,8 +116,24 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    using MatrixBase<ValueType>::getValue;
+
+    //--------------------------------------------------------------------------
     // Public overloaded operators
     //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, M, StorageOption>& operator=(
+                   const MatrixStorage<ValueType, N, M, StorageOption>& matrix)
+    {
+        MatrixBase<ValueType>::copyValuesProtected(matrix);
+
+        return (*this);
+    }
 
     // Assignment operator
     //--------------------------------------------------------------------------
@@ -142,6 +158,14 @@ public:
         return MatrixBase<ValueType>::getValue(row, column);
     }
 
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    bool operator==(
+                   const MatrixStorage<ValueType, N, M, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::operatorEquals(matrix);
+    }
+
     // Unary plus operator
     //--------------------------------------------------------------------------
     MatrixStorage<ValueType, N, M> operator+() const
@@ -164,16 +188,6 @@ public:
         return matrix;
     }
 
-    // Addition-equals operator (scalar)
-    //--------------------------------------------------------------------------
-    MatrixStorage<ValueType, N, M, StorageOption>& operator+=(
-                                                         const ValueType scalar)
-    {
-        MatrixBase<ValueType>::operatorAddEquals(scalar);
-
-        return (*this);
-    }
-
     // Addition operator
     //--------------------------------------------------------------------------
     MatrixStorage<ValueType, N, M> operator+(
@@ -186,6 +200,16 @@ public:
         return resultMatrix;
     }
 
+    // Addition-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, M, StorageOption>& operator+=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorAddEqualsScalar(scalar);
+
+        return (*this);
+    }
+
     // Unary minus operator
     //--------------------------------------------------------------------------
     MatrixStorage<ValueType, N, M> operator-() const
@@ -194,6 +218,17 @@ public:
 
         MatrixBase<ValueType>::operatorUnaryMinus(matrix);
 
+        return matrix;
+    }
+
+    // Subtraction operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, M> operator-(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, N, M> matrix;
+
+        MatrixBase<ValueType>::operatorSubtractScalar(matrix, scalar);
+        
         return matrix;
     }
 
@@ -209,15 +244,17 @@ public:
         return resultMatrix;
     }
 
-    // Subtraction operator (scalar)
+    // Subtraction operator
     //--------------------------------------------------------------------------
-    MatrixStorage<ValueType, N, M> operator-(const ValueType scalar) const
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, M> operator-(
+             const MatrixStorage<ValueType, N, M, StorageOption2>& matrix) const
     {
-        MatrixStorage<ValueType, N, M> matrix;
+        MatrixStorage<ValueType, N, M> resultMatrix;
 
-        MatrixBase<ValueType>::operatorSubtractScalar(matrix, scalar);
-        
-        return matrix;
+        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
+
+        return resultMatrix;
     }
 
     // Subtraction-equals operator (scalar)
@@ -225,7 +262,7 @@ public:
     MatrixStorage<ValueType, N, M, StorageOption>& operator-=(
                                                          const ValueType scalar)
     {
-        MatrixBase<ValueType>::operatorSubtractEquals(scalar);
+        MatrixBase<ValueType>::operatorSubtractEqualsScalar(scalar);
 
         return (*this);
     }
@@ -400,6 +437,14 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    bool operator==(
+                   const MatrixStorage<ValueType, N, M, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::operatorEquals(matrix);
+    }
+
+    //--------------------------------------------------------------------------
     ValueType& operator()(const uint32_t row, const uint32_t column)
     {
         return MatrixBase<ValueType>::getValue(row, column);
@@ -450,7 +495,7 @@ public:
     //--------------------------------------------------------------------------
     MatrixStorage<ValueType, N, M> operator+=(const ValueType scalar)
     {
-        MatrixBase<ValueType>::operatorAddEquals(*this, scalar);
+        MatrixBase<ValueType>::operatorAddEqualsScalar(scalar);
 
         return (*this);
     }
@@ -495,7 +540,7 @@ public:
     MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>& operator-=(
                                                          const ValueType scalar)
     {
-        MatrixBase<ValueType>::operatorSubtractEquals(scalar);
+        MatrixBase<ValueType>::operatorSubtractEqualsScalar(scalar);
 
         return (*this);
     }
