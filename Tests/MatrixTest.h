@@ -69,9 +69,29 @@ public:
     // Public static methods
     //--------------------------------------------------------------------------
 
-    static bool test1();
+    static bool operatorEqualsTest();
 
-    static bool test2();
+    static bool operatorUnaryPlusTest();
+
+    static bool operatorAddScalarTest();
+
+    static bool operatorAddTest();
+
+    static bool operatorAddEqualsScalarTest();
+
+    static bool operatorUnaryMinusTest();
+
+    static bool operatorSubtractScalarTest();
+
+    static bool operatorSubtractTest();
+
+    static bool operatorSubtractEqualsScalarTest();
+
+    static bool operatorMultiplyScalarTest();
+
+    static bool operatorMultiplyTest();
+
+    static bool operatorMultiplyEqualsScalarTest();
 
 private:
 

@@ -5,7 +5,7 @@ set(PLAT4M_CORE_DIR ${PROJECT_SOURCE_DIR}/../../Dependencies/Plat4m_Core/Plat4m_
 
 set(PROJECT_FLAGS "-g3 \
                    -pthread \
-                   -fdebug-prefix-map=/home/Matrice=. \
+                   -fdebug-prefix-map=/home/matrice_sq=. \
                    -fdebug-prefix-map=${PROJECT_BINARY_DIR}=.")
 
 set(CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS} ${PROJECT_FLAGS}")
