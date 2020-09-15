@@ -21,7 +21,7 @@ build:Matrice_Test_App:
   - sh docker_bash.sh "./git_clone_dependencies.sh && Tests/Matrice_Test_App/build.sh"
   artifacts:
     paths:
-      - Test/Matrice_Test_App/Build/
+      - Tests/Matrice_Test_App/Build/
 
 test:Matrice_Test_App:
   stage: test
