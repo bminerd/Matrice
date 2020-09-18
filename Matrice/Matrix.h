@@ -68,7 +68,7 @@ public:
 
     typedef ValueType ValueT;
     static const uint32_t rows = N;
-    static const uint32_t columns = N;
+    static const uint32_t columns = M;
 
     //--------------------------------------------------------------------------
     // Public constructors
