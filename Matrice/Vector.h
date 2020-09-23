@@ -67,15 +67,24 @@ public:
     
     //--------------------------------------------------------------------------
     Vector() :
-        Matrix<ValueType, N, 1, StorageOption>()
+        MatrixStorage<ValueType, N, 1, StorageOption>()
     {
     }
 
     //--------------------------------------------------------------------------
     Vector(const ValueType values[N]) :
-        Matrix<ValueType, N, 1, StorageOption>()
+        MatrixStorage<ValueType, N, 1, StorageOption>(
+                                                  *(ValueType (*)[N][1]) values)
     {
-        Matrix<ValueType, N, 1>::setValuesProtected(values);
+        // MatrixStorage<ValueType, N, 1>::setValuesProtected(values);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Vector(const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix) :
+        MatrixStorage<ValueType, N, 1, StorageOption>()
+    {
+        MatrixStorage<ValueType, N, 1, StorageOption>::operator=(matrix);
     }
 
     //--------------------------------------------------------------------------
@@ -101,6 +110,70 @@ public:
     const ValueType& operator()(const uint32_t row) const
     {
         return (Matrix<ValueType, N, 1, StorageOption>::getValue(row, 0));
+    }
+};
+
+template <typename ValueType, uint32_t N>
+class Vector<ValueType, N, STORAGE_EXTERNAL> :
+                         public MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>
+{
+public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = N;
+    static const uint32_t columns = 1;
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+    
+    //--------------------------------------------------------------------------
+    Vector() :
+        MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Vector(ValueType values[N]) :
+        MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>(
+                                                  *(ValueType (*)[N][1]) values)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption>
+    Vector(Matrix<ValueType, ParentN, ParentM, StorageOption>& matrix,
+           const uint32_t row,
+           const uint32_t column) :
+        MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>(matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ~Vector()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    using MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>::getValue;
+
+    //--------------------------------------------------------------------------
+    ValueType& operator()(const uint32_t row)
+    {
+        return getValue(row, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    const ValueType& operator()(const uint32_t row) const
+    {
+        return getValue(row, 0);
     }
 };
 
