@@ -122,6 +122,25 @@ public:
     using MatrixBase<ValueType>::getValue;
 
     //--------------------------------------------------------------------------
+    // Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix = matrix.getSubMatrix(1, 1);
+    template <uint32_t SubN, uint32_t SubM>
+    MatrixStorage<ValueType, SubN, SubM, STORAGE_EXTERNAL> submatrix(
+                                                          
+                                                          const uint32_t row,
+                                                          const uint32_t column)
+    {
+        if (((row + SubN) > N) || ((column + SubM) > M))
+        {
+            return MatrixStorage<ValueType, 0, 0, STORAGE_EXTERNAL>(0);
+        }
+
+        MatrixStorage<ValueType, SubN, SubM, STORAGE_EXTERNAL> submatrix(
+                                                         myValues[row][column]);
+
+        return submatrix;
+    }
+
+    //--------------------------------------------------------------------------
     // Public overloaded operators
     //--------------------------------------------------------------------------
 
@@ -404,6 +423,8 @@ class MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL> :
 {
 public:
 
+    using MatrixBase<ValueType>::getValue;
+
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -415,9 +436,22 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption>
+    MatrixStorage(MatrixStorage<ValueType, ParentN, ParentM, StorageOption>& matrix,
+                  const uint32_t row,
+                  const uint32_t column) :
+        MatrixBase<ValueType>(N, M, &(matrix.getValue(row, column)), (M - column) + 1)
+    {
+        if (((row + N + 1) > ParentN) || ((column + M + 1) > ParentM))
+        {
+            // Error, submatrix beyond parent matrix bounds
+        }
+    }
+
+    //--------------------------------------------------------------------------
     MatrixStorage(
                const MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>& matrix) :
-        MatrixBase<ValueType>(N, M, matrix)
+        MatrixBase<ValueType>(N, M, matrix.myValues)
     {
     }
 
@@ -594,11 +628,11 @@ public:
 
 protected:
 
-    using MatrixBase<ValueType>::getValueFast;
-
     //--------------------------------------------------------------------------
     // Protected methods
     //--------------------------------------------------------------------------
+
+    using MatrixBase<ValueType>::getValueFast;
 
     //--------------------------------------------------------------------------
     inline void setValuesProtected(const ValueType values[][M])

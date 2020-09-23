@@ -148,6 +148,15 @@ public:
         MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>(storageValues)
     {
     }
+
+    //--------------------------------------------------------------------------
+    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption>
+    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption>& matrix,
+           const uint32_t row,
+           const uint32_t column) :
+        MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>(matrix, row, column)
+    {
+    }
 };
 
 template <typename ValueType, uint32_t N, Storage StorageOption>
@@ -202,6 +211,15 @@ public:
     //--------------------------------------------------------------------------
     Matrix(ValueType storageValues[N][N]) :
         MatrixStorage<ValueType, N, N, STORAGE_EXTERNAL>(storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption>
+    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption>& matrix,
+           const uint32_t row,
+           const uint32_t column) :
+        MatrixStorage<ValueType, N, N, STORAGE_EXTERNAL>(matrix, row, column)
     {
     }
 
