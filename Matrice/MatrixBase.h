@@ -75,10 +75,12 @@ protected:
     //--------------------------------------------------------------------------
     MatrixBase(const uint32_t rows,
                const uint32_t columns,
-               ValueType* valuesPointer) :
+               ValueType* valuesPointer,
+               const uint32_t columnJump = 0) :
         myRows(rows),
         myColumns(columns),
-        myValuesPointer(valuesPointer)
+        myValuesPointer(valuesPointer),
+        myColumnJump(columnJump)
     {
     }
 
@@ -86,7 +88,8 @@ protected:
     MatrixBase(const MatrixBase& matrix) :
         myRows(matrix.myRows),
         myColumns(matrix.myColumns),
-        myValuesPointer(matrix.myValuesPointer)
+        myValuesPointer(matrix.myValuesPointer),
+        myColumnJump(matrix.myColumnJump)
     {
     }
 
@@ -145,7 +148,6 @@ protected:
                              *(ValueType (*)[myRows][myColumns]) myValuesPointer;
 
         return (arrayReference[row][column]);
-        // return ((*(ValueType *[myRows][myColumns])myValuesPointer)[row][column]);
     }
 
     ///
@@ -182,11 +184,25 @@ protected:
     {
         ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = myRows * myColumns;
-
-        while (i--)
+        if (myColumnJump == 0)
         {
-            (*thisValuePointer++) = value;
+            uint32_t i = myRows * myColumns;
+
+            while (i--)
+            {
+                (*thisValuePointer++) = value;
+            }
+        }
+        else
+        {
+            int32_t i = myRows * myColumns;
+
+            while (i--)
+            {
+                (*thisValuePointer) = value;
+
+                incrementValuePointer(i);
+            }
         }
     }
 
@@ -203,12 +219,25 @@ protected:
 
         int32_t i = 0;
 
-        while (i != (myRows * myColumns))
+        if (myColumnJump == 0)
         {
-            matrix.getValueFast((i % myColumns), (i / myColumns)) =
+            while (i != (myRows * myColumns))
+            {
+                matrix.getValueFast((i % myColumns), (i / myColumns)) =
                                                           (*thisValuePointer++);
 
-            i++;
+                i++;
+            }
+        }
+        else
+        {
+            while (i != (myRows * myColumns))
+            {
+                matrix.getValueFast((i % myColumns), (i / myColumns)) =
+                                                            (*thisValuePointer);
+
+                i++;
+            }
         }
     }
 
@@ -349,14 +378,63 @@ protected:
 
         int32_t i = myRows * myColumns;
 
-        while (i--)
+        if ((myColumnJump == 0) && (matrix.myColumnJump == 0))
         {
-            ValueType value1 = (*thisValuePointer++);
-            ValueType value2 = (*valuePointer++);
-
-            if (fabs(value1 - value2) > epsilon)
+            while (i--)
             {
-                return false;
+                ValueType value1 = (*thisValuePointer++);
+                ValueType value2 = (*valuePointer++);
+
+                if (fabs(value1 - value2) > epsilon)
+                {
+                    return false;
+                }
+            }
+        }
+        else if ((myColumnJump != 0) && (matrix.myColumnJump == 0))
+        {
+            while (i--)
+            {
+                ValueType value1 = (*thisValuePointer);
+                ValueType value2 = (*valuePointer++);
+
+                if (fabs(value1 - value2) > epsilon)
+                {
+                    return false;
+                }
+
+                incrementValuePointer(thisValuePointer, i);
+            }
+        }
+        else if ((myColumnJump == 0) && (matrix.myColumnJump != 0))
+        {
+            while (i--)
+            {
+                ValueType value1 = (*thisValuePointer++);
+                ValueType value2 = (*valuePointer);
+
+                if (fabs(value1 - value2) > epsilon)
+                {
+                    return false;
+                }
+
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                ValueType value1 = (*thisValuePointer++);
+                ValueType value2 = (*valuePointer++);
+
+                if (fabs(value1 - value2) > epsilon)
+                {
+                    return false;
+                }
+
+                incrementValuePointer(thisValuePointer, i);
+                matrix.incrementValuePointer(valuePointer, i);
             }
         }
 
@@ -367,15 +445,7 @@ protected:
     //--------------------------------------------------------------------------
     void operatorUnaryPlus(MatrixBase<ValueType>& matrix) const
     {
-        const ValueType* thisValuePointer = &(getValueFast(0, 0));
-        ValueType* valuePointer = &(matrix.getValueFast(0, 0));
-
-        int32_t i = myRows * myColumns;
-
-        while (i--)
-        {
-            (*valuePointer++) = +(*thisValuePointer++);
-        }
+        // Here for symmetry with operatorUnaryMinus() only
     }
     
     // Unary minus operator
@@ -387,9 +457,21 @@ protected:
 
         int32_t i = myRows * myColumns;
 
-        while (i--)
+        if (myColumnJump == 0)
         {
-            (*valuePointer++) = -(*thisValuePointer++);
+            while (i--)
+            {
+                (*valuePointer++) = -(*thisValuePointer++);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*valuePointer++) = -(*thisValuePointer);
+
+                incrementValuePointer(thisValuePointer, i);
+            }
         }
     }
 
@@ -404,9 +486,43 @@ protected:
 
         int32_t i = myRows * myColumns;
 
-        while (i--)
+        if ((myColumnJump == 0) && (matrix.myColumnJump == 0))
         {
-            (*resultValuePointer++) = (*thisValuePointer++) + (*valuePointer++);
+            while (i--)
+            {
+                (*resultValuePointer++) =
+                                      (*thisValuePointer++) + (*valuePointer++);
+            }
+        }
+        else if ((myColumnJump != 0) && (matrix.myColumnJump == 0))
+        {
+            while (i--)
+            {
+                (*resultValuePointer++) =
+                                        (*thisValuePointer) + (*valuePointer++);
+
+                incrementValuePointer(thisValuePointer, i);
+            }
+        }
+        else if ((myColumnJump == 0) && (matrix.myColumnJump != 0))
+        {
+            while (i--)
+            {
+                (*resultValuePointer++) =
+                                        (*thisValuePointer++) + (*valuePointer);
+
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*resultValuePointer++) = (*thisValuePointer) + (*valuePointer);
+
+                incrementValuePointer(thisValuePointer, i);
+                matrix.incrementValuePointer(valuePointer, i);
+            }
         }
     }
 
@@ -421,9 +537,43 @@ protected:
 
         int32_t i = myRows * myColumns;
 
-        while (i--)
+        if ((myColumnJump == 0) && (matrix.myColumnJump == 0))
         {
-            (*resultValuePointer++) = (*thisValuePointer++) - (*valuePointer++);
+            while (i--)
+            {
+                (*resultValuePointer++) =
+                                      (*thisValuePointer++) - (*valuePointer++);
+            }
+        }
+        else if ((myColumnJump != 0) && (matrix.myColumnJump == 0))
+        {
+            while (i--)
+            {
+                (*resultValuePointer++) =
+                                        (*thisValuePointer) - (*valuePointer++);
+
+                incrementValuePointer(thisValuePointer, i);
+            }
+        }
+        else if ((myColumnJump == 0) && (matrix.myColumnJump != 0))
+        {
+            while (i--)
+            {
+                (*resultValuePointer++) =
+                                        (*thisValuePointer++) - (*valuePointer);
+
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*resultValuePointer++) = (*thisValuePointer) - (*valuePointer);
+
+                incrementValuePointer(thisValuePointer, i);
+                matrix.incrementValuePointer(valuePointer, i);
+            }
         }
     }
 
@@ -473,33 +623,135 @@ protected:
         const uint32_t resultColumns = resultMatrix.myColumns;
         const uint32_t resultSize = myRows * resultColumns;
 
-        // Loop through every element (myRows * myColumns2) in the resulting Matrix starting
-        // at (1, 1) moving left-to-right, top-to-bottom until (N, M2)
-        while (i++ < resultSize)
+        if ((myColumnJump == 0) && (matrix.myColumnJump == 0))
         {
-            int32_t rowSize = (int32_t) myColumns;
-
-            // Loop
-            while (rowSize--)
+            // Loop through every element (myRows * myColumns2) in the resulting
+            // Matrix starting at (1, 1) moving left-to-right, top-to-bottom
+            // until (N, M2)
+            while (i++ < resultSize)
             {
-                (*resultPointer) += (*leftPointer++) * (*rightPointer);
+                uint32_t columns = myColumns;
 
-                rightPointer += resultColumns;
+                // Loop
+                while (columns--)
+                {
+                    (*resultPointer) += (*leftPointer++) * (*rightPointer);
+
+                    rightPointer += resultColumns;
+                }
+
+                resultPointer++;
+
+                //
+                // Integer divide i / resultColumns gives the first element in
+                // the current row of the left matrix
+                //
+                leftPointer = &(getValueFast((i / resultColumns), 0));
+
+                //
+                // Integer modulo i % resultColumns gives the first element in
+                // the current column of the right matrix
+                //
+                rightPointer = &(matrix.getValueFast(0, (i % resultColumns)));
             }
+        }
+        else if ((myColumnJump != 0) && (matrix.myColumnJump == 0))
+        {
+            // Loop through every element (myRows * myColumns2) in the resulting
+            // Matrix starting at (1, 1) moving left-to-right, top-to-bottom
+            // until (N, M2)
+            while (i++ < resultSize)
+            {
+                uint32_t columns = myColumns;
 
-            resultPointer++;
+                // Loop
+                while (columns--)
+                {
+                    (*resultPointer) += (*leftPointer++) * (*rightPointer);
 
-            //
-            // Integer divide i / resultColumns gives the first element in the
-            // current row of the left matrix
-            //
-            leftPointer = &(getValueFast((i / resultColumns), 0));
+                    rightPointer += resultColumns;
+                }
 
-            //
-            // Integer modulo i % resultColumns gives the first element in the
-            // current column of the right matrix
-            //
-            rightPointer = &(matrix.getValueFast(0, (i % resultColumns)));
+                resultPointer++;
+
+                //
+                // Integer divide i / resultColumns gives the first element in
+                // the current row of the left matrix
+                //
+                leftPointer = &(getValueFast((i / resultColumns), 0));
+                leftPointer += (i / resultColumns) * myColumnJump;
+
+                //
+                // Integer modulo i % resultColumns gives the first element in
+                // the current column of the right matrix
+                //
+                rightPointer = &(matrix.getValueFast(0, (i % resultColumns)));
+            }
+        }
+        else if ((myColumnJump == 0) && (matrix.myColumnJump != 0))
+        {
+            // Loop through every element (myRows * myColumns2) in the resulting
+            // Matrix starting at (1, 1) moving left-to-right, top-to-bottom
+            // until (N, M2)
+            while (i++ < resultSize)
+            {
+                uint32_t columns = myColumns;
+
+                // Loop
+                while (columns--)
+                {
+                    (*resultPointer) += (*leftPointer++) * (*rightPointer);
+
+                    rightPointer += resultColumns + matrix.myColumnJump - 1;
+                }
+
+                resultPointer++;
+
+                //
+                // Integer divide i / resultColumns gives the first element in
+                // the current row of the left matrix
+                //
+                leftPointer = &(getValueFast((i / resultColumns), 0));
+
+                //
+                // Integer modulo i % resultColumns gives the first element in
+                // the current column of the right matrix
+                //
+                rightPointer = &(matrix.getValueFast(0, (i % resultColumns)));
+            }
+        }
+        else
+        {
+            // Loop through every element (myRows * myColumns2) in the resulting
+            // Matrix starting at (1, 1) moving left-to-right, top-to-bottom
+            // until (N, M2)
+            while (i++ < resultSize)
+            {
+                uint32_t columns = myColumns;
+
+                // Loop
+                while (columns--)
+                {
+                    (*resultPointer) += (*leftPointer++) * (*rightPointer);
+
+                    rightPointer += resultColumns + matrix.myColumnJump -1;
+                }
+
+                resultPointer++;
+
+                //
+                // Integer divide i / resultColumns gives the first element in
+                // the current row of the left matrix
+                //
+                leftPointer = &(getValueFast((i / resultColumns), 0));
+                leftPointer += (i / resultColumns) * myColumnJump;
+
+                //
+                // Integer modulo i % resultColumns gives the first element in
+                // the current column of the right matrix
+                //
+                rightPointer = &(matrix.getValueFast(0, (i % resultColumns)));
+            }
         }
     }
 
@@ -511,26 +763,96 @@ protected:
         const ValueType* rightPointer = &(matrix.getValueFast(0, 0));
         ValueType* resultPointer = &(resultMatrix.getValueFast(0, 0));
 
-        int32_t i = myColumns;
+        uint32_t i = myColumns;
 
-        // Loop through every element (N) in the resulting Vector starting
-        // at (1) moving top-to-bottom until (N)
-        while (i--)
+        if ((myColumnJump == 0) && (matrix.myColumnJump == 0))
         {
-            int32_t rowSize = (int32_t) myColumns;
-
-            // Loop
-            while (rowSize--)
+            // Loop through every element (N) in the resulting Vector starting
+            // at (1) moving top-to-bottom until (N)
+            while (i--)
             {
-                (*resultPointer) += (*leftPointer++) * (*rightPointer++);
+                int32_t rowSize = (int32_t) myColumns;
+
+                // Loop
+                while (rowSize--)
+                {
+                    (*resultPointer) += (*leftPointer++) * (*rightPointer++);
+                }
+
+                resultPointer++;
+
+                //
+                // First element in the right matrix
+                //
+                rightPointer = &(matrix.getValueFast(0, 0));
             }
+        }
+        else if ((myColumnJump != 0) && (matrix.myColumnJump == 0))
+        {
+            while (i--)
+            {
+                int32_t rowSize = (int32_t) myColumns;
 
-            resultPointer++;
+                // Loop
+                while (rowSize--)
+                {
+                    (*resultPointer) += (*leftPointer) * (*rightPointer++);
 
-            //
-            // First element in the right matrix
-            //
-            rightPointer = &(matrix.getValueFast(0, 0));
+                    incrementValuePointer(leftPointer, i);
+                }
+
+                resultPointer++;
+
+                //
+                // First element in the right matrix
+                //
+                rightPointer = &(matrix.getValueFast(0, 0));
+            }
+        }
+        else if ((myColumnJump == 0) && (matrix.myColumnJump != 0))
+        {
+            while (i--)
+            {
+                int32_t rowSize = (int32_t) myColumns;
+
+                // Loop
+                while (rowSize--)
+                {
+                    (*resultPointer) += (*leftPointer) * (*rightPointer);
+
+                    matrix.incrementValuePointer(rightPointer, i);
+                }
+
+                resultPointer++;
+
+                //
+                // First element in the right matrix
+                //
+                rightPointer = &(matrix.getValueFast(0, 0));
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                int32_t rowSize = (int32_t) myColumns;
+
+                // Loop
+                while (rowSize--)
+                {
+                    (*resultPointer) += (*leftPointer) * (*rightPointer);
+
+                    matrix.incrementValuePointer(rightPointer, i);
+                    incrementValuePointer(leftPointer, i);
+                }
+
+                resultPointer++;
+
+                //
+                // First element in the right matrix
+                //
+                rightPointer = &(matrix.getValueFast(0, 0));
+            }
         }
     }
 
@@ -542,11 +864,23 @@ protected:
         const ValueType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = myRows * myColumns;
+        uint32_t i = myRows * myColumns;
 
-        while (i--)
+        if (myColumnJump == 0)
         {
-            (*valuePointer++) = (*thisValuePointer++) + scalar;
+            while (i--)
+            {
+                (*valuePointer++) = (*thisValuePointer++) + scalar;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*valuePointer++) = (*thisValuePointer) + scalar;
+
+                incrementValuePointer(thisValuePointer, i);
+            }
         }
     }
 
@@ -556,11 +890,23 @@ protected:
     {
         ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = myRows * myColumns;
+        uint32_t i = myRows * myColumns;
 
-        while (i--)
+        if (myColumnJump == 0)
         {
-            (*thisValuePointer++) += scalar;
+            while (i--)
+            {
+                (*thisValuePointer++) += scalar;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*thisValuePointer) += scalar;
+
+                incrementValuePointer(thisValuePointer, i);
+            }
         }
     }
 
@@ -572,11 +918,23 @@ protected:
         const ValueType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = (int32_t) (myRows * myColumns);
+        uint32_t i = myRows * myColumns;
 
-        while (i--)
+        if (myColumnJump == 0)
         {
-            (*valuePointer++) = (*thisValuePointer++) - scalar;
+            while (i--)
+            {
+                (*valuePointer++) = (*thisValuePointer++) - scalar;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*valuePointer++) = (*thisValuePointer) - scalar;
+
+                incrementValuePointer(thisValuePointer, i);
+            }
         }
     }
 
@@ -586,11 +944,23 @@ protected:
     {
         ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = (int32_t) (myRows * myColumns);
+        uint32_t i = myRows * myColumns;
 
-        while (i--)
+        if (myColumnJump == 0)
         {
-            (*thisValuePointer++) -= scalar;
+            while (i--)
+            {
+                (*thisValuePointer++) -= scalar;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*thisValuePointer) -= scalar;
+
+                incrementValuePointer(thisValuePointer, i);
+            }
         }
     }
 
@@ -602,11 +972,23 @@ protected:
         const ValueType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = (int32_t) (myRows * myColumns);
+        uint32_t i = myRows * myColumns;
 
-        while (i--)
+        if (myColumnJump == 0)
         {
-            (*valuePointer++) = (*thisValuePointer++) * scalar;
+            while (i--)
+            {
+                (*valuePointer++) = (*thisValuePointer++) * scalar;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*valuePointer++) = (*thisValuePointer) * scalar;
+
+                incrementValuePointer(thisValuePointer, i);
+            }
         }
     }
 
@@ -616,11 +998,23 @@ protected:
     {
         ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = (int32_t) (myRows * myColumns);
+        uint32_t i = myRows * myColumns;
 
-        while (i--)
+        if (myColumnJump == 0)
         {
-            (*thisValuePointer++) *= scalar;
+            while (i--)
+            {
+                (*thisValuePointer++) *= scalar;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*thisValuePointer) *= scalar;
+
+                incrementValuePointer(thisValuePointer, i);
+            }
         }
     }
 
@@ -647,9 +1041,40 @@ protected:
 
         int32_t i = myRows * myColumns;
 
-        while (i--)
+        if ((myColumnJump == 0) && (matrix.myColumnJump == 0))
         {
-            (*myValuePointer++) = (*valuePointer++);
+            while (i--)
+            {
+                (*myValuePointer++) = (*valuePointer++);
+            }
+        }
+        else if ((myColumnJump != 0) && (matrix.myColumnJump == 0))
+        {
+            while (i--)
+            {
+                (*myValuePointer) = (*valuePointer++);
+
+                incrementValuePointer(myValuePointer, i);
+            }
+        }
+        else if ((myColumnJump == 0) && (matrix.myColumnJump != 0))
+        {
+            while (i--)
+            {
+                (*myValuePointer++) = (*valuePointer);
+
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*myValuePointer) = (*valuePointer);
+
+                incrementValuePointer(myValuePointer, i);
+                matrix.incrementValuePointer(valuePointer, i);
+            }
         }
     }
 
@@ -664,6 +1089,39 @@ private:
     const uint32_t myColumns;
 
     ValueType* myValuesPointer;
+
+    const uint32_t myColumnJump;
+
+    //--------------------------------------------------------------------------
+    // Private methods
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    void incrementValuePointer(ValueType*& valuePointer, const int i)
+    {
+        if ((i % myColumns) == 0)
+        {
+            valuePointer += myColumnJump;
+        }
+        else
+        {
+            valuePointer++;
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    void incrementValuePointer(const ValueType*& valuePointer,
+                               const int i) const
+    {
+        if ((i % myColumns) == 0)
+        {
+            valuePointer += myColumnJump;
+        }
+        else
+        {
+            valuePointer++;
+        }
+    }
 };
 
 }; // namespace Matrice
