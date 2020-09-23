@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[FEATURE]` Added in-place submatrix functionality to Matrix and Vector classes through modifications to MatrixBase and MatrixStorage. [Resolves #3].
 * `[FEATURE]` Added external memory mapping support to Vector class. [Resolves #4].
 * `[BUG FIX]` Fixed initialization of Matrix::columns for NxM template. [Resolves #2].
 * `[FEATURE]` Added MatrixStorage class between MatrixBase and outer API classes (Matrix, Vector, etc.) to reduce template flash usage and allow for external storage. Added Matrice_Test_App with acceptance tests for mathematical operator overloads. [Resolves #1].
