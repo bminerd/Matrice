@@ -71,8 +71,6 @@ public:
 
     static bool operatorEqualsTest();
 
-    static bool operatorUnaryPlusTest();
-
     static bool operatorAddScalarTest();
 
     static bool operatorAddTest();
@@ -92,6 +90,26 @@ public:
     static bool operatorMultiplyTest();
 
     static bool operatorMultiplyEqualsScalarTest();
+
+    static bool submatrixOperatorAddScalarTest();
+
+    static bool submatrixOperatorAddTest();
+
+    static bool submatrixOperatorAddEqualsScalarTest();
+
+    static bool submatrixOperatorUnaryMinusTest();
+
+    static bool submatrixOperatorSubtractScalarTest();
+
+    static bool submatrixOperatorSubtractTest();
+
+    static bool submatrixOperatorSubtractEqualsScalarTest();
+
+    static bool submatrixOperatorMultiplyScalarTest();
+
+    static bool submatrixOperatorMultiplyTest();
+
+    static bool submatrixOperatorMultiplyEqualsScalarTest();
 
 private:
 
