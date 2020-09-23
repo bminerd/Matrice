@@ -818,7 +818,7 @@ protected:
                 // Loop
                 while (rowSize--)
                 {
-                    (*resultPointer) += (*leftPointer) * (*rightPointer);
+                    (*resultPointer) += (*leftPointer++) * (*rightPointer);
 
                     matrix.incrementValuePointer(rightPointer, i);
                 }
