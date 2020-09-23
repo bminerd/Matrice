@@ -122,25 +122,6 @@ public:
     using MatrixBase<ValueType>::getValue;
 
     //--------------------------------------------------------------------------
-    // Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix = matrix.getSubMatrix(1, 1);
-    template <uint32_t SubN, uint32_t SubM>
-    MatrixStorage<ValueType, SubN, SubM, STORAGE_EXTERNAL> submatrix(
-                                                          
-                                                          const uint32_t row,
-                                                          const uint32_t column)
-    {
-        if (((row + SubN) > N) || ((column + SubM) > M))
-        {
-            return MatrixStorage<ValueType, 0, 0, STORAGE_EXTERNAL>(0);
-        }
-
-        MatrixStorage<ValueType, SubN, SubM, STORAGE_EXTERNAL> submatrix(
-                                                         myValues[row][column]);
-
-        return submatrix;
-    }
-
-    //--------------------------------------------------------------------------
     // Public overloaded operators
     //--------------------------------------------------------------------------
 
@@ -437,10 +418,14 @@ public:
 
     //--------------------------------------------------------------------------
     template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption>
-    MatrixStorage(MatrixStorage<ValueType, ParentN, ParentM, StorageOption>& matrix,
-                  const uint32_t row,
-                  const uint32_t column) :
-        MatrixBase<ValueType>(N, M, &(matrix.getValue(row, column)), (M - column) + 1)
+    MatrixStorage(
+              MatrixStorage<ValueType, ParentN, ParentM, StorageOption>& matrix,
+              const uint32_t row,
+              const uint32_t column) :
+        MatrixBase<ValueType>(
+                             N,
+                             M,
+                             &(matrix.getValue(row, column)), (ParentM - M) + 1)
     {
         if (((row + N + 1) > ParentN) || ((column + M + 1) > ParentM))
         {
