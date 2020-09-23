@@ -22,6 +22,7 @@ include_directories(${PLAT4M_CORE_DIR}/../)
 set(source_files main.cpp
                  ApplicationMatriceTest.cpp
                  ${PROJECT_SOURCE_DIR}/../MatrixTest.cpp
+                 ${PROJECT_SOURCE_DIR}/../VectorTest.cpp
                  ${PLAT4M_CORE_DIR}/Application.cpp
                  ${PLAT4M_CORE_DIR}/Module.cpp
                  ${PLAT4M_CORE_DIR}/System.cpp

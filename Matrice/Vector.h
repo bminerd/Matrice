@@ -76,7 +76,6 @@ public:
         MatrixStorage<ValueType, N, 1, StorageOption>(
                                                   *(ValueType (*)[N][1]) values)
     {
-        // MatrixStorage<ValueType, N, 1>::setValuesProtected(values);
     }
 
     //--------------------------------------------------------------------------

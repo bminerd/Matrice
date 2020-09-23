@@ -41,6 +41,7 @@
 #include <Plat4m_Core/Linux/ProcessorLinux.h>
 
 #include <Tests/MatrixTest.h>
+#include <Tests/VectorTest.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
@@ -81,6 +82,8 @@ private:
     Plat4m::ProcessorLinux myProcessor;
 
     MatrixTest myMatrixTest;
+
+    VectorTest myVectorTest;
 
     //--------------------------------------------------------------------------
     // Private methods implemented from Application

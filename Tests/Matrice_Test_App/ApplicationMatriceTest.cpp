@@ -52,7 +52,8 @@ ApplicationMatriceTest::ApplicationMatriceTest() :
                                    "1.0.0"),
     mySystem(),
     myProcessor(),
-    myMatrixTest()
+    myMatrixTest(),
+    myVectorTest()
 {
 }
 
@@ -85,4 +86,5 @@ void ApplicationMatriceTest::driverRun()
 void ApplicationMatriceTest::initializeSystem()
 {
     addUnitTest(myMatrixTest);
+    addUnitTest(myVectorTest);
 }
