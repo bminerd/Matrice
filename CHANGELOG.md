@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[FEATURE]` Added setValues() methods and assignment operators to Matrix and Vector for array types. Refactored portions of MatrixBase and MatrixStorage for readability and consistency. [Resolves #6].
 * `[BUG FIX]` Fixed missing assignment operators in Vector class for conversion between storage types. [Resolves #5].
 * `[FEATURE]` Added in-place submatrix functionality to Matrix and Vector classes through modifications to MatrixBase and MatrixStorage. [Resolves #3].
 * `[FEATURE]` Added external memory mapping support to Vector class. [Resolves #4].
