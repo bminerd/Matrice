@@ -47,6 +47,7 @@ using Plat4m::UnitTest;
 
 const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
 {
+    &VectorTest::operatorAssignmentTest,
     &VectorTest::operatorEqualsTest,
     &VectorTest::operatorAddScalarTest,
     &VectorTest::operatorAddTest,
@@ -58,6 +59,7 @@ const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
     &VectorTest::operatorMultiplyScalarTest,
     &VectorTest::operatorMultiplyTest,
     &VectorTest::operatorMultiplyEqualsScalarTest,
+    &VectorTest::setValuesTest,
     &VectorTest::submatrixOperatorAddScalarTest,
     &VectorTest::submatrixOperatorAddTest,
     &VectorTest::submatrixOperatorAddEqualsScalarTest,
@@ -94,6 +96,57 @@ VectorTest::~VectorTest()
 //------------------------------------------------------------------------------
 // Public static methods
 //------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+bool VectorTest::operatorAssignmentTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3> vector1;
+
+    float values2[3] =
+    {
+        0.0,
+        0.0,
+        0.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
+
+    // Test
+
+    vector1 = values1;
+    vector2 = values1;
+    Vector<float, 3> result1 = vector1;
+    Vector<float, 3> result2 = vector2;
+
+    static const float expectedValues[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3> expected(expectedValues);
+    bool compare1 = (result1 == expected);
+    bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
 
 //------------------------------------------------------------------------------
 bool VectorTest::operatorEqualsTest()
@@ -653,6 +706,58 @@ bool VectorTest::operatorMultiplyEqualsScalarTest()
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
                             UNIT_TEST_CASE_EQUAL(compare2, true));
 }
+
+//------------------------------------------------------------------------------
+bool VectorTest::setValuesTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3> matrix1;
+
+    float values2[3] =
+    {
+        0.0,
+        0.0,
+        0.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    // Test
+
+    matrix1.setValues(values1);
+    matrix2.setValues(values1);
+    Vector<float, 3> result1 = matrix1;
+    Vector<float, 3> result2 = matrix2;
+
+    static const float expectedValues[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3> expected(expectedValues);
+    bool compare1 = (result1 == expected);
+    bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
 
 //------------------------------------------------------------------------------
 bool VectorTest::submatrixOperatorAddScalarTest()

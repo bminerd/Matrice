@@ -69,6 +69,8 @@ public:
     // Public static methods
     //--------------------------------------------------------------------------
 
+    static bool operatorAssignmentTest();
+
     static bool operatorEqualsTest();
 
     static bool operatorAddScalarTest();
@@ -90,6 +92,8 @@ public:
     static bool operatorMultiplyTest();
 
     static bool operatorMultiplyEqualsScalarTest();
+
+    static bool setValuesTest();
 
     static bool submatrixOperatorAddScalarTest();
 
