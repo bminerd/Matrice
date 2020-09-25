@@ -1188,6 +1188,48 @@ protected:
         }
     }
 
+    //--------------------------------------------------------------------------
+    void getRow(MatrixBase<ValueType>& matrix, const uint32_t row)
+    {
+        const ValueType* myValuePointer = &(getValueFast(row, 0));
+        ValueType* valuePointer = &(matrix.getValueFast(0, 0));
+
+        uint32_t i = myColumns;
+
+        while (i--)
+        {
+            (*valuePointer++) = (*myValuePointer++);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    void getColumn(MatrixBase<ValueType>& matrix, const uint32_t column)
+    {
+        const ValueType* myValuePointer = &(getValueFast(0, column));
+        ValueType* valuePointer = &(matrix.getValueFast(0, 0));
+
+        uint32_t i = myRows;
+
+        if (myColumnJump == 0)
+        {
+            while (i--)
+            {
+                (*valuePointer++) = (*myValuePointer);
+
+                myValuePointer += myColumns;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*valuePointer++) = (*myValuePointer);
+
+                myValuePointer += myColumns + myColumnJump;
+            }
+        }
+    }
+
 private:
 
     //--------------------------------------------------------------------------
