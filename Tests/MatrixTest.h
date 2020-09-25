@@ -99,6 +99,8 @@ public:
 
     static bool getColumnTest();
 
+    static bool transposeTest();
+
     static bool submatrixOperatorAddScalarTest();
 
     static bool submatrixOperatorAddTest();

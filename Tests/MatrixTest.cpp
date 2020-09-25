@@ -64,6 +64,7 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::setValuesTest,
     &MatrixTest::getRowTest,
     &MatrixTest::getColumnTest,
+    &MatrixTest::transposeTest,
     &MatrixTest::submatrixOperatorAddScalarTest,
     &MatrixTest::submatrixOperatorAddTest,
     &MatrixTest::submatrixOperatorAddEqualsScalarTest,
@@ -858,6 +859,59 @@ bool MatrixTest::getColumnTest()
     };
 
     Matrix<float, 3, 1> expected(expectedValues);
+    bool compare1 = (result1 == expected);
+    bool compare2 = (result2 == expected);
+    bool compare3 = (result3 == expected);
+    bool compare4 = (result4 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true) &
+                            UNIT_TEST_CASE_EQUAL(compare4, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::transposeTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[2][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 }
+    };
+
+    Matrix<float, 2, 3> matrix1(values1);
+
+    float values2[2][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 }
+    };
+
+    Matrix<float, 2, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    // Test
+
+    Matrix<float, 3, 2> result1 = matrix1.transpose();
+    Matrix<float, 3, 2> result2 = matrix2.transpose();
+    Matrix<float, 3, 2> result3 = matrix1.T();
+    Matrix<float, 3, 2> result4 = matrix2.T();
+
+    static const float expectedValues[3][2] =
+    {
+        { 1.0, 4.0 },
+        { 2.0, 5.0 },
+        { 3.0, 6.0 }
+    };
+
+    Matrix<float, 3, 2> expected(expectedValues);
     bool compare1 = (result1 == expected);
     bool compare2 = (result2 == expected);
     bool compare3 = (result3 == expected);

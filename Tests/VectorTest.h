@@ -95,6 +95,8 @@ public:
 
     static bool setValuesTest();
 
+    static bool transposeTest();
+
     static bool submatrixOperatorAddScalarTest();
 
     static bool submatrixOperatorAddTest();

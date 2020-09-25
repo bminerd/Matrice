@@ -60,6 +60,7 @@ const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
     &VectorTest::operatorMultiplyTest,
     &VectorTest::operatorMultiplyEqualsScalarTest,
     &VectorTest::setValuesTest,
+    &VectorTest::transposeTest,
     &VectorTest::submatrixOperatorAddScalarTest,
     &VectorTest::submatrixOperatorAddTest,
     &VectorTest::submatrixOperatorAddEqualsScalarTest,
@@ -725,7 +726,7 @@ bool VectorTest::setValuesTest()
         3.0
     };
 
-    Vector<float, 3> matrix1;
+    Vector<float, 3> vector1;
 
     float values2[3] =
     {
@@ -734,14 +735,14 @@ bool VectorTest::setValuesTest()
         0.0
     };
 
-    Vector<float, 3, STORAGE_EXTERNAL> matrix2(values2);
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
 
     // Test
 
-    matrix1.setValues(values1);
-    matrix2.setValues(values1);
-    Vector<float, 3> result1 = matrix1;
-    Vector<float, 3> result2 = matrix2;
+    vector1.setValues(values1);
+    vector2.setValues(values1);
+    Vector<float, 3> result1 = vector1;
+    Vector<float, 3> result2 = vector2;
 
     static const float expectedValues[3] =
     {
@@ -758,6 +759,56 @@ bool VectorTest::setValuesTest()
                             UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
+//------------------------------------------------------------------------------
+bool VectorTest::transposeTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3> vector1(values1);
+
+    float values2[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
+
+    // Test
+
+    Matrix<float, 1, 3> result1 = vector1.transpose();
+    Matrix<float, 1, 3> result2 = vector2.T();
+    Matrix<float, 1, 3> result3 = vector1.transpose();
+    Matrix<float, 1, 3> result4 = vector2.T();
+
+    static const float expectedValues[1][3] =
+    {
+        { 1.0, 2.0, 3.0 }
+    };
+
+    Matrix<float, 1, 3> expected(expectedValues);
+    bool compare1 = (result1 == expected);
+    bool compare2 = (result2 == expected);
+    bool compare3 = (result3 == expected);
+    bool compare4 = (result4 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
 
 //------------------------------------------------------------------------------
 bool VectorTest::submatrixOperatorAddScalarTest()
