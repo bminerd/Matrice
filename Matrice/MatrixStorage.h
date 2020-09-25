@@ -140,6 +140,16 @@ public:
         return (*this);
     }
 
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, M, StorageOption>& operator=(
+                                                   const ValueType values[N][M])
+    {
+        MatrixBase<ValueType>::setValuesProtected((ValueType*) values);
+
+        return (*this);
+    }
+
     //--------------------------------------------------------------------------
     ValueType& operator()(const uint32_t row, const uint32_t column)
     {
@@ -457,6 +467,16 @@ public:
                    const MatrixStorage<ValueType, N, M, StorageOption2>& matrix)
     {
         MatrixBase<ValueType>::setValuesProtected(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>& operator=(
+                                                   const ValueType values[N][M])
+    {
+        MatrixBase<ValueType>::setValuesProtected((ValueType*) values);
 
         return (*this);
     }
