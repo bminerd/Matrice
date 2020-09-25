@@ -39,6 +39,7 @@
 #include <cstdint>
 #include <limits>
 #include <algorithm>
+#include <cmath>
 
 #include <Matrice/Matrice.h>
 
@@ -377,6 +378,41 @@ public:
         }
     }
 
+    //--------------------------------------------------------------------------
+    ValueType magnitude() const
+    {
+        ValueType squaredSum = 0.0;
+
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
+
+        uint32_t i = myRows * myColumns;
+
+        if (myColumnJump == 0)
+        {
+            while (i--)
+            {
+                squaredSum += square(*thisValuePointer++);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                squaredSum += square(*thisValuePointer);
+
+                incrementValuePointer(thisValuePointer, i);
+            }
+        }
+
+        return sqrt(squaredSum);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType norm() const
+    {
+        return magnitude();
+    }
+
 protected:
 
     //--------------------------------------------------------------------------
@@ -416,37 +452,6 @@ protected:
     //--------------------------------------------------------------------------
     // Protected methods
     //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
-    void transpose(MatrixBase<ValueType>& matrix) const
-    {
-        const ValueType* thisValuePointer = &(getValueFast(0, 0));
-
-        uint32_t i = 0;
-
-        if (myColumnJump == 0)
-        {
-            while (i != (myRows * myColumns))
-            {
-                matrix.getValueFast((i % myColumns), (i / myColumns)) =
-                                                          (*thisValuePointer++);
-
-                i++;
-            }
-        }
-        else
-        {
-            while (i != (myRows * myColumns))
-            {
-                matrix.getValueFast((i % myColumns), (i / myColumns)) =
-                                                            (*thisValuePointer);
-
-                incrementValuePointer(thisValuePointer, i);
-
-                i++;
-            }
-        }
-    }
 
     //--------------------------------------------------------------------------
     bool operatorEquals(const MatrixBase<ValueType>& matrix)
@@ -1098,10 +1103,6 @@ protected:
     }
 
     //--------------------------------------------------------------------------
-    // Protected methods
-    //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
     void setValuesPointerProtected(ValueType values[])
     {
         myValuesPointer = values;
@@ -1222,6 +1223,37 @@ protected:
                 (*valuePointer++) = (*myValuePointer);
 
                 myValuePointer += myColumns + myColumnJump;
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    void transpose(MatrixBase<ValueType>& matrix) const
+    {
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
+
+        uint32_t i = 0;
+
+        if (myColumnJump == 0)
+        {
+            while (i != (myRows * myColumns))
+            {
+                matrix.getValueFast((i % myColumns), (i / myColumns)) =
+                                                          (*thisValuePointer++);
+
+                i++;
+            }
+        }
+        else
+        {
+            while (i != (myRows * myColumns))
+            {
+                matrix.getValueFast((i % myColumns), (i / myColumns)) =
+                                                            (*thisValuePointer);
+
+                incrementValuePointer(thisValuePointer, i);
+
+                i++;
             }
         }
     }

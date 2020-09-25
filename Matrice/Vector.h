@@ -36,8 +36,6 @@
 // Include files
 //------------------------------------------------------------------------------
 
-#include <cmath>
-
 #include <Matrice/Matrice.h>
 #include <Matrice/Matrix.h>
 
@@ -98,40 +96,6 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    // Public methods
-    //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
-    void setValues(const ValueType values[N])
-    {
-        MatrixBase<ValueType>::setValuesProtected(values);
-    }
-
-    //--------------------------------------------------------------------------
-    ValueType magnitude() const
-    {
-        ValueType squaredSum = 0.0;
-
-        const ValueType* valuePointer =
-                                   &(MatrixBase<ValueType>::getValueFast(0, 0));
-
-        uint32_t i = N;
-
-        while (i--)
-        {
-            squaredSum += square(*valuePointer++);
-        }
-
-        return sqrt(squaredSum);
-    }
-
-    //--------------------------------------------------------------------------
-    ValueType norm() const
-    {
-        return magnitude();
-    }
-
-    //--------------------------------------------------------------------------
     // Public overloaded operators
     //--------------------------------------------------------------------------
 
@@ -175,6 +139,16 @@ public:
     const ValueType& operator()(const uint32_t row) const
     {
         return (Matrix<ValueType, N, 1, StorageOption>::getValue(row, 0));
+    }
+
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    void setValues(const ValueType values[N])
+    {
+        MatrixBase<ValueType>::setValuesProtected(values);
     }
 };
 
@@ -224,42 +198,6 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    // Public methods
-    //--------------------------------------------------------------------------
-
-    using MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>::getValue;
-
-    //--------------------------------------------------------------------------
-    void setValues(const ValueType values[N])
-    {
-        MatrixBase<ValueType>::setValuesProtected(values);
-    }
-
-    //--------------------------------------------------------------------------
-    ValueType magnitude() const
-    {
-        ValueType squaredSum = 0.0;
-
-        const ValueType* valuePointer =
-                                   &(MatrixBase<ValueType>::getValueFast(0, 0));
-
-        uint32_t i = N;
-
-        while (i--)
-        {
-            squaredSum += square(*valuePointer++);
-        }
-
-        return sqrt(squaredSum);
-    }
-
-    //--------------------------------------------------------------------------
-    ValueType norm() const
-    {
-        return magnitude();
-    }
-
-    //--------------------------------------------------------------------------
     // Public overloaded operators
     //--------------------------------------------------------------------------
 
@@ -293,6 +231,18 @@ public:
     const ValueType& operator()(const uint32_t row) const
     {
         return getValue(row, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    using MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>::getValue;
+
+    //--------------------------------------------------------------------------
+    void setValues(const ValueType values[N])
+    {
+        MatrixBase<ValueType>::setValuesProtected(values);
     }
 };
 
