@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[BUG FIX]` Fixed missing assignment operators in Vector class for conversion between storage types. [Resolves #5].
 * `[FEATURE]` Added in-place submatrix functionality to Matrix and Vector classes through modifications to MatrixBase and MatrixStorage. [Resolves #3].
 * `[FEATURE]` Added external memory mapping support to Vector class. [Resolves #4].
 * `[BUG FIX]` Fixed initialization of Matrix::columns for NxM template. [Resolves #2].
