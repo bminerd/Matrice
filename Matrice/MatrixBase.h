@@ -66,40 +66,33 @@ namespace Matrice
 template <typename ValueType>
 class MatrixBase
 {
-protected:
+public:
 
     //--------------------------------------------------------------------------
-    // Protected constructors
+    // Public operator overloads
     //--------------------------------------------------------------------------
 
+    // Assignment operator
     //--------------------------------------------------------------------------
-    MatrixBase(const uint32_t rows,
-               const uint32_t columns,
-               ValueType* valuesPointer,
-               const uint32_t columnJump = 0) :
-        myRows(rows),
-        myColumns(columns),
-        myValuesPointer(valuesPointer),
-        myColumnJump(columnJump)
+    MatrixBase<ValueType>& operator=(const MatrixBase<ValueType>& matrix)
     {
+        setValuesPointerProtected(matrix.myValuesPointer);
+
+        return (*this);
     }
 
+    //
     //--------------------------------------------------------------------------
-    MatrixBase(const MatrixBase& matrix) :
-        myRows(matrix.myRows),
-        myColumns(matrix.myColumns),
-        myValuesPointer(matrix.myValuesPointer),
-        myColumnJump(matrix.myColumnJump)
+    ValueType& operator()(const uint32_t row, const uint32_t column)
     {
+        return getValue(row, column);
     }
 
+    //
     //--------------------------------------------------------------------------
-    // Protected destructors
-    //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
-    ~MatrixBase()
+    const ValueType& operator()(const uint32_t row, const uint32_t column) const
     {
+        return getValue(row, column);
     }
 
     //--------------------------------------------------------------------------
@@ -184,10 +177,10 @@ protected:
     {
         ValueType* thisValuePointer = &(getValueFast(0, 0));
 
+        uint32_t i = myRows * myColumns;
+
         if (myColumnJump == 0)
         {
-            uint32_t i = myRows * myColumns;
-
             while (i--)
             {
                 (*thisValuePointer++) = value;
@@ -195,8 +188,6 @@ protected:
         }
         else
         {
-            int32_t i = myRows * myColumns;
-
             while (i--)
             {
                 (*thisValuePointer) = value;
@@ -205,6 +196,226 @@ protected:
             }
         }
     }
+
+    //--------------------------------------------------------------------------
+    ValueType maxValue() const
+    {
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
+        ValueType maxValue = (*thisValuePointer);
+
+        int32_t i = myRows * myColumns;
+
+        if (myColumnJump == 0)
+        {
+            while (i--)
+            {
+                if ((*thisValuePointer) > maxValue)
+                {
+                    maxValue = (*thisValuePointer);
+                }
+
+                thisValuePointer++;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                if ((*thisValuePointer) > maxValue)
+                {
+                    maxValue = (*thisValuePointer);
+                }
+
+                incrementValuePointer(thisValuePointer, i);
+            }
+        }
+
+        return maxValue;
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType minValue() const
+    {
+        const ValueType* thisValuePointer = &(getValueFast(0, 0));
+        ValueType minValue = (*thisValuePointer);
+
+        int32_t i = myRows * myColumns;
+
+        if (myColumnJump == 0)
+        {
+            while (i--)
+            {
+                if ((*thisValuePointer) < minValue)
+                {
+                    minValue = (*thisValuePointer);
+                }
+
+                thisValuePointer++;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                if ((*thisValuePointer) < minValue)
+                {
+                    minValue = (*thisValuePointer);
+                }
+
+                incrementValuePointer(thisValuePointer, i);
+            }
+        }
+
+        return minValue;
+    }
+
+    //--------------------------------------------------------------------------
+    void limitValues(const ValueType lowerLimitValue,
+                     const ValueType upperLimitValue)
+    {
+        ValueType* thisValuePointer = &(getValueFast(0, 0));
+
+        int32_t i = myRows * myColumns;
+
+        if (myColumnJump == 0)
+        {
+            while (i--)
+            {
+                if ((*thisValuePointer) < lowerLimitValue)
+                {
+                    (*thisValuePointer) = lowerLimitValue;
+                }
+                else if ((*thisValuePointer) > upperLimitValue)
+                {
+                    (*thisValuePointer) = upperLimitValue;
+                }
+
+                thisValuePointer++;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                if ((*thisValuePointer) < lowerLimitValue)
+                {
+                    (*thisValuePointer) = lowerLimitValue;
+                }
+                else if ((*thisValuePointer) > upperLimitValue)
+                {
+                    (*thisValuePointer) = upperLimitValue;
+                }
+
+                incrementValuePointer(thisValuePointer, i);
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    void limitUpperValue(const ValueType limitValue)
+    {
+        ValueType* thisValuePointer = &(getValueFast(0, 0));
+
+        int32_t i = myRows * myColumns;
+
+        if (myColumnJump == 0)
+        {
+            while (i--)
+            {
+                if ((*thisValuePointer) > limitValue)
+                {
+                    (*thisValuePointer) = limitValue;
+                }
+
+                thisValuePointer++;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                if ((*thisValuePointer) > limitValue)
+                {
+                    (*thisValuePointer) = limitValue;
+                }
+
+                incrementValuePointer(thisValuePointer, i);
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    void limitLowerValue(const ValueType limitValue)
+    {
+        ValueType* thisValuePointer = &(getValueFast(0, 0));
+
+        int32_t i = myRows * myColumns;
+
+        if (myColumnJump == 0)
+        {
+            while (i--)
+            {
+                if ((*thisValuePointer) < limitValue)
+                {
+                    (*thisValuePointer) = limitValue;
+                }
+
+                thisValuePointer++;
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                if ((*thisValuePointer) < limitValue)
+                {
+                    (*thisValuePointer) = limitValue;
+                }
+
+                incrementValuePointer(thisValuePointer, i);
+            }
+        }
+    }
+
+protected:
+
+    //--------------------------------------------------------------------------
+    // Protected constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixBase(const uint32_t rows,
+               const uint32_t columns,
+               ValueType* valuesPointer,
+               const uint32_t columnJump = 0) :
+        myRows(rows),
+        myColumns(columns),
+        myValuesPointer(valuesPointer),
+        myColumnJump(columnJump)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixBase(const MatrixBase& matrix) :
+        myRows(matrix.myRows),
+        myColumns(matrix.myColumns),
+        myValuesPointer(matrix.myValuesPointer),
+        myColumnJump(matrix.myColumnJump)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ~MatrixBase()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected methods
+    //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
     void T(MatrixBase<ValueType>& matrix)
@@ -239,134 +450,6 @@ protected:
                 i++;
             }
         }
-    }
-
-    //--------------------------------------------------------------------------
-    ValueType maxValue() const
-    {
-        const ValueType* thisValuePointer = &(getValueFast(0, 0));
-        ValueType maxValue = (*thisValuePointer);
-
-        int32_t i = myRows * myColumns;
-
-        while (i--)
-        {
-            if ((*thisValuePointer) > maxValue)
-            {
-                maxValue = (*thisValuePointer);
-            }
-
-            thisValuePointer++;
-        }
-
-        return maxValue;
-    }
-
-    //--------------------------------------------------------------------------
-    ValueType minValue() const
-    {
-        const ValueType* thisValuePointer = &(getValueFast(0, 0));
-        ValueType minValue = (*thisValuePointer);
-
-        int32_t i = myRows * myColumns;
-
-        while (i--)
-        {
-            if ((*thisValuePointer) < minValue)
-            {
-                minValue = (*thisValuePointer);
-            }
-
-            thisValuePointer++;
-        }
-
-        return minValue;
-    }
-
-    //--------------------------------------------------------------------------
-    void limitValues(const ValueType lowerLimitValue,
-                     const ValueType upperLimitValue)
-    {
-        ValueType* thisValuePointer = &(getValueFast(0, 0));
-
-        int32_t i = myRows * myColumns;
-
-        while (i--)
-        {
-            if ((*thisValuePointer) < lowerLimitValue)
-            {
-                (*thisValuePointer) = lowerLimitValue;
-            }
-            else if ((*thisValuePointer) > upperLimitValue)
-            {
-                (*thisValuePointer) = upperLimitValue;
-            }
-
-            thisValuePointer++;
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    void limitUpperValue(const ValueType limitValue)
-    {
-        ValueType* thisValuePointer = &(getValueFast(0, 0));
-
-        int32_t i = myRows * myColumns;
-
-        while (i--)
-        {
-            if ((*thisValuePointer) > limitValue)
-            {
-                (*thisValuePointer) = limitValue;
-            }
-
-            thisValuePointer++;
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    void limitLowerValue(const ValueType limitValue)
-    {
-        ValueType* thisValuePointer = &(getValueFast(0, 0));
-
-        int32_t i = myRows * myColumns;
-
-        while (i--)
-        {
-            if ((*thisValuePointer) < limitValue)
-            {
-                (*thisValuePointer) = limitValue;
-            }
-
-            thisValuePointer++;
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // Public overloaded operators
-    //--------------------------------------------------------------------------
-
-    // Assignment operator
-    //--------------------------------------------------------------------------
-    MatrixBase<ValueType>& operator=(const MatrixBase<ValueType>& matrix)
-    {
-        setValuesProtected(matrix.myValuesPointer);
-
-        return (*this);
-    }
-
-    //
-    //--------------------------------------------------------------------------
-    ValueType& operator()(const uint32_t row, const uint32_t column)
-    {
-        return getValue(row, column);
-    }
-
-    //
-    //--------------------------------------------------------------------------
-    const ValueType& operator()(const uint32_t row, const uint32_t column) const
-    {
-        return getValue(row, column);
     }
 
     //--------------------------------------------------------------------------
@@ -1018,25 +1101,52 @@ protected:
         }
     }
 
-protected:
+    //--------------------------------------------------------------------------
+    // Protected methods
+    //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    inline void setValuesProtected(ValueType values[])
+    void setValuesPointerProtected(ValueType values[])
     {
         myValuesPointer = values;
     }
 
     //--------------------------------------------------------------------------
-    inline void setValuesProtected(const ValueType values[])
+    void setValuesPointerProtected(const ValueType values[])
     {
         myValuesPointer = values;
     }
 
     //--------------------------------------------------------------------------
-    inline void copyValuesProtected(const MatrixBase<ValueType>& matrix)
+    void setValuesProtected(const ValueType values[])
     {
-        ValueType* myValuePointer =
-                                   &(MatrixBase<ValueType>::getValueFast(0, 0));
+        ValueType* myValuePointer = &(getValueFast(0, 0));
+        const ValueType* valuePointer = values;
+
+        int32_t i = myRows * myColumns;
+
+        if (myColumnJump == 0)
+        {
+            while (i--)
+            {
+                (*myValuePointer++) = (*valuePointer++);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*myValuePointer) = (*valuePointer);
+
+                incrementValuePointer(myValuePointer, i);
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    void setValuesProtected(const MatrixBase<ValueType>& matrix)
+    {
+        ValueType* myValuePointer = &(getValueFast(0, 0));
         const ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
         int32_t i = myRows * myColumns;
