@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[FEATURE]` Added magnitude() and norm() methods to Vector. [Resolves #9].
 * `[FEATURE]` Added transpose() / T() methods to MatrixStorage and MatrixBase. [Resolves #8].
 * `[FEATURE]` Added getRow() / row() and getColumn() / col() methods to MatrixStorage and MatrixBase. [Resolves #7].
 * `[FEATURE]` Added setValues() methods and assignment operators to Matrix and Vector for array types. Refactored portions of MatrixBase and MatrixStorage for readability and consistency. [Resolves #6].
