@@ -23,69 +23,66 @@
 //------------------------------------------------------------------------------
 
 ///
-/// @file ApplicationMatriceTest.cpp
-/// @author Ben Minerd
-/// @date 4/14/2020
-/// @brief ApplicationMatriceTest class source file.
+/// @file MatrixVectorTest.h
+/// @author Andrew Harmon
+/// @date 9/24/2020
+/// @brief MatrixVectorTest class header file.
 ///
+
+#ifndef MATRICE_MATRIX_VECTOR_TEST_H
+#define MATRICE_MATRIX_VECTOR_TEST_H
 
 //------------------------------------------------------------------------------
 // Include files
 //------------------------------------------------------------------------------
 
-#include <ApplicationMatriceTest.h>
-
-using Matrice::ApplicationMatriceTest;
+#include <Plat4m_Core/UnitTest/UnitTest.h>
 
 //------------------------------------------------------------------------------
-// Private static data members
+// Namespaces
 //------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
-// Public constructors
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-ApplicationMatriceTest::ApplicationMatriceTest() :
-    Plat4m::ApplicationUnitTestApp("MATRICE_TEST_APP",
-                                   "MATRICE_TEST",
-                                   "1.0.0"),
-    mySystem(),
-    myProcessor(),
-    myMatrixTest(),
-    myVectorTest()
+namespace Matrice
 {
-}
 
 //------------------------------------------------------------------------------
-// Public virtual destructors
+// Classes
 //------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
-ApplicationMatriceTest::~ApplicationMatriceTest()
+class MatrixVectorTest : public Plat4m::UnitTest
 {
-}
+public:
+    
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
-// Private methods implemented from Application
-//------------------------------------------------------------------------------
+    MatrixVectorTest();
 
-//------------------------------------------------------------------------------
-void ApplicationMatriceTest::driverRun()
-{
-    initializeSystem();
+    //--------------------------------------------------------------------------
+    // Public virtual destructors
+    //--------------------------------------------------------------------------
 
-    runParentApplication();
-}
+    virtual ~MatrixVectorTest();
 
-//------------------------------------------------------------------------------
-// Private methods
-//------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // Public static methods
+    //--------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
-void ApplicationMatriceTest::initializeSystem()
-{
-    addUnitTest(myMatrixTest);
-    addUnitTest(myVectorTest);
-    addUnitTest(myMatrixVectorTest);
-}
+    static bool matrixTimesVectorStorageInternalTest();
+
+    static bool matrixTimesVectorStorageExternalTest();
+
+private:
+
+    //--------------------------------------------------------------------------
+    // Private static data members
+    //--------------------------------------------------------------------------
+
+    static const Plat4m::UnitTest::TestCallbackFunction
+                                                      myTestCallbackFunctions[];
+};
+
+}; // namespace Matrice
+
+#endif // MATRICE_MATRIX_VECTOR_TEST_H

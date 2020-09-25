@@ -23,37 +23,47 @@
 //------------------------------------------------------------------------------
 
 ///
-/// @file ApplicationMatriceTest.cpp
-/// @author Ben Minerd
-/// @date 4/14/2020
-/// @brief ApplicationMatriceTest class source file.
+/// @file MatrixVectorTest.cpp
+/// @author Andrew Harmon
+/// @date 9/24/2020
+/// @brief MatrixVectorTest class source file.
 ///
 
 //------------------------------------------------------------------------------
 // Include files
 //------------------------------------------------------------------------------
 
-#include <ApplicationMatriceTest.h>
+#include <string.h>
 
-using Matrice::ApplicationMatriceTest;
+#include <Plat4m_Core/Plat4m.h>
+
+#include <Tests/MatrixVectorTest.h>
+#include <Matrice/Matrix.h>
+#include <Matrice/Vector.h>
+
+using Matrice::MatrixVectorTest;
+using Plat4m::UnitTest;
 
 //------------------------------------------------------------------------------
 // Private static data members
 //------------------------------------------------------------------------------
+
+const UnitTest::TestCallbackFunction
+    MatrixVectorTest::myTestCallbackFunctions[] =
+{
+    &MatrixVectorTest::matrixTimesVectorStorageInternalTest,
+    &MatrixVectorTest::matrixTimesVectorStorageExternalTest
+};
 
 //------------------------------------------------------------------------------
 // Public constructors
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-ApplicationMatriceTest::ApplicationMatriceTest() :
-    Plat4m::ApplicationUnitTestApp("MATRICE_TEST_APP",
-                                   "MATRICE_TEST",
-                                   "1.0.0"),
-    mySystem(),
-    myProcessor(),
-    myMatrixTest(),
-    myVectorTest()
+MatrixVectorTest::MatrixVectorTest() :
+    UnitTest("MatrixVectorTest",
+             myTestCallbackFunctions,
+             Plat4m::arraySize(myTestCallbackFunctions))
 {
 }
 
@@ -62,30 +72,90 @@ ApplicationMatriceTest::ApplicationMatriceTest() :
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-ApplicationMatriceTest::~ApplicationMatriceTest()
+MatrixVectorTest::~MatrixVectorTest()
 {
 }
 
 //------------------------------------------------------------------------------
-// Private methods implemented from Application
+// Public static methods
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-void ApplicationMatriceTest::driverRun()
+bool MatrixVectorTest::matrixTimesVectorStorageInternalTest()
 {
-    initializeSystem();
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
 
-    runParentApplication();
+    // Setup / Operation
+
+    static const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    static const float values2[3] = { 1.0, 2.0, 3.0 };
+
+    Vector<float, 3> vector1(values2);
+
+    static const float values3[3] = { 14.0, 32.0,  50.0 };
+
+    Vector<float, 3> expected(values3);
+
+    // Test
+
+    Vector<float, 3> actual;
+
+    actual = matrix1 * vector1;
+
+    bool result1 = (actual == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true));
 }
 
 //------------------------------------------------------------------------------
-// Private methods
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-void ApplicationMatriceTest::initializeSystem()
+bool MatrixVectorTest::matrixTimesVectorStorageExternalTest()
 {
-    addUnitTest(myMatrixTest);
-    addUnitTest(myVectorTest);
-    addUnitTest(myMatrixVectorTest);
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
+
+    static float values2[3] = { 1.0, 2.0, 3.0 };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector1(values2);
+
+    static const float values3[3] = { 14.0, 32.0,  50.0 };
+
+    Vector<float, 3> expected(values3);
+
+    // Test
+
+    static float values4[3] = { 0.0, 0.0, 0.0 };
+
+    Vector<float, 3, STORAGE_EXTERNAL> actual(values4);
+
+    actual = matrix1 * vector1;
+
+    bool result1 = (actual == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true));
 }

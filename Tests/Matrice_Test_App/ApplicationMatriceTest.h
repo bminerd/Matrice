@@ -42,6 +42,7 @@
 
 #include <Tests/MatrixTest.h>
 #include <Tests/VectorTest.h>
+#include <Tests/MatrixVectorTest.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
@@ -84,6 +85,8 @@ private:
     MatrixTest myMatrixTest;
 
     VectorTest myVectorTest;
+
+    MatrixVectorTest myMatrixVectorTest;
 
     //--------------------------------------------------------------------------
     // Private methods implemented from Application
