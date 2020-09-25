@@ -418,17 +418,11 @@ protected:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    void T(MatrixBase<ValueType>& matrix)
-    {
-        return transpose(matrix);
-    }
-
-    //--------------------------------------------------------------------------
-    void transpose(MatrixBase<ValueType>& matrix)
+    void transpose(MatrixBase<ValueType>& matrix) const
     {
         const ValueType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = 0;
+        uint32_t i = 0;
 
         if (myColumnJump == 0)
         {
@@ -446,6 +440,8 @@ protected:
             {
                 matrix.getValueFast((i % myColumns), (i / myColumns)) =
                                                             (*thisValuePointer);
+
+                incrementValuePointer(thisValuePointer, i);
 
                 i++;
             }
