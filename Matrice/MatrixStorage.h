@@ -330,6 +330,38 @@ public:
         setValuesProtected(values);
     }
 
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, N> getRow(const uint32_t row)
+    {
+        MatrixStorage<ValueType, 1, N> matrix;
+
+        MatrixBase<ValueType>::getRow(matrix, row);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, N> row(const uint32_t row)
+    {
+        return getRow(row);
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> getColumn(const uint32_t column)
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::getColumn(matrix, column);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> col(const uint32_t column)
+    {
+        return getColumn(column);
+    }
+
 protected:
 
     //--------------------------------------------------------------------------
@@ -645,6 +677,38 @@ public:
     void setValues(const ValueType values[N][M])
     {
         setValuesProtected(values);
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, N> getRow(const uint32_t row)
+    {
+        MatrixStorage<ValueType, 1, N> matrix;
+
+        MatrixBase<ValueType>::getRow(matrix, row);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, N> row(const uint32_t row)
+    {
+        return getRow(row);
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> getColumn(const uint32_t column)
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::getColumn(matrix, column);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> col(const uint32_t column)
+    {
+        return getColumn(column);
     }
 
 protected:
