@@ -65,6 +65,7 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::getRowTest,
     &MatrixTest::getColumnTest,
     &MatrixTest::transposeTest,
+    &MatrixTest::magnitudeTest,
     &MatrixTest::submatrixOperatorAddScalarTest,
     &MatrixTest::submatrixOperatorAddTest,
     &MatrixTest::submatrixOperatorAddEqualsScalarTest,
@@ -921,6 +922,51 @@ bool MatrixTest::transposeTest()
                             UNIT_TEST_CASE_EQUAL(compare2, true) &
                             UNIT_TEST_CASE_EQUAL(compare3, true) &
                             UNIT_TEST_CASE_EQUAL(compare4, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::magnitudeTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    // Test
+
+    const float result1 = matrix1.magnitude();
+    const float result2 = matrix2.magnitude();
+    const float result3 = matrix1.norm();
+    const float result4 = matrix2.norm();
+
+    const float expected =
+                      sqrt(1*1 + 2*2 + 3*3 + 4*4 + 5*5 + 6*6 + 7*7 + 8*8 + 9*9);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected));
 }
 
 //------------------------------------------------------------------------------
