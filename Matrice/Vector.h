@@ -36,6 +36,8 @@
 // Include files
 //------------------------------------------------------------------------------
 
+#include <cmath>
+
 #include <Matrice/Matrice.h>
 #include <Matrice/Matrix.h>
 
@@ -103,6 +105,30 @@ public:
     void setValues(const ValueType values[N])
     {
         MatrixBase<ValueType>::setValuesProtected(values);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType magnitude() const
+    {
+        ValueType squaredSum = 0.0;
+
+        const ValueType* valuePointer =
+                                   &(MatrixBase<ValueType>::getValueFast(0, 0));
+
+        uint32_t i = N;
+
+        while (i--)
+        {
+            squaredSum += square(*valuePointer++);
+        }
+
+        return sqrt(squaredSum);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType norm() const
+    {
+        return magnitude();
     }
 
     //--------------------------------------------------------------------------
@@ -207,6 +233,30 @@ public:
     void setValues(const ValueType values[N])
     {
         MatrixBase<ValueType>::setValuesProtected(values);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType magnitude() const
+    {
+        ValueType squaredSum = 0.0;
+
+        const ValueType* valuePointer =
+                                   &(MatrixBase<ValueType>::getValueFast(0, 0));
+
+        uint32_t i = N;
+
+        while (i--)
+        {
+            squaredSum += square(*valuePointer++);
+        }
+
+        return sqrt(squaredSum);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType norm() const
+    {
+        return magnitude();
     }
 
     //--------------------------------------------------------------------------
