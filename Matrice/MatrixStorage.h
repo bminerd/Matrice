@@ -362,6 +362,22 @@ public:
         return getColumn(column);
     }
 
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, M, N, StorageOption> transpose() const
+    {
+        MatrixStorage<ValueType, M, N> matrix;
+
+        MatrixBase<ValueType>::transpose(matrix);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, M, N, StorageOption> T() const
+    {
+        return transpose();
+    }
+
 protected:
 
     //--------------------------------------------------------------------------
@@ -709,6 +725,22 @@ public:
     MatrixStorage<ValueType, N, 1> col(const uint32_t column)
     {
         return getColumn(column);
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, M, N> transpose() const
+    {
+        MatrixStorage<ValueType, M, N> matrix;
+
+        MatrixBase<ValueType>::transpose(matrix);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, M, N> T() const
+    {
+        return transpose();
     }
 
 protected:
