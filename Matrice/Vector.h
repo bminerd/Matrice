@@ -110,6 +110,31 @@ public:
     {
         return (Matrix<ValueType, N, 1, StorageOption>::getValue(row, 0));
     }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Vector<ValueType, N, StorageOption>& operator=(
+                    const MatrixStorage<ValueType, N, 1, StorageOption>& matrix)
+    {
+        MatrixStorage<ValueType, N, 1, StorageOption>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Vector<ValueType, N, StorageOption>& operator=(
+                   const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        MatrixStorage<ValueType, N, 1, StorageOption>::operator=(matrix);
+
+        return (*this);
+    }
 };
 
 template <typename ValueType, uint32_t N>
@@ -173,6 +198,21 @@ public:
     const ValueType& operator()(const uint32_t row) const
     {
         return getValue(row, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Vector<ValueType, N, STORAGE_EXTERNAL>& operator=(
+                   const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>::operator=(matrix);
+
+        return (*this);
     }
 };
 
