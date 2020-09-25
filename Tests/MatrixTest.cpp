@@ -62,6 +62,8 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::operatorMultiplyTest,
     &MatrixTest::operatorMultiplyEqualsScalarTest,
     &MatrixTest::setValuesTest,
+    &MatrixTest::getRowTest,
+    &MatrixTest::getColumnTest,
     &MatrixTest::submatrixOperatorAddScalarTest,
     &MatrixTest::submatrixOperatorAddTest,
     &MatrixTest::submatrixOperatorAddEqualsScalarTest,
@@ -757,6 +759,114 @@ bool MatrixTest::setValuesTest()
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
                             UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getRowTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    // Test
+
+    Matrix<float, 1, 3> result1 = matrix1.getRow(1);
+    Matrix<float, 1, 3> result2 = matrix2.getRow(1);
+    Matrix<float, 1, 3> result3 = matrix1.row(1);
+    Matrix<float, 1, 3> result4 = matrix2.row(1);
+
+    static const float expectedValues[1][3] =
+    {
+        { 4.0, 5.0, 6.0 }
+    };
+
+    Matrix<float, 1, 3> expected(expectedValues);
+    bool compare1 = (result1 == expected);
+    bool compare2 = (result2 == expected);
+    bool compare3 = (result3 == expected);
+    bool compare4 = (result4 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true) &
+                            UNIT_TEST_CASE_EQUAL(compare4, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getColumnTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    // Test
+
+    Matrix<float, 3, 1> result1 = matrix1.getColumn(1);
+    Matrix<float, 3, 1> result2 = matrix2.getColumn(1);
+    Matrix<float, 3, 1> result3 = matrix1.col(1);
+    Matrix<float, 3, 1> result4 = matrix2.col(1);
+
+    static const float expectedValues[3][1] =
+    {
+        { 2.0 },
+        { 5.0 },
+        { 8.0 }
+    };
+
+    Matrix<float, 3, 1> expected(expectedValues);
+    bool compare1 = (result1 == expected);
+    bool compare2 = (result2 == expected);
+    bool compare3 = (result3 == expected);
+    bool compare4 = (result4 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true) &
+                            UNIT_TEST_CASE_EQUAL(compare4, true));
 }
 
 //------------------------------------------------------------------------------

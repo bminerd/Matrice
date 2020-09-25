@@ -95,6 +95,10 @@ public:
 
     static bool setValuesTest();
 
+    static bool getRowTest();
+
+    static bool getColumnTest();
+
     static bool submatrixOperatorAddScalarTest();
 
     static bool submatrixOperatorAddTest();
