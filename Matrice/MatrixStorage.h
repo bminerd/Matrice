@@ -446,8 +446,8 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
-    template <Storage StorageOption1, Storage StorageOption2>
-    MatrixStorage<ValueType, N, M, StorageOption1>& operator=(
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>& operator=(
                    const MatrixStorage<ValueType, N, M, StorageOption2>& matrix)
     {
         MatrixBase<ValueType>::copyValuesProtected(matrix);
