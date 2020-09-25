@@ -127,6 +127,16 @@ public:
 
         return (*this);
     }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, M, StorageOption>& operator=(
+                                                   const ValueType values[N][M])
+    {
+        MatrixStorage<ValueType, N, M, StorageOption>::operator=(values);
+
+        return (*this);
+    }
 };
 
 template <typename ValueType, uint32_t N, uint32_t M>
@@ -156,6 +166,20 @@ public:
            const uint32_t column) :
         MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>(matrix, row, column)
     {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, M, STORAGE_EXTERNAL>& operator=(
+                                                   const ValueType values[N][M])
+    {
+        MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>::operator=(values);
+
+        return (*this);
     }
 };
 
@@ -192,6 +216,20 @@ public:
     {
         MatrixStorage<ValueType, N, N, StorageOption>::operator=(matrix);
     }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, N, StorageOption>& operator=(
+                                                   const ValueType values[N][N])
+    {
+        MatrixStorage<ValueType, N, N, StorageOption>::operator=(values);
+
+        return (*this);
+    }
 };
 
 template <typename ValueType, uint32_t N>
@@ -224,7 +262,7 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    // Public methods
+    // Public overloaded operators
     //--------------------------------------------------------------------------
 
     // Assignment operator
@@ -234,6 +272,16 @@ public:
                    const MatrixStorage<ValueType, N, N, StorageOption2>& matrix)
     {
         MatrixStorage<ValueType, N, N, STORAGE_EXTERNAL>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, N, STORAGE_EXTERNAL>& operator=(
+                                                   const ValueType values[N][N])
+    {
+        MatrixStorage<ValueType, N, N, STORAGE_EXTERNAL>::operator=(values);
 
         return (*this);
     }
