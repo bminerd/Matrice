@@ -97,6 +97,8 @@ public:
 
     static bool transposeTest();
 
+    static bool magnitudeTest();
+
     static bool submatrixOperatorAddScalarTest();
 
     static bool submatrixOperatorAddTest();

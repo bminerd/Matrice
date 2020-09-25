@@ -61,6 +61,7 @@ const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
     &VectorTest::operatorMultiplyEqualsScalarTest,
     &VectorTest::setValuesTest,
     &VectorTest::transposeTest,
+    &VectorTest::magnitudeTest,
     &VectorTest::submatrixOperatorAddScalarTest,
     &VectorTest::submatrixOperatorAddTest,
     &VectorTest::submatrixOperatorAddEqualsScalarTest,
@@ -807,7 +808,53 @@ bool VectorTest::transposeTest()
     bool compare4 = (result4 == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true) &
+                            UNIT_TEST_CASE_EQUAL(compare4, true));
+}
+
+//------------------------------------------------------------------------------
+bool VectorTest::magnitudeTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3> vector1(values1);
+
+    float values2[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
+
+    // Test
+
+    const float result1 = vector1.magnitude();
+    const float result2 = vector2.magnitude();
+    const float result3 = vector1.norm();
+    const float result4 = vector2.norm();
+
+    const float expected = sqrt(1*1 + 2*2 + 3*3);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected));
 }
 
 //------------------------------------------------------------------------------
