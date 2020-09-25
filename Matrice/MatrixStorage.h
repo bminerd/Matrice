@@ -103,7 +103,7 @@ public:
                  const MatrixStorage<ValueType, N, M, StorageOption2>& matrix) :
         MatrixBase<ValueType>(N, M, (ValueType*) myValues)
     {
-        MatrixBase<ValueType>::copyValuesProtected(matrix);
+        MatrixBase<ValueType>::setValuesProtected(matrix);
     }
 
     //--------------------------------------------------------------------------
@@ -116,12 +116,6 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    // Public methods
-    //--------------------------------------------------------------------------
-
-    using MatrixBase<ValueType>::getValue;
-
-    //--------------------------------------------------------------------------
     // Public overloaded operators
     //--------------------------------------------------------------------------
 
@@ -130,7 +124,7 @@ public:
     MatrixStorage<ValueType, N, M, StorageOption>& operator=(
                    const MatrixStorage<ValueType, N, M, StorageOption>& matrix)
     {
-        MatrixBase<ValueType>::copyValuesProtected(matrix);
+        MatrixBase<ValueType>::setValuesProtected(matrix);
 
         return (*this);
     }
@@ -141,7 +135,7 @@ public:
     MatrixStorage<ValueType, N, M, StorageOption>& operator=(
                    const MatrixStorage<ValueType, N, M, StorageOption2>& matrix)
     {
-        MatrixBase<ValueType>::copyValuesProtected(matrix);
+        MatrixBase<ValueType>::setValuesProtected(matrix);
 
         return (*this);
     }
@@ -314,6 +308,18 @@ public:
         return (*this);
     }
 
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    using MatrixBase<ValueType>::getValue;
+
+    //--------------------------------------------------------------------------
+    void setValues(const ValueType values[N][M])
+    {
+        setValuesProtected(values);
+    }
+
 protected:
 
     //--------------------------------------------------------------------------
@@ -450,7 +456,7 @@ public:
     MatrixStorage<ValueType, N, M, STORAGE_EXTERNAL>& operator=(
                    const MatrixStorage<ValueType, N, M, StorageOption2>& matrix)
     {
-        MatrixBase<ValueType>::copyValuesProtected(matrix);
+        MatrixBase<ValueType>::setValuesProtected(matrix);
 
         return (*this);
     }
@@ -609,6 +615,16 @@ public:
         MatrixBase<ValueType>::operatorMultiplyEqualsScalar(scalar);
 
         return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    void setValues(const ValueType values[N][M])
+    {
+        setValuesProtected(values);
     }
 
 protected:
