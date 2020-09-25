@@ -100,15 +100,9 @@ public:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    ValueType& operator()(const uint32_t row)
+    void setValues(const ValueType values[N])
     {
-        return (Matrix<ValueType, N, 1, StorageOption>::getValue(row, 0));
-    }
-
-    //--------------------------------------------------------------------------
-    const ValueType& operator()(const uint32_t row) const
-    {
-        return (Matrix<ValueType, N, 1, StorageOption>::getValue(row, 0));
+        MatrixBase<ValueType>::setValuesProtected(values);
     }
 
     //--------------------------------------------------------------------------
@@ -134,6 +128,27 @@ public:
         MatrixStorage<ValueType, N, 1, StorageOption>::operator=(matrix);
 
         return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Vector<ValueType, N, StorageOption>& operator=(const ValueType values[N])
+    {
+        setValues(values);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& operator()(const uint32_t row)
+    {
+        return (Matrix<ValueType, N, 1, StorageOption>::getValue(row, 0));
+    }
+
+    //--------------------------------------------------------------------------
+    const ValueType& operator()(const uint32_t row) const
+    {
+        return (Matrix<ValueType, N, 1, StorageOption>::getValue(row, 0));
     }
 };
 
@@ -189,15 +204,9 @@ public:
     using MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>::getValue;
 
     //--------------------------------------------------------------------------
-    ValueType& operator()(const uint32_t row)
+    void setValues(const ValueType values[N])
     {
-        return getValue(row, 0);
-    }
-
-    //--------------------------------------------------------------------------
-    const ValueType& operator()(const uint32_t row) const
-    {
-        return getValue(row, 0);
+        MatrixBase<ValueType>::setValuesProtected(values);
     }
 
     //--------------------------------------------------------------------------
@@ -213,6 +222,27 @@ public:
         MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>::operator=(matrix);
 
         return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Vector<ValueType, N, STORAGE_EXTERNAL>& operator=(const ValueType values[N])
+    {
+        setValues(values);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& operator()(const uint32_t row)
+    {
+        return getValue(row, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    const ValueType& operator()(const uint32_t row) const
+    {
+        return getValue(row, 0);
     }
 };
 
