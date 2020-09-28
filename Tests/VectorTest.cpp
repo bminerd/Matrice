@@ -73,7 +73,7 @@ const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
     &VectorTest::submatrixOperatorSubtractEqualsScalarTest,
     &VectorTest::submatrixOperatorMultiplyScalarTest,
     &VectorTest::submatrixOperatorMultiplyTest,
-    &VectorTest::submatrixOperatorMultiplyEqualsScalarTest,
+    &VectorTest::submatrixOperatorMultiplyEqualsScalarTest
 };
 
 //------------------------------------------------------------------------------

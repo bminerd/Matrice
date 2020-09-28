@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[FEATURE]` Added operator()() and getValue() methods to Vector. [Resolves #12].
 * `[FEATURE]` Moved magnitude() and norm() methods to MatrixBase. [Resolves #11].
 * `[FEATURE]` Added magnitude() and norm() methods to Vector. [Resolves #9].
 * `[FEATURE]` Added transpose() / T() methods to MatrixStorage and MatrixBase. [Resolves #8].
