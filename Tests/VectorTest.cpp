@@ -47,6 +47,7 @@ using Plat4m::UnitTest;
 
 const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
 {
+    &VectorTest::operatorValueTypeCastTest,
     &VectorTest::operatorAssignmentTest,
     &VectorTest::operatorEqualsTest,
     &VectorTest::operatorParenthesesTest,
@@ -100,6 +101,35 @@ VectorTest::~VectorTest()
 //------------------------------------------------------------------------------
 // Public static methods
 //------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+bool VectorTest::operatorValueTypeCastTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3> vector1(values1);
+
+    Vector<float, 1> vector2 = vector1.T() * vector1;
+
+    // Test
+    
+    float result1 = vector2;
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 14.0f));
+}
 
 //------------------------------------------------------------------------------
 bool VectorTest::operatorAssignmentTest()
