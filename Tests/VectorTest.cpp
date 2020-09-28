@@ -71,7 +71,8 @@ const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
     &VectorTest::submatrixOperatorSubtractEqualsScalarTest,
     &VectorTest::submatrixOperatorMultiplyScalarTest,
     &VectorTest::submatrixOperatorMultiplyTest,
-    &VectorTest::submatrixOperatorMultiplyEqualsScalarTest
+    &VectorTest::submatrixOperatorMultiplyEqualsScalarTest,
+    &VectorTest::accessVectorElementTest
 };
 
 //------------------------------------------------------------------------------
@@ -1440,4 +1441,54 @@ bool VectorTest::submatrixOperatorMultiplyEqualsScalarTest()
                             UNIT_TEST_CASE_EQUAL(compare2, true) &
                             UNIT_TEST_CASE_EQUAL(compare3, true) &
                             UNIT_TEST_CASE_EQUAL(compare4, true));
+}
+
+
+bool VectorTest::accessVectorElementTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3> vector1(values1);
+
+    float values2[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
+
+    // Test
+
+    // calls MatrixBase::SetValue(row, 0, value)
+    vector1(1) = 5.0F;
+    vector2(1) = 5.0F;
+
+    // calls MatrixBase::GetValue(row, 0)
+    float my_float1 = vector1(1);
+    float my_float2 = vector2(1);
+
+    bool result1 = vector1.getValue(0,0) == 5.0F;
+    bool result2 = vector1.getValue(0,0) == 5.0F;
+    bool result3 = my_float1 == 5.0F;
+    bool result4 = my_float2 == 5.0F;
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true) &
+                            UNIT_TEST_CASE_EQUAL(result2, true) &
+                            UNIT_TEST_CASE_EQUAL(result3, true) &
+                            UNIT_TEST_CASE_EQUAL(result4, true));
 }

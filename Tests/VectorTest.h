@@ -119,6 +119,8 @@ public:
 
     static bool submatrixOperatorMultiplyEqualsScalarTest();
 
+    static bool accessVectorElementTest();
+
 private:
 
     //--------------------------------------------------------------------------
