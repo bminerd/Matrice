@@ -73,6 +73,8 @@ public:
 
     static bool operatorEqualsTest();
 
+    static bool operatorParenthesesTest();
+
     static bool operatorAddScalarTest();
 
     static bool operatorAddTest();
@@ -92,6 +94,8 @@ public:
     static bool operatorMultiplyTest();
 
     static bool operatorMultiplyEqualsScalarTest();
+
+    static bool getValueTest();
 
     static bool setValuesTest();
 
@@ -118,8 +122,6 @@ public:
     static bool submatrixOperatorMultiplyTest();
 
     static bool submatrixOperatorMultiplyEqualsScalarTest();
-
-    static bool accessVectorElementTest();
 
 private:
 

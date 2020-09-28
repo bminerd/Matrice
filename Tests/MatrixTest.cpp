@@ -51,6 +51,7 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
 {
     &MatrixTest::operatorAssignmentTest,
     &MatrixTest::operatorEqualsTest,
+    &MatrixTest::operatorParenthesesTest,
     &MatrixTest::operatorAddScalarTest,
     &MatrixTest::operatorAddTest,
     &MatrixTest::operatorAddEqualsScalarTest,
@@ -61,6 +62,7 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::operatorMultiplyScalarTest,
     &MatrixTest::operatorMultiplyTest,
     &MatrixTest::operatorMultiplyEqualsScalarTest,
+    &MatrixTest::getValueTest,
     &MatrixTest::setValuesTest,
     &MatrixTest::getRowTest,
     &MatrixTest::getColumnTest,
@@ -199,6 +201,51 @@ bool MatrixTest::operatorEqualsTest()
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true) &
                             UNIT_TEST_CASE_EQUAL(result2, false));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorParenthesesTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    // Test
+
+    matrix1(2, 2) = 10.0;
+    matrix2(2, 2) = 10.0;
+
+    float result1 = matrix1(0, 1);
+    float result2 = matrix2(0, 1);
+    float result3 = matrix1(2, 2);
+    float result4 = matrix2(2, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 2.0f) &
+                            UNIT_TEST_CASE_EQUAL(result2, 2.0f) &
+                            UNIT_TEST_CASE_EQUAL(result3, 10.0f) &
+                            UNIT_TEST_CASE_EQUAL(result4, 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -710,6 +757,51 @@ bool MatrixTest::operatorMultiplyEqualsScalarTest()
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
                             UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getValueTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    // Test
+
+    matrix1.getValue(2, 2) = 10.0;
+    matrix2.getValue(2, 2) = 10.0;
+
+    float result1 = matrix1.getValue(0, 1);
+    float result2 = matrix2.getValue(0, 1);
+    float result3 = matrix1.getValue(2, 2);
+    float result4 = matrix2.getValue(2, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 2.0f) &
+                            UNIT_TEST_CASE_EQUAL(result2, 2.0f) &
+                            UNIT_TEST_CASE_EQUAL(result3, 10.0f) &
+                            UNIT_TEST_CASE_EQUAL(result4, 10.0f));
 }
 
 //------------------------------------------------------------------------------
