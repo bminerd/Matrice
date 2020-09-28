@@ -69,6 +69,8 @@ public:
     // Public static methods
     //--------------------------------------------------------------------------
 
+    static bool operatorValueTypeCastTest();
+
     static bool operatorAssignmentTest();
 
     static bool operatorEqualsTest();

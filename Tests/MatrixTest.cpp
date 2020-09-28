@@ -49,6 +49,7 @@ using Plat4m::UnitTest;
 
 const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
 {
+    &MatrixTest::operatorValueTypeCastTest,
     &MatrixTest::operatorAssignmentTest,
     &MatrixTest::operatorEqualsTest,
     &MatrixTest::operatorParenthesesTest,
@@ -106,6 +107,43 @@ MatrixTest::~MatrixTest()
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
+bool MatrixTest::operatorValueTypeCastTest()
+{
+    //
+    // Procedure:
+    //
+    // Test: 
+    //
+
+    // Setup / Operation
+
+    static const float values1[1][3] =
+    {
+        { 1.0, 2.0, 3.0 }
+    };
+
+    Matrix<float, 1, 3> matrix1(values1);
+
+    float values2[3][1] =
+    {
+        { 1.0 },
+        { 2.0 },
+        { 3.0 }
+    };
+
+    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix2(values2);
+
+
+    Matrix<float, 1, 1> matrix3 = matrix1 * matrix2;
+
+    // Test
+    
+    float result1 = matrix3;
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 14.0f));
+}
+
+//------------------------------------------------------------------------------
 bool MatrixTest::operatorAssignmentTest()
 {
     //
@@ -141,14 +179,7 @@ bool MatrixTest::operatorAssignmentTest()
     Matrix<float, 3, 3> result1 = matrix1;
     Matrix<float, 3, 3> result2 = matrix2;
 
-    static const float expectedValues[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> expected(expectedValues);
+    Matrix<float, 3, 3> expected(values1);
     bool compare1 = (result1 == expected);
     bool compare2 = (result2 == expected);
 
