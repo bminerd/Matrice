@@ -287,6 +287,126 @@ public:
     }
 };
 
+
+template <typename ValueType, Storage StorageOption>
+class Matrix<ValueType, 1, 1, StorageOption> :
+                            public MatrixStorage<ValueType, 1, 1, StorageOption>
+{
+public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = 1;
+    static const uint32_t columns = 1;
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix() :
+        MatrixStorage<ValueType, 1, 1, StorageOption>()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const ValueType initializationValues[1][1]) :
+        MatrixStorage<ValueType, 1, 1, StorageOption>(initializationValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const ValueType initializationValue) :
+        MatrixStorage<ValueType, 1, 1, StorageOption>(initializationValue)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix(const MatrixStorage<ValueType, 1, 1, StorageOption2>& matrix) :
+        MatrixStorage<ValueType, 1, 1, StorageOption>()
+    {
+        MatrixStorage<ValueType, 1, 1, StorageOption>::operator=(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, 1, 1, StorageOption>& operator=(
+                                                   const ValueType values[1][1])
+    {
+        MatrixStorage<ValueType, 1, 1, StorageOption>::operator=(values);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, 1, 1, StorageOption>& operator=(const ValueType value)
+    {
+        MatrixStorage<ValueType, 1, 1, StorageOption>::operator=(value);
+
+        return (*this);
+    }
+};
+
+template <typename ValueType>
+class Matrix<ValueType, 1, 1, STORAGE_EXTERNAL> :
+                         public MatrixStorage<ValueType, 1, 1, STORAGE_EXTERNAL>
+{
+public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = 1;
+    static const uint32_t columns = 1;
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(ValueType storageValues[1][1]) :
+        MatrixStorage<ValueType, 1, 1, STORAGE_EXTERNAL>(storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, 1, 1, STORAGE_EXTERNAL>& operator=(
+                   const MatrixStorage<ValueType, 1, 1, StorageOption2>& matrix)
+    {
+        MatrixStorage<ValueType, 1, 1, STORAGE_EXTERNAL>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, 1, 1, STORAGE_EXTERNAL>& operator=(
+                                                   const ValueType values[1][1])
+    {
+        MatrixStorage<ValueType, 1, 1, STORAGE_EXTERNAL>::operator=(values);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, 1, 1, STORAGE_EXTERNAL>& operator=(const ValueType value)
+    {
+        MatrixStorage<ValueType, 1, 1, STORAGE_EXTERNAL>::operator=(value);
+
+        return (*this);
+    }
+};
+
 }; // namespace Matrice
 
 #endif // MATRICE_MATRIX_H

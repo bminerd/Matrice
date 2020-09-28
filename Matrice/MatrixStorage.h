@@ -151,6 +151,15 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    bool operator==(
+                   const MatrixStorage<ValueType, N, M, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::operatorEquals(matrix);
+    }
+
+
+    //--------------------------------------------------------------------------
     ValueType& operator()(const uint32_t row, const uint32_t column)
     {
         return MatrixBase<ValueType>::getValue(row, column);
@@ -160,14 +169,6 @@ public:
     const ValueType& operator()(const uint32_t row, const uint32_t column) const
     {
         return MatrixBase<ValueType>::getValue(row, column);
-    }
-
-    //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
-    bool operator==(
-                   const MatrixStorage<ValueType, N, M, StorageOption2>& matrix)
-    {
-        return MatrixBase<ValueType>::operatorEquals(matrix);
     }
 
     // Unary plus operator
@@ -805,6 +806,230 @@ protected:
         {
             (*myValuePointer++) = (*valuePointer++);
         }
+    }
+};
+
+///
+/// @brief Parent class for all outer API matrix-based classes. Specializations
+/// (ex. 3x1 Matrix / Vector) can be added by inheriting from this class.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+/// @tparam N Number of rows.
+/// @tparam M Number of columns.
+/// @tparam StorageOption Where underlying matrix storage should be located.
+/// Options are STORAGE_INTERNAL (default here) and STORAGE_EXTERNAL.
+/// @note Since the partial template specialization below specifies
+/// STORAGE_EXTERNAL for StorageOption and there are only two entries in
+/// the StorageOption eunmerated type, the StorageOption parameter here will
+/// always be STORAGE_INTERNAL.
+/// @note Currently supports only row-major matrices.
+/// @note The underlying array indexing is done by incrementing pointers.
+/// Normally this approach is avoided due to poor readability, but the
+/// performance gains are ~10x versus using for-loops and standard indexing.
+///
+template <typename ValueType, Storage StorageOption>
+class MatrixStorage<ValueType, 1, 1, StorageOption> :
+                                                    public MatrixBase<ValueType>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixStorage() :
+        MatrixBase<ValueType>(1, 1, &myValue),
+        myValue()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage(const ValueType initializationValues[1][1]) :
+        MatrixBase<ValueType>(1, 1, &myValue),
+        myValue()
+    {
+       MatrixBase<ValueType>::setValuesProtected(
+                                             (ValueType*) initializationValues);
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage(const ValueType initializationValue) :
+        MatrixBase<ValueType>(1, 1, &myValue),
+        myValue()
+    {
+       MatrixBase<ValueType>::setValuesProtected(&initializationValue);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage(
+                 const MatrixStorage<ValueType, 1, 1, StorageOption2>& matrix) :
+        MatrixBase<ValueType>(1, 1, &myValue)
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ~MatrixStorage()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    operator ValueType()
+    {
+        return MatrixBase<ValueType>::getValue(0, 0);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, 1, StorageOption>& operator=(
+                   const MatrixStorage<ValueType, 1, 1, StorageOption>& matrix)
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 1, 1, StorageOption>& operator=(
+                   const MatrixStorage<ValueType, 1, 1, StorageOption2>& matrix)
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, 1, StorageOption>& operator=(
+                                                   const ValueType values[1][1])
+    {
+        MatrixBase<ValueType>::setValuesProtected((ValueType*) values);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, 1, StorageOption>& operator=(
+                                                          const ValueType value)
+    {
+        MatrixBase<ValueType>::setValuesProtected(&value);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    bool operator==(
+                   const MatrixStorage<ValueType, 1, 1, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::operatorEquals(matrix);
+    }
+
+private:
+
+    //--------------------------------------------------------------------------
+    // Private data members
+    //--------------------------------------------------------------------------
+
+    ValueType myValue;
+};
+
+///
+/// @brief Partial template specialization for
+/// MatrixStorage<ValueType, N, M, StorageOption> where StorageOption is
+/// STORAGE_EXTERNAL and the class doesn't contain a 2-D array data member.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+/// @tparam N Number of rows.
+/// @tparam M Number of columns.
+/// @note Currently supports only row-major matrices.
+/// @note The underlying array indexing is done by incrementing pointers.
+/// Normally this approach is avoided due to poor readability, but the
+/// performance gains are ~10x versus using for-loops and standard indexing.
+///
+template <typename ValueType>
+class MatrixStorage<ValueType, 1, 1, STORAGE_EXTERNAL> :
+                                                    public MatrixBase<ValueType>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixStorage(ValueType storageValues[1][1]) :
+        MatrixBase<ValueType>(1, 1, (ValueType*) storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage(
+               const MatrixStorage<ValueType, 1, 1, STORAGE_EXTERNAL>& matrix) :
+        MatrixBase<ValueType>(1, 1, matrix.myValue)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    operator ValueType()
+    {
+        return MatrixBase<ValueType>::getValue(0, 0);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 1, 1, STORAGE_EXTERNAL>& operator=(
+                   const MatrixStorage<ValueType, 1, 1, StorageOption2>& matrix)
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, 1, STORAGE_EXTERNAL>& operator=(
+                                                   const ValueType values[1][1])
+    {
+        MatrixBase<ValueType>::setValuesProtected((ValueType*) values);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, 1, STORAGE_EXTERNAL>& operator=(
+                                                          const ValueType value)
+    {
+        MatrixBase<ValueType>::setValuesProtected(&value);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    bool operator==(
+                   const MatrixStorage<ValueType, 1, 1, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::operatorEquals(matrix);
     }
 };
 
