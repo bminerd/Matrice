@@ -132,18 +132,20 @@ public:
     //--------------------------------------------------------------------------
     ValueType& operator()(const uint32_t row)
     {
-        return (Matrix<ValueType, N, 1, StorageOption>::getValue(row, 0));
+        return getValue(row, 0);
     }
 
     //--------------------------------------------------------------------------
     const ValueType& operator()(const uint32_t row) const
     {
-        return (Matrix<ValueType, N, 1, StorageOption>::getValue(row, 0));
+        return getValue(row, 0);
     }
 
     //--------------------------------------------------------------------------
     // Public methods
     //--------------------------------------------------------------------------
+
+    using MatrixStorage<ValueType, N, 1, StorageOption>::getValue;
 
     //--------------------------------------------------------------------------
     void setValues(const ValueType values[N])
