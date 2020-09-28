@@ -148,6 +148,19 @@ public:
     using MatrixStorage<ValueType, N, 1, StorageOption>::getValue;
 
     //--------------------------------------------------------------------------
+    ValueType& getValue(const uint32_t row)
+    {
+        return getValue(row, 0);
+    }
+
+    //
+    //--------------------------------------------------------------------------
+    const ValueType& getValue(const uint32_t row) const
+    {
+        return getValue(row, 0);
+    }
+
+    //--------------------------------------------------------------------------
     void setValues(const ValueType values[N])
     {
         MatrixBase<ValueType>::setValuesProtected(values);
@@ -240,6 +253,19 @@ public:
     //--------------------------------------------------------------------------
 
     using MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>::getValue;
+
+    //--------------------------------------------------------------------------
+    ValueType& getValue(const uint32_t row)
+    {
+        return getValue(row, 0);
+    }
+
+    //
+    //--------------------------------------------------------------------------
+    const ValueType& getValue(const uint32_t row) const
+    {
+        return getValue(row, 0);
+    }
 
     //--------------------------------------------------------------------------
     void setValues(const ValueType values[N])
