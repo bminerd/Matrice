@@ -1258,6 +1258,144 @@ protected:
         }
     }
 
+    //--------------------------------------------------------------------------
+    void crossProductMatrix(const MatrixBase<ValueType>& matrix,
+                            MatrixBase<ValueType>& resultMatrix)
+    {
+        uint32_t i = 0;
+
+        while (i++ < myColumns)
+        {
+            resultMatrix.getValueFast(0, i) =
+                getValueFast(1, i) * matrix.getValueFast(2, i) -
+                                 getValueFast(2, i) * matrix.getValueFast(1, i);
+
+            resultMatrix.getValueFast(1, i) =
+                getValueFast(2, i) * matrix.getValueFast(0, i) -
+                                 getValueFast(0, i) * matrix.getValueFast(2, i);
+
+            resultMatrix.getValueFast(2, i) =
+                getValueFast(0, i) * matrix.getValueFast(1, i) -
+                                 getValueFast(1, i) * matrix.getValueFast(0, i);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    void crossProductVector(const MatrixBase<ValueType>& matrix,
+                            MatrixBase<ValueType>& resultMatrix)
+    {
+        resultMatrix.getValueFast(0, 0) =
+            getValueFast(1, 0) * matrix.getValueFast(2, 0) -
+                                 getValueFast(2, 0) * matrix.getValueFast(1, 0);
+
+        resultMatrix.getValueFast(1, 0) =
+            getValueFast(2, 0) * matrix.getValueFast(0, 0) -
+                                 getValueFast(0, 0) * matrix.getValueFast(2, 0);
+
+        resultMatrix.getValueFast(2, 0) =
+            getValueFast(0, 0) * matrix.getValueFast(1, 0) -
+                                 getValueFast(1, 0) * matrix.getValueFast(0, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType dotProductMatrix(const MatrixBase<ValueType>& matrix,
+                               MatrixBase<ValueType>& resultMatrix)
+    {
+        ValueType* myValuePointer = &(getValueFast(0, 0));
+        const ValueType* valuePointer = &(matrix.getValueFast(0, 0));
+
+        ValueType result = 0;
+
+        uint32_t i = myRows * myColumns;
+
+        if ((myColumnJump == 0) && (matrix.myColumnJump == 0))
+        {
+            while (i--)
+            {
+                result += (*myValuePointer++) * (*valuePointer++);
+            }
+        }
+        else if ((myColumnJump != 0) && (matrix.myColumnJump == 0))
+        {
+            while (i--)
+            {
+                result += (*myValuePointer) * (*valuePointer++);
+
+                incrementValuePointer(myValuePointer, i);
+            }
+        }
+        else if ((myColumnJump == 0) && (matrix.myColumnJump != 0))
+        {
+            while (i--)
+            {
+                result += (*myValuePointer++) * (*valuePointer);
+
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                result += (*myValuePointer) * (*valuePointer);
+
+                incrementValuePointer(myValuePointer, i);
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+
+        return result;
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType dotProductVector(const MatrixBase<ValueType>& matrix)
+    {
+        ValueType* myValuePointer = &(getValueFast(0, 0));
+        const ValueType* valuePointer = &(matrix.getValueFast(0, 0));
+
+        ValueType result = 0;
+
+        uint32_t i = myRows * myColumns;
+
+        if ((myColumnJump == 0) && (matrix.myColumnJump == 0))
+        {
+            while (i--)
+            {
+                result += (*myValuePointer++) * (*valuePointer++);
+            }
+        }
+        else if ((myColumnJump != 0) && (matrix.myColumnJump == 0))
+        {
+            while (i--)
+            {
+                result += (*myValuePointer) * (*valuePointer++);
+
+                incrementValuePointer(myValuePointer, i);
+            }
+        }
+        else if ((myColumnJump == 0) && (matrix.myColumnJump != 0))
+        {
+            while (i--)
+            {
+                result += (*myValuePointer++) * (*valuePointer);
+
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                result += (*myValuePointer) * (*valuePointer);
+
+                incrementValuePointer(myValuePointer, i);
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+
+        return result;
+    }
+
 private:
 
     //--------------------------------------------------------------------------
