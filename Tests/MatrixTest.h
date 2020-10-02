@@ -109,6 +109,10 @@ public:
 
     static bool magnitudeTest();
 
+    static bool crossProductTest();
+
+    static bool dotProductTest();
+
     static bool submatrixOperatorAddScalarTest();
 
     static bool submatrixOperatorAddTest();

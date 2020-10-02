@@ -65,6 +65,8 @@ const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
     &VectorTest::setValuesTest,
     &VectorTest::transposeTest,
     &VectorTest::magnitudeTest,
+    &VectorTest::crossProductTest,
+    &VectorTest::dotProductTest,
     &VectorTest::submatrixOperatorAddScalarTest,
     &VectorTest::submatrixOperatorAddTest,
     &VectorTest::submatrixOperatorAddEqualsScalarTest,
@@ -977,6 +979,96 @@ bool VectorTest::magnitudeTest()
                             UNIT_TEST_CASE_EQUAL(result2, expected) &
                             UNIT_TEST_CASE_EQUAL(result3, expected) &
                             UNIT_TEST_CASE_EQUAL(result4, expected));
+}
+
+//------------------------------------------------------------------------------
+bool VectorTest::crossProductTest()
+{
+    // Setup
+
+    const float values1[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3> vector1(values1);
+
+    float values2[3] =
+    {
+        4.0,
+        5.0,
+        6.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
+
+    // Test
+
+    Vector<float, 3> result1 = vector1.cross(vector2);
+    Vector<float, 3> result2 = vector2.cross(vector1);
+
+    float expectedValues1[3] =
+    {
+        -3.0,
+         6.0,
+        -3.0
+    };
+
+    Vector<float, 3> expected1(expectedValues1);
+
+    float expectedValues2[3] =
+    {
+         3.0,
+        -6.0,
+         3.0
+    };
+
+    Vector<float, 3> expected2(expectedValues2);
+
+    bool compare1 = (result1 == expected1);
+    bool compare2 = (result2 == expected2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool VectorTest::dotProductTest()
+{
+    // Setup
+
+    float values1[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3> vector1(values1);
+
+    float values2[3] =
+    {
+        4.0,
+        5.0,
+        6.0
+    };
+
+    Vector<float, 3> vector2(values2);
+
+    // Test
+
+    float result1 = vector1.dot(vector2);
+    float result2 = vector2.dot(vector1);
+
+    float expected = 32.0f;
+
+    bool compare1 = (result1 == expected);
+    bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
 //------------------------------------------------------------------------------
