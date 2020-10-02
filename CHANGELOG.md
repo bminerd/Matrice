@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[QUALITY]` Added support for VSCode Remote Container building and debugging in plat4m_linux_dev Docker container. [Resolves #15].
 * `[FEATURE]` Added cross and dot product methods to MatrixBase. Added Nx1 and 3x1 partial template specializations to MatrixStorage. [Resolves #14].
 * `[FEATURE]` Added 1x1 partial template specializations to Matrix and MatrixStorage with a ValueType cast operator. [Resolves #13].
 * `[FEATURE]` Added operator()() and getValue() methods to Vector. [Resolves #12].
