@@ -4,6 +4,38 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Matrice_Test_App - Container build",
+            "type": "shell",
+            "linux": {
+                "command": "${workspaceRoot}/Tests/Matrice_Test_App/build.sh",
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Matrice_Test_App - Container clean",
+            "type": "shell",
+            "linux": {
+                "command": "rm -rf ${workspaceRoot}/Tests/Matrice_Test_App/Build",
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Matrice_Test_App - Container run",
+            "type": "shell",
+            "linux": {
+                "command": "${workspaceRoot}/Tests/Matrice_Test_App/Build/Matrice_Test_App",
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "Matrice_Test_App - Docker build",
             "type": "shell",
             "linux": {
