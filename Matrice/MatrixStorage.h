@@ -158,7 +158,6 @@ public:
         return MatrixBase<ValueType>::operatorEquals(matrix);
     }
 
-
     //--------------------------------------------------------------------------
     ValueType& operator()(const uint32_t row, const uint32_t column)
     {
@@ -810,12 +809,1153 @@ protected:
 };
 
 ///
-/// @brief Parent class for all outer API matrix-based classes. Specializations
-/// (ex. 3x1 Matrix / Vector) can be added by inheriting from this class.
+/// @brief Partial template specialization for
+/// MatrixStorage<ValueType, N, M, StorageOption> where M = 1.
 /// @tparam ValueType Type of value to be stored in this matrix (ex. double,
 /// float, uint32_t, etc.).
 /// @tparam N Number of rows.
-/// @tparam M Number of columns.
+/// @tparam StorageOption Where underlying matrix storage should be located.
+/// Options are STORAGE_INTERNAL (default here) and STORAGE_EXTERNAL.
+/// @note Currently supports only row-major matrices.
+/// @note Since the partial template specialization in the next class specifies
+/// STORAGE_EXTERNAL for StorageOption and there are only two entries in
+/// the StorageOption eunmerated type, the StorageOption parameter here will
+/// always be STORAGE_INTERNAL.
+/// @note The underlying array indexing is done by incrementing pointers.
+/// Normally this approach is avoided due to poor readability, but the
+/// performance gains are ~10x versus using for-loops and standard indexing.
+///
+template <typename ValueType, uint32_t N, Storage StorageOption>
+class MatrixStorage<ValueType, N, 1, StorageOption> :
+                                                    public MatrixBase<ValueType>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixStorage() :
+        MatrixBase<ValueType>(N, 1, myValues),
+        myValues()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage(const ValueType initializationValues[N][1]) :
+        MatrixBase<ValueType>(N, 1, myValues),
+        myValues()
+    {
+       MatrixBase<ValueType>::setValuesProtected(
+                                             (ValueType*) initializationValues);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage(
+                 const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix) :
+        MatrixBase<ValueType>(N, 1, myValues),
+        myValues()
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ~MatrixStorage()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+    
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1, StorageOption>& operator=(
+                   const MatrixStorage<ValueType, N, 1, StorageOption>& matrix)
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, 1, StorageOption>& operator=(
+                   const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1, StorageOption>& operator=(
+                                                   const ValueType values[N][1])
+    {
+        MatrixBase<ValueType>::setValuesProtected((ValueType*) values);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    bool operator==(
+                   const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::operatorEquals(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& operator()(const uint32_t row, const uint32_t column)
+    {
+        return MatrixBase<ValueType>::getValue(row, column);
+    }
+
+    //--------------------------------------------------------------------------
+    const ValueType& operator()(const uint32_t row, const uint32_t column) const
+    {
+        return MatrixBase<ValueType>::getValue(row, column);
+    }
+
+    // Unary plus operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator+() const
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::operatorUnaryPlus(matrix);
+
+        return matrix;
+    }
+
+    // Addition operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator+(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::operatorAddScalar(matrix, scalar);
+
+        return matrix;
+    }
+
+    // Addition operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator+(
+              const MatrixStorage<ValueType, N, 1, StorageOption>& matrix) const
+    {
+        MatrixStorage<ValueType, N, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorAdd(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Addition-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1, StorageOption>& operator+=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorAddEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    // Unary minus operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator-() const
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::operatorUnaryMinus(matrix);
+
+        return matrix;
+    }
+
+    // Subtraction operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator-(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::operatorSubtractScalar(matrix, scalar);
+        
+        return matrix;
+    }
+
+    // Subtraction operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator-(
+              const MatrixStorage<ValueType, N, 1, StorageOption>& matrix) const
+    {
+        MatrixStorage<ValueType, N, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Subtraction operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, 1> operator-(
+             const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, N, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Subtraction-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1, StorageOption>& operator-=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorSubtractEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    // Multiplication operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator*(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::operatorMultiplyScalar(matrix, scalar);
+
+        return matrix;
+    }
+
+    // Multiplication operator (N by 1)
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, 1> operator*(
+             const MatrixStorage<ValueType, 1, N, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, 1, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorMultiplyNBy1(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Multiplication-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1, StorageOption>& operator*=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorMultiplyEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, N> transpose() const
+    {
+        MatrixStorage<ValueType, 1, N> matrix;
+
+        MatrixBase<ValueType>::transpose(matrix);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, N> T() const
+    {
+        return transpose();
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dotProduct(
+                   const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::dotProductVector(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dot(const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        return dotProduct(matrix);
+    }
+
+private:
+
+    //--------------------------------------------------------------------------
+    // Private data members
+    //--------------------------------------------------------------------------
+
+    ValueType myValues[N];
+};
+
+///
+/// @brief Partial template specialization for
+/// MatrixStorage<ValueType, N, M, StorageOption> where M = 1 and StorageOption
+/// = STORAGE_EXTERNAL.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+/// @tparam N Number of rows.
+/// @note Currently supports only row-major matrices.
+/// @note The underlying array indexing is done by incrementing pointers.
+/// Normally this approach is avoided due to poor readability, but the
+/// performance gains are ~10x versus using for-loops and standard indexing.
+///
+template <typename ValueType, uint32_t N>
+class MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL> :
+                                                    public MatrixBase<ValueType>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixStorage(ValueType storageValues[N][1]) :
+        MatrixBase<ValueType>(N, 1, (ValueType*) storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage(
+               const MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>& matrix) :
+        MatrixBase<ValueType>(N, 1, matrix.myValue)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption>
+    MatrixStorage(
+              MatrixStorage<ValueType, ParentN, ParentM, StorageOption>& matrix,
+              const uint32_t row,
+              const uint32_t column) :
+        MatrixBase<ValueType>(
+                             N,
+                             1,
+                             &(matrix.getValue(row, column)), (ParentM - 1) + 1)
+    {
+        if (((row + N + 1) > ParentN) || ((column + 1 + 1) > ParentM))
+        {
+            // Error, submatrix beyond parent matrix bounds
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>& operator=(
+                   const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>& operator=(
+                                                   const ValueType values[N][1])
+    {
+        MatrixBase<ValueType>::setValuesProtected((ValueType*) values);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    bool operator==(
+                   const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::operatorEquals(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& operator()(const uint32_t row, const uint32_t column)
+    {
+        return MatrixBase<ValueType>::getValue(row, column);
+    }
+
+    //--------------------------------------------------------------------------
+    const ValueType& operator()(const uint32_t row, const uint32_t column) const
+    {
+        return MatrixBase<ValueType>::getValue(row, column);
+    }
+
+    // Unary plus operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator+() const
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::operatorUnaryPlus(matrix);
+
+        return matrix;
+    }
+
+    // Addition operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator+(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::operatorAddScalar(matrix, scalar);
+
+        return matrix;
+    }
+
+    // Addition operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, 1> operator+(
+             const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, N, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorAdd(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Addition-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator+=(const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorAddEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    // Unary minus operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator-() const
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::operatorUnaryMinus(matrix);
+
+        return matrix;
+    }
+
+    // Subtraction operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator-(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::operatorSubtractScalar(matrix, scalar);
+        
+        return matrix;
+    }
+
+    // Subtraction operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, 1> operator-(
+             const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, N, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Subtraction-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>& operator-=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorSubtractEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    // Multiplication operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1> operator*(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, N, 1> matrix;
+
+        MatrixBase<ValueType>::operatorMultiplyScalar(matrix, scalar);
+
+        return matrix;
+    }
+
+    // Multiplication operator (N by 1)
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, N, 1> operator*(
+             const MatrixStorage<ValueType, 1, N, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, 1, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorMultiplyNBy1(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Multiplication-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, N, 1, STORAGE_EXTERNAL>& operator*=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorMultiplyEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, N> transpose() const
+    {
+        MatrixStorage<ValueType, 1, N> matrix;
+
+        MatrixBase<ValueType>::transpose(matrix);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, N> T() const
+    {
+        return transpose();
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dotProduct(
+                   const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::dotProductVector(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dot(const MatrixStorage<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        return dotProduct(matrix);
+    }
+};
+
+///
+/// @brief Partial template specialization for
+/// MatrixStorage<ValueType, N, M, StorageOption> where N = 3 and M = 1.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+/// @tparam StorageOption Where underlying matrix storage should be located.
+/// Options are STORAGE_INTERNAL (default here) and STORAGE_EXTERNAL.
+/// @note Currently supports only row-major matrices.
+/// @note Since the partial template specialization in the next class specifies
+/// STORAGE_EXTERNAL for StorageOption and there are only two entries in
+/// the StorageOption eunmerated type, the StorageOption parameter here will
+/// always be STORAGE_INTERNAL.
+/// @note The underlying array indexing is done by incrementing pointers.
+/// Normally this approach is avoided due to poor readability, but the
+/// performance gains are ~10x versus using for-loops and standard indexing.
+///
+template <typename ValueType, Storage StorageOption>
+class MatrixStorage<ValueType, 3, 1, StorageOption> :
+                                                    public MatrixBase<ValueType>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixStorage() :
+        MatrixBase<ValueType>(3, 1, myValues),
+        myValues()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage(const ValueType initializationValues[3][1]) :
+        MatrixBase<ValueType>(3, 1, myValues),
+        myValues()
+    {
+       MatrixBase<ValueType>::setValuesProtected(
+                                             (ValueType*) initializationValues);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage(
+                 const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix) :
+        MatrixBase<ValueType>(3, 1, myValues),
+        myValues()
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ~MatrixStorage()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+    
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1, StorageOption>& operator=(
+                   const MatrixStorage<ValueType, 3, 1, StorageOption>& matrix)
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 3, 1, StorageOption>& operator=(
+                   const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1, StorageOption>& operator=(
+                                                   const ValueType values[3][1])
+    {
+        MatrixBase<ValueType>::setValuesProtected((ValueType*) values);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    bool operator==(
+                   const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::operatorEquals(matrix);
+    }
+
+        //--------------------------------------------------------------------------
+    ValueType& operator()(const uint32_t row, const uint32_t column)
+    {
+        return MatrixBase<ValueType>::getValue(row, column);
+    }
+
+    //--------------------------------------------------------------------------
+    const ValueType& operator()(const uint32_t row, const uint32_t column) const
+    {
+        return MatrixBase<ValueType>::getValue(row, column);
+    }
+
+    // Unary plus operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator+() const
+    {
+        MatrixStorage<ValueType, 3, 1> matrix;
+
+        MatrixBase<ValueType>::operatorUnaryPlus(matrix);
+
+        return matrix;
+    }
+
+    // Addition operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator+(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, 3, 1> matrix;
+
+        MatrixBase<ValueType>::operatorAddScalar(matrix, scalar);
+
+        return matrix;
+    }
+
+    // Addition operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator+(
+              const MatrixStorage<ValueType, 3, 1, StorageOption>& matrix) const
+    {
+        MatrixStorage<ValueType, 3, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorAdd(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Addition-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1, StorageOption>& operator+=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorAddEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    // Unary minus operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator-() const
+    {
+        MatrixStorage<ValueType, 3, 1> matrix;
+
+        MatrixBase<ValueType>::operatorUnaryMinus(matrix);
+
+        return matrix;
+    }
+
+    // Subtraction operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator-(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, 3, 1> matrix;
+
+        MatrixBase<ValueType>::operatorSubtractScalar(matrix, scalar);
+        
+        return matrix;
+    }
+
+    // Subtraction operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator-(
+              const MatrixStorage<ValueType, 3, 1, StorageOption>& matrix) const
+    {
+        MatrixStorage<ValueType, 3, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Subtraction operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 3, 1> operator-(
+             const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, 3, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Subtraction-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1, StorageOption>& operator-=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorSubtractEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    // Multiplication operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator*(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, 3, 1> matrix;
+
+        MatrixBase<ValueType>::operatorMultiplyScalar(matrix, scalar);
+
+        return matrix;
+    }
+
+    // Multiplication operator (N by 1)
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 3, 1> operator*(
+             const MatrixStorage<ValueType, 1, 3, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, 1, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorMultiplyNBy1(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Multiplication-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1, StorageOption>& operator*=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorMultiplyEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, 3> transpose() const
+    {
+        MatrixStorage<ValueType, 1, 3> matrix;
+
+        MatrixBase<ValueType>::transpose(matrix);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, 3> T() const
+    {
+        return transpose();
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 3, 1> crossProduct(
+                   const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        MatrixStorage<ValueType, 3, 1> resultMatrix;
+
+        MatrixBase<ValueType>::crossProductVector(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 3, 1> cross(
+                   const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        return crossProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dotProduct(
+                   const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::dotProductVector(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dot(const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        return dotProduct(matrix);
+    }
+
+private:
+
+    //--------------------------------------------------------------------------
+    // Private data members
+    //--------------------------------------------------------------------------
+
+    ValueType myValues[3];
+};
+
+///
+/// @brief Partial template specialization for
+/// MatrixStorage<ValueType, N, M, StorageOption> where N = 3, M = 1, and
+/// StorageOption = STORAGE_EXTERNAL.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+/// @note Currently supports only row-major matrices.
+/// @note The underlying array indexing is done by incrementing pointers.
+/// Normally this approach is avoided due to poor readability, but the
+/// performance gains are ~10x versus using for-loops and standard indexing.
+///
+template <typename ValueType>
+class MatrixStorage<ValueType, 3, 1, STORAGE_EXTERNAL> :
+                                                    public MatrixBase<ValueType>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixStorage(ValueType storageValues[3][1]) :
+        MatrixBase<ValueType>(3, 1, (ValueType*) storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage(
+               const MatrixStorage<ValueType, 3, 1, STORAGE_EXTERNAL>& matrix) :
+        MatrixBase<ValueType>(3, 1, matrix.myValue)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption>
+    MatrixStorage(
+              MatrixStorage<ValueType, ParentN, ParentM, StorageOption>& matrix,
+              const uint32_t row,
+              const uint32_t column) :
+        MatrixBase<ValueType>(
+                             3,
+                             1,
+                             &(matrix.getValue(row, column)), (ParentM - 1) + 1)
+    {
+        if (((row + 3 + 1) > ParentN) || ((column + 1 + 1) > ParentM))
+        {
+            // Error, submatrix beyond parent matrix bounds
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 3, 1, STORAGE_EXTERNAL>& operator=(
+                   const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        MatrixBase<ValueType>::setValuesProtected(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1, STORAGE_EXTERNAL>& operator=(
+                                                   const ValueType values[3][1])
+    {
+        MatrixBase<ValueType>::setValuesProtected((ValueType*) values);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    bool operator==(
+                   const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::operatorEquals(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& operator()(const uint32_t row, const uint32_t column)
+    {
+        return MatrixBase<ValueType>::getValue(row, column);
+    }
+
+    //--------------------------------------------------------------------------
+    const ValueType& operator()(const uint32_t row, const uint32_t column) const
+    {
+        return MatrixBase<ValueType>::getValue(row, column);
+    }
+
+    // Unary plus operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator+() const
+    {
+        MatrixStorage<ValueType, 3, 1> matrix;
+
+        MatrixBase<ValueType>::operatorUnaryPlus(matrix);
+
+        return matrix;
+    }
+
+    // Addition operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator+(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, 3, 1> matrix;
+
+        MatrixBase<ValueType>::operatorAddScalar(matrix, scalar);
+
+        return matrix;
+    }
+
+    // Addition operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 3, 1> operator+(
+             const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, 3, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorAdd(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Addition-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1, STORAGE_EXTERNAL>& operator+=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorAddEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    // Unary minus operator
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator-() const
+    {
+        MatrixStorage<ValueType, 3, 1> matrix;
+
+        MatrixBase<ValueType>::operatorUnaryMinus(matrix);
+
+        return matrix;
+    }
+
+    // Subtraction operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator-(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, 3, 1> matrix;
+
+        MatrixBase<ValueType>::operatorSubtractScalar(matrix, scalar);
+        
+        return matrix;
+    }
+
+    // Subtraction operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 3, 1> operator-(
+             const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, 3, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Subtraction-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1, STORAGE_EXTERNAL>& operator-=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorSubtractEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    // Multiplication operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1> operator*(const ValueType scalar) const
+    {
+        MatrixStorage<ValueType, 3, 1> matrix;
+
+        MatrixBase<ValueType>::operatorMultiplyScalar(matrix, scalar);
+
+        return matrix;
+    }
+
+    // Multiplication operator (N by 1)
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 3, 1> operator*(
+             const MatrixStorage<ValueType, 1, 3, StorageOption2>& matrix) const
+    {
+        MatrixStorage<ValueType, 1, 1> resultMatrix;
+
+        MatrixBase<ValueType>::operatorMultiplyNBy1(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    // Multiplication-equals operator (scalar)
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 1, STORAGE_EXTERNAL>& operator*=(
+                                                         const ValueType scalar)
+    {
+        MatrixBase<ValueType>::operatorMultiplyEqualsScalar(scalar);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, 3> transpose() const
+    {
+        MatrixStorage<ValueType, 1, 3> matrix;
+
+        MatrixBase<ValueType>::transpose(matrix);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 1, 3> T() const
+    {
+        return transpose();
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 3, 1> crossProduct(
+                   const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        MatrixStorage<ValueType, 3, 1> resultMatrix;
+
+        MatrixBase<ValueType>::crossProductVector(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    MatrixStorage<ValueType, 3, 1> cross(
+                   const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        return crossProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dotProduct(
+                   const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        return MatrixBase<ValueType>::dotProductVector(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dot(const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        return dotProduct(matrix);
+    }
+};
+
+///
+/// @brief Partial template specialization for
+/// MatrixStorage<ValueType, N, M, StorageOption> where N = 1 and M = 1.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
 /// @tparam StorageOption Where underlying matrix storage should be located.
 /// Options are STORAGE_INTERNAL (default here) and STORAGE_EXTERNAL.
 /// @note Since the partial template specialization below specifies
@@ -949,12 +2089,10 @@ private:
 
 ///
 /// @brief Partial template specialization for
-/// MatrixStorage<ValueType, N, M, StorageOption> where StorageOption is
-/// STORAGE_EXTERNAL and the class doesn't contain a 2-D array data member.
+/// MatrixStorage<ValueType, N, M, StorageOption> where N = 3, M = 1, and
+/// StorageOption = STORAGE_EXTERNAL.
 /// @tparam ValueType Type of value to be stored in this matrix (ex. double,
 /// float, uint32_t, etc.).
-/// @tparam N Number of rows.
-/// @tparam M Number of columns.
 /// @note Currently supports only row-major matrices.
 /// @note The underlying array indexing is done by incrementing pointers.
 /// Normally this approach is avoided due to poor readability, but the
