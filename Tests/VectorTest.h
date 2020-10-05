@@ -109,6 +109,8 @@ public:
 
     static bool dotProductTest();
 
+    static bool toCrossProductEquivalentMatrixTest();
+
     static bool submatrixOperatorAddScalarTest();
 
     static bool submatrixOperatorAddTest();
