@@ -1396,6 +1396,24 @@ protected:
         return result;
     }
 
+    // Compute the 3x3 skew / cross product equivalent matrix from a 3x1 vector
+    // 
+    // vector = | a1 |    -->    skew = |   0  -a3   a2 |
+    //          | a2 |                  |  a3    0  -a1 |
+    //          | a3 |                  | -a2   a1    0 |
+    //
+    //--------------------------------------------------------------------------
+    void toCrossProductEquivalentMatrix(
+                                      MatrixBase<ValueType>& resultMatrix) const
+    {
+        resultMatrix.getValueFast(0, 1) = -getValueFast(2, 0);
+        resultMatrix.getValueFast(0, 2) =  getValueFast(1, 0);
+        resultMatrix.getValueFast(1, 0) =  getValueFast(2, 0);
+        resultMatrix.getValueFast(1, 2) = -getValueFast(0, 0);
+        resultMatrix.getValueFast(2, 0) = -getValueFast(1, 0);
+        resultMatrix.getValueFast(2, 1) =  getValueFast(0, 0);
+    }
+
 private:
 
     //--------------------------------------------------------------------------

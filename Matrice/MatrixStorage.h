@@ -1666,6 +1666,22 @@ public:
         return dotProduct(matrix);
     }
 
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 3> toCrossProductEquivalentMatrix() const
+    {
+        MatrixStorage<ValueType, 3, 3> resultMatrix;
+
+        MatrixBase<ValueType>::toCrossProductEquivalentMatrix(resultMatrix);
+
+        return resultMatrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 3> skew() const
+    {
+        return toCrossProductEquivalentMatrix();
+    }
+
 private:
 
     //--------------------------------------------------------------------------
@@ -1948,6 +1964,22 @@ public:
     ValueType dot(const MatrixStorage<ValueType, 3, 1, StorageOption2>& matrix)
     {
         return dotProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 3> toCrossProductEquivalentMatrix() const
+    {
+        MatrixStorage<ValueType, 3, 3> resultMatrix;
+
+        MatrixBase<ValueType>::toCrossProductEquivalentMatrix(resultMatrix);
+
+        return resultMatrix;
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixStorage<ValueType, 3, 3> skew() const
+    {
+        return toCrossProductEquivalentMatrix();
     }
 };
 
