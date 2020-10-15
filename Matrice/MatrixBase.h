@@ -77,7 +77,7 @@ public:
     //--------------------------------------------------------------------------
     MatrixBase<ValueType>& operator=(const MatrixBase<ValueType>& matrix)
     {
-        setValuesPointerProtected(matrix.myValuesPointer);
+        setValuesProtected(matrix);
 
         return (*this);
     }
@@ -423,13 +423,42 @@ protected:
     MatrixBase(const uint32_t rows,
                const uint32_t columns,
                ValueType* valuesPointer,
-               const uint32_t columnJump = 0) :
+               const uint32_t columnJump) :
         myRows(rows),
         myColumns(columns),
         myValuesPointer(valuesPointer),
         myColumnJump(columnJump)
     {
     }
+
+    //--------------------------------------------------------------------------
+    MatrixBase(const uint32_t rows,
+               const uint32_t columns,
+               ValueType* valuesPointer,
+               const uint32_t columnJump,
+               const ValueType* initializationValuesPointer) :
+        myRows(rows),
+        myColumns(columns),
+        myValuesPointer(valuesPointer),
+        myColumnJump(columnJump)
+    {
+        setValuesProtected(initializationValuesPointer);
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixBase(const uint32_t rows,
+               const uint32_t columns,
+               ValueType* valuesPointer,
+               const uint32_t columnJump,
+               const MatrixBase& matrix) :
+        myRows(rows),
+        myColumns(columns),
+        myValuesPointer(valuesPointer),
+        myColumnJump(columnJump)
+    {
+        operator=(matrix);
+    }
+
 
     //--------------------------------------------------------------------------
     MatrixBase(const MatrixBase& matrix) :
