@@ -139,17 +139,32 @@ bool MatrixVectorTest::matrixTimesVectorStorageExternalTest()
 
     Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
 
-    static float values2[3] = { 1.0, 2.0, 3.0 };
+    static float values2[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
 
     Vector<float, 3, STORAGE_EXTERNAL> vector1(values2);
 
-    static const float values3[3] = { 14.0, 32.0,  50.0 };
+    static const float values3[3] =
+    {
+        14.0,
+        32.0,
+        50.0
+    };
 
     Vector<float, 3> expected(values3);
 
     // Test
 
-    static float values4[3] = { 0.0, 0.0, 0.0 };
+    static float values4[3] =
+    {
+        0.0,
+        0.0,
+        0.0
+    };
 
     Vector<float, 3, STORAGE_EXTERNAL> actual(values4);
 

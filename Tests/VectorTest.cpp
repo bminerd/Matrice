@@ -37,6 +37,7 @@
 
 #include <Tests/VectorTest.h>
 #include <Matrice/Vector.h>
+#include <Matrice/Matrix.h>
 
 using Matrice::VectorTest;
 using Plat4m::UnitTest;

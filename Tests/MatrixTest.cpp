@@ -182,12 +182,22 @@ bool MatrixTest::operatorAssignmentTest()
     Matrix<float, 3, 3> result1 = matrix1;
     Matrix<float, 3, 3> result2 = matrix2;
 
+    Matrix<float, 3, 3> result3;
+    Matrix<float, 3, 3> result4;
+
+    result3 = matrix1;
+    result4 = matrix2;
+
     Matrix<float, 3, 3> expected(values1);
     bool compare1 = (result1 == expected);
     bool compare2 = (result2 == expected);
+    bool compare3 = (result3 == expected);
+    bool compare4 = (result4 == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true) &
+                            UNIT_TEST_CASE_EQUAL(compare4, true));
 }
 
 //------------------------------------------------------------------------------
