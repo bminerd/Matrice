@@ -320,6 +320,12 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    void setValues(const ValueType value)
+    {
+        MatrixBase<ValueType>::setValues(value);
+    }
+
+    //--------------------------------------------------------------------------
     Matrix<ValueType, 1, N, STORAGE_INTERNAL> getRow(const uint32_t row)
     {
         Matrix<ValueType, 1, N, STORAGE_INTERNAL> matrix;

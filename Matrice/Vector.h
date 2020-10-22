@@ -183,6 +183,12 @@ public:
     {
         MatrixBase<ValueType>::setValuesProtected(values);
     }
+
+    //--------------------------------------------------------------------------
+    void setValues(const ValueType value)
+    {
+        MatrixBase<ValueType>::setValues(value);
+    }
 };
 
 ///
@@ -318,6 +324,12 @@ public:
     void setValues(const ValueType values[N])
     {
         MatrixBase<ValueType>::setValuesProtected(values);
+    }
+
+    //--------------------------------------------------------------------------
+    void setValues(const ValueType value)
+    {
+        MatrixBase<ValueType>::setValues(value);
     }
 };
 

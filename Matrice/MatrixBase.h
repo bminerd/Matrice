@@ -193,7 +193,7 @@ public:
             {
                 (*thisValuePointer) = value;
 
-                incrementValuePointer(i);
+                incrementValuePointer(thisValuePointer, i);
             }
         }
     }
