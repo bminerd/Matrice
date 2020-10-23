@@ -313,16 +313,12 @@ public:
     // Public methods
     //--------------------------------------------------------------------------
 
+    using MatrixBase<ValueType>::setValues;
+
     //--------------------------------------------------------------------------
     void setValues(const ValueType values[N][M])
     {
         MatrixBase<ValueType>::setValuesProtected((ValueType*) values);
-    }
-
-    //--------------------------------------------------------------------------
-    void setValues(const ValueType value)
-    {
-        MatrixBase<ValueType>::setValues(value);
     }
 
     //--------------------------------------------------------------------------
