@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[FEATURE]` Exposed setValues() method for setting all Matrix values to single value to Matrix and Vector. [Resolves #18].
 * `[FEATURE]` Renamed MatrixStorage to MatrixInterface and refactored to push storage template option and partial template specializations to subclasses. Matrix now provides template parameter for storage location and partial template specializations for some dimensions. Vector is now subclass of Matrix. [Resolves #10].
 * `[FEATURE]` Added skew / cross product equivalent matrix methods to MatrixBase and MatrixStorage 3x1 specializations. [Resolves #16].
 * `[QUALITY]` Added support for VSCode Remote Container building and debugging in plat4m_linux_dev Docker container. [Resolves #15].
