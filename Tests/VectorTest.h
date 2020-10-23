@@ -101,6 +101,8 @@ public:
 
     static bool setValuesTest();
 
+    static bool setValuesTest2();
+
     static bool transposeTest();
 
     static bool magnitudeTest();
