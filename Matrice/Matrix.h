@@ -183,8 +183,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption>
-    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption>& matrix,
+    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
+    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
            const uint32_t row,
            const uint32_t column) :
         MatrixInterface<ValueType, N, M>(matrix, row, column)
@@ -234,6 +234,72 @@ public:
                                                    const ValueType values[N][M])
     {
         MatrixInterface<ValueType, N, M>::operator=(values);
+
+        return (*this);
+    }
+};
+
+
+///
+/// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
+/// where StorageOption = STORAGE_CONSTANT.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+/// @tparam N Number of matrix rows.
+/// @tparam M Number of matrix columns.
+///
+template <typename ValueType, uint32_t N, uint32_t M>
+class Matrix<ValueType, N, M, STORAGE_CONSTANT> :
+                        public MatrixInterface<ValueType, N, M, const ValueType>
+{
+public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = N;
+    static const uint32_t columns = M;
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(const ValueType storageValues[N][M]) :
+        MatrixInterface<ValueType, N, M, const ValueType>(storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
+    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
+           const uint32_t row,
+           const uint32_t column) :
+        MatrixInterface<ValueType, N, M, const ValueType>(matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, N, M, STORAGE_CONSTANT>& operator=(
+                          const Matrix<ValueType, N, M, StorageOption2>& matrix)
+    {
+        MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
+                                                                        matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, M, STORAGE_CONSTANT>& operator=(
+                                 const MatrixInterface<ValueType, N, M>& matrix)
+    {
+        MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
+                                                                        matrix);
 
         return (*this);
     }
@@ -423,6 +489,89 @@ public:
                                                    const ValueType values[N][N])
     {
         MatrixInterface<ValueType, N, N>::operator=(values);
+
+        return (*this);
+    }
+};
+
+///
+/// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
+/// where N = M and StorageOption = STORAGE_CONSTANT.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+/// @tparam N Number of matrix rows.
+/// @tparam M Number of matrix columns.
+///
+template <typename ValueType, uint32_t N>
+class Matrix<ValueType, N, N, STORAGE_CONSTANT> :
+                        public MatrixInterface<ValueType, N, N, const ValueType>
+{
+public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = N;
+    static const uint32_t columns = N;
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(const ValueType storageValues[N][N]) :
+        MatrixInterface<ValueType, N, N, const ValueType>(storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
+    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
+           const uint32_t row,
+           const uint32_t column) :
+        MatrixInterface<ValueType, N, N, const ValueType>(matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix(const Matrix<ValueType, N, N, StorageOption2>& matrix) :
+        MatrixInterface<ValueType, N, N, const ValueType>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, N, STORAGE_CONSTANT>& operator=(
+                        const Matrix<ValueType, N, N, STORAGE_CONSTANT>& matrix)
+    {
+        MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
+                                                                        matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, N, N, STORAGE_CONSTANT>& operator=(
+                          const Matrix<ValueType, N, N, StorageOption2>& matrix)
+    {
+        MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
+                                                                        matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, N, STORAGE_CONSTANT>& operator=(
+                                 const MatrixInterface<ValueType, N, N>& matrix)
+    {
+        MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
+                                                                        matrix);
 
         return (*this);
     }
@@ -660,6 +809,71 @@ public:
 
 ///
 /// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
+/// where M = 1 (i.e. Matrix is a column Vector) and StorageOption =
+/// STORAGE_CONSTANT.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+/// @tparam N Number of matrix rows.
+///
+template <typename ValueType, uint32_t N>
+class Matrix<ValueType, N, 1, STORAGE_CONSTANT> :
+                        public MatrixInterface<ValueType, N, 1, const ValueType>
+{
+public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = N;
+    static const uint32_t columns = 1;
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(const ValueType storageValues[N][1]) :
+        MatrixInterface<ValueType, N, 1, const ValueType>(storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
+    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
+           const uint32_t row,
+           const uint32_t column) :
+        MatrixInterface<ValueType, N, 1, const ValueType>(matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, N, 1, STORAGE_CONSTANT>& operator=(
+                          const Matrix<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
+                                                                        matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, 1, STORAGE_CONSTANT>& operator=(
+                                 const MatrixInterface<ValueType, N, 1>& matrix)
+    {
+        MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
+                                                                        matrix);
+
+        return (*this);
+    }
+};
+
+///
+/// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
 /// where N = 3 and M = 1 (i.e. Matrix is a 3-element column vector).
 /// @tparam ValueType Type of value to be stored in this matrix (ex. double,
 /// float, uint32_t, etc.).
@@ -722,11 +936,21 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    Matrix<ValueType, 3, 1, StorageOption>& operator=(
+                           const Matrix<ValueType, 3, 1, StorageOption>& matrix)
+    {
+        MatrixInterface<ValueType, 3, 1>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
     template <Storage StorageOption2>
     Matrix<ValueType, 3, 1, StorageOption>& operator=(
                           const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
     {
-        MatrixInterface<ValueType, 3, 1>::operator=(matrix);
+        MatrixInterface<ValueType, 3, 1, ValueType>::operator=(matrix);
 
         return (*this);
     }
@@ -910,7 +1134,7 @@ public:
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
     Matrix<ValueType, 3, 1> crossProduct(
-                          const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
+                    const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
     {
         Matrix<ValueType, 3, 1> resultMatrix;
 
@@ -922,21 +1146,22 @@ public:
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
     Matrix<ValueType, 3, 1> cross(
-                          const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
+                    const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
     {
         return crossProduct(matrix);
     }
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
-    ValueType dotProduct(const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
+    ValueType dotProduct(
+                    const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
     {
         return MatrixBase<ValueType>::dotProductVector(matrix);
     }
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
-    ValueType dot(const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
+    ValueType dot(const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
     {
         return dotProduct(matrix);
     }
@@ -947,6 +1172,139 @@ public:
         Matrix<ValueType, 3, 3> resultMatrix;
 
         MatrixBase<ValueType>::toCrossProductEquivalentMatrix(resultMatrix);
+
+        return resultMatrix;
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, 3, 3> skew() const
+    {
+        return toCrossProductEquivalentMatrix();
+    }
+};
+
+///
+/// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
+/// where N = 3, M = 1 (i.e. Matrix is a 3x1 column Vector) and StorageOption =
+/// STORAGE_CONSTANT.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+///
+template <typename ValueType>
+class Matrix<ValueType, 3, 1, STORAGE_CONSTANT> :
+                        public MatrixInterface<ValueType, 3, 1, const ValueType>
+{
+public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = 3;
+    static const uint32_t columns = 1;
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(const ValueType storageValues[3][1]) :
+        MatrixInterface<ValueType, 3, 1, const ValueType>(storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
+    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
+           const uint32_t row,
+           const uint32_t column) :
+        MatrixInterface<ValueType, 3, 1, const ValueType>(matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, 3, 1, STORAGE_CONSTANT>& operator=(
+                        const Matrix<ValueType, 3, 1, STORAGE_CONSTANT>& matrix)
+    {
+        MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
+                                                                        matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, 3, 1, STORAGE_CONSTANT>& operator=(
+                          const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
+                                                                        matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, 3, 1, STORAGE_CONSTANT>& operator=(
+                                 const MatrixInterface<ValueType, 3, 1>& matrix)
+    {
+        MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
+                                                                        matrix);
+
+        return (*this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, 3, 1> crossProduct(
+                    const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
+    {
+        Matrix<ValueType, 3, 1> resultMatrix;
+
+        MatrixBase<ValueType, const ValueType>::crossProductVector(
+                                                                  matrix,
+                                                                  resultMatrix);
+
+        return resultMatrix;
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, 3, 1> cross(
+                    const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
+    {
+        return crossProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dotProduct(
+                    const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
+    {
+        return MatrixBase<ValueType, const ValueType>::dotProductVector(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dot(const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
+    {
+        return dotProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, 3, 3> toCrossProductEquivalentMatrix() const
+    {
+        Matrix<ValueType, 3, 3> resultMatrix;
+
+        MatrixBase<ValueType, const ValueType>::toCrossProductEquivalentMatrix(
+                                                                  resultMatrix);
 
         return resultMatrix;
     }
@@ -1019,7 +1377,7 @@ public:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    operator ValueType()
+    operator ValueType() const
     {
         return MatrixBase<ValueType>::getValue(0, 0);
     }
@@ -1114,7 +1472,7 @@ public:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    operator ValueType()
+    operator ValueType() const
     {
         return MatrixBase<ValueType>::getValue(0, 0);
     }
@@ -1122,7 +1480,7 @@ public:
     // Assignment operator
     //--------------------------------------------------------------------------
     Matrix<ValueType, 1, 1, STORAGE_EXTERNAL>& operator=(
-                                   const MatrixInterface<ValueType, 1, 1>& matrix)
+                                 const MatrixInterface<ValueType, 1, 1>& matrix)
     {
         MatrixInterface<ValueType, 1, 1>::operator=(matrix);
 
@@ -1144,6 +1502,65 @@ public:
     Matrix<ValueType, 1, 1, STORAGE_EXTERNAL>& operator=(const ValueType value)
     {
         MatrixInterface<ValueType, 1, 1>::operator=(value);
+
+        return (*this);
+    }
+};
+
+///
+/// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
+/// where N = 1, M = 1 (i.e. Matrix is a 1x1 column Vector) and StorageOption =
+/// STORAGE_CONSTANT.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+///
+template <typename ValueType>
+class Matrix<ValueType, 1, 1, STORAGE_CONSTANT> :
+                        public MatrixInterface<ValueType, 1, 1, const ValueType>
+{
+public:
+
+    typedef ValueType ValueT;
+    static const uint32_t rows = 1;
+    static const uint32_t columns = 1;
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(const ValueType storageValues[1][1]) :
+        MatrixInterface<ValueType, 1, 1, const ValueType>(storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    operator ValueType() const
+    {
+        return MatrixBase<ValueType, const ValueType>::getValue(0, 0);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, 1, 1, STORAGE_CONSTANT>& operator=(
+                          const Matrix<ValueType, 1, 1, StorageOption2>& matrix)
+    {
+        MatrixInterface<ValueType, 1, 1, const ValueType>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, 1, 1, STORAGE_CONSTANT>& operator=(
+                                 const MatrixInterface<ValueType, 1, 1>& matrix)
+    {
+        MatrixInterface<ValueType, 1, 1, const ValueType>::operator=(matrix);
 
         return (*this);
     }

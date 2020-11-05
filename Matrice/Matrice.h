@@ -49,7 +49,8 @@ namespace Matrice
     enum Storage
     {
         STORAGE_INTERNAL = 0,
-        STORAGE_EXTERNAL
+        STORAGE_EXTERNAL,
+        STORAGE_CONSTANT
     };
 
     //--------------------------------------------------------------------------
