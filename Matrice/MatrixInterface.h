@@ -71,8 +71,11 @@ class Matrix;
 /// Normally this approach is avoided due to poor readability, but the
 /// performance gains are ~10x versus using for-loops and standard indexing.
 ///
-template <typename ValueType, uint32_t N, uint32_t M>
-class MatrixInterface : public MatrixBase<ValueType>
+template <typename ValueType,
+          uint32_t N,
+          uint32_t M,
+          typename ValuePointerType = ValueType>
+class MatrixInterface : public MatrixBase<ValueType, ValuePointerType>
 {
 public:
 
@@ -81,26 +84,32 @@ public:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    MatrixInterface(ValueType storageValues[N][M]) :
-        MatrixBase<ValueType>(N, M, (ValueType*) storageValues, 0)
+    MatrixInterface(ValuePointerType storageValues[N][M]) :
+        MatrixBase<ValueType, ValuePointerType>(N, M, (ValuePointerType*) storageValues, 0)
     {
     }
 
     //--------------------------------------------------------------------------
-    MatrixInterface(ValueType storageValues[N][M],
-                    const ValueType initializationValues[N][M]) :
-        MatrixBase<ValueType>(N,
+    MatrixInterface(ValuePointerType storageValues[N][M],
+                    const ValuePointerType initializationValues[N][M]) :
+        MatrixBase<ValueType, ValuePointerType>(N,
                               M,
-                              (ValueType*) storageValues,
+                              (ValuePointerType*) storageValues,
                               0,
-                              (ValueType*) initializationValues)
+                              (ValuePointerType*) initializationValues)
     {
     }
     
     //--------------------------------------------------------------------------
-    MatrixInterface(ValueType storageValues[N][M],
-                    const MatrixInterface<ValueType, N, M>& matrix) :
-        MatrixBase<ValueType>(N, M, (ValueType*) storageValues, 0, matrix)
+    template <typename ValuePointerType2>
+    MatrixInterface(
+            ValuePointerType storageValues[N][M],
+            const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) :
+        MatrixBase<ValueType, ValuePointerType>(
+                                               N,                                
+                                               M,
+                                               (ValuePointerType*)storageValues,
+                                               0, matrix)
     {
     }
 
@@ -109,7 +118,7 @@ public:
     MatrixInterface(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
                     const uint32_t row,
                     const uint32_t column) :
-        MatrixBase<ValueType>(
+        MatrixBase<ValueType, ValuePointerType>(
                              N,
                              M,
                              &(matrix.getValue(row, column)), (ParentM - M) + 1)
@@ -121,8 +130,17 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    MatrixInterface(const MatrixInterface<ValueType, N, M>& matrix) :
-        MatrixBase<ValueType>(matrix)
+    MatrixInterface(
+            const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
+        MatrixBase<ValueType, ValuePointerType>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    MatrixInterface(
+            const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) :
+        MatrixBase<ValueType, ValuePointerType>(matrix)
     {
     }
 
@@ -141,39 +159,54 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
-    MatrixInterface<ValueType, N, M>& operator=(
-                                 const MatrixInterface<ValueType, N, M>& matrix)
+    MatrixInterface<ValueType, N, M, ValuePointerType>& operator=(
+               const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix)
     {
-        MatrixBase<ValueType>::operator=(matrix);
+        MatrixBase<ValueType, ValuePointerType>::setValuesProtected(matrix);
 
         return (*this);
     }
 
     // Assignment operator
     //--------------------------------------------------------------------------
-    MatrixInterface<ValueType, N, M>& operator=(const ValueType values[N][M])
+    template <typename ValuePointerType2>
+    MatrixInterface<ValueType, N, M, ValuePointerType>& operator=(
+              const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix)
     {
-        MatrixBase<ValueType>::setValuesProtected((ValueType*) values);
+        MatrixBase<ValueType, ValuePointerType>::setValuesProtected(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    MatrixInterface<ValueType, N, M, ValuePointerType>& operator=(
+                                            const ValuePointerType values[N][M])
+    {
+        MatrixBase<ValueType, ValuePointerType>::setValuesProtected(
+                                                    (ValuePointerType*) values);
 
         return (*this);
     }
 
     //--------------------------------------------------------------------------
-    bool operator==(const MatrixInterface<ValueType, N, M>& matrix)
+    template <typename ValuePointerType2>
+    bool operator==(
+        const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) const
     {
-        return MatrixBase<ValueType>::operatorEquals(matrix);
+        return MatrixBase<ValueType, ValuePointerType>::operatorEquals(matrix);
     }
 
     //--------------------------------------------------------------------------
     ValueType& operator()(const uint32_t row, const uint32_t column)
     {
-        return MatrixBase<ValueType>::getValue(row, column);
+        return MatrixBase<ValueType, ValuePointerType>::getValue(row, column);
     }
 
     //--------------------------------------------------------------------------
     const ValueType& operator()(const uint32_t row, const uint32_t column) const
     {
-        return MatrixBase<ValueType>::getValue(row, column);
+        return MatrixBase<ValueType, ValuePointerType>::getValue(row, column);
     }
 
     // Unary plus operator
@@ -182,7 +215,7 @@ public:
     {
         Matrix<ValueType, N, M, STORAGE_INTERNAL> matrix;
 
-        MatrixBase<ValueType>::operatorUnaryPlus(matrix);
+        MatrixBase<ValueType, ValuePointerType>::operatorUnaryPlus(matrix);
 
         return matrix;
     }
@@ -194,28 +227,33 @@ public:
     {
         Matrix<ValueType, N, M, STORAGE_INTERNAL> matrix;
 
-        MatrixBase<ValueType>::operatorAddScalar(matrix, scalar);
+        MatrixBase<ValueType, ValuePointerType>::operatorAddScalar(matrix,
+                                                                   scalar);
 
         return matrix;
     }
 
     // Addition operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
     Matrix<ValueType, N, M, STORAGE_INTERNAL> operator+(
-                           const MatrixInterface<ValueType, N, M>& matrix) const
+        const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) const
     {
         Matrix<ValueType, N, M, STORAGE_INTERNAL> resultMatrix;
 
-        MatrixBase<ValueType>::operatorAdd(matrix, resultMatrix);
+        MatrixBase<ValueType, ValuePointerType>::operatorAdd(matrix,
+                                                             resultMatrix);
 
         return resultMatrix;
     }
 
     // Addition-equals operator (scalar)
     //--------------------------------------------------------------------------
-    MatrixInterface<ValueType, N, M>& operator+=(const ValueType scalar)
+    MatrixInterface<ValueType, N, M, ValuePointerType>& operator+=(
+                                                         const ValueType scalar)
     {
-        MatrixBase<ValueType>::operatorAddEqualsScalar(scalar);
+        MatrixBase<ValueType, ValuePointerType>::operatorAddEqualsScalar(
+                                                                        scalar);
 
         return (*this);
     }
@@ -226,7 +264,7 @@ public:
     {
         Matrix<ValueType, N, M, STORAGE_INTERNAL> matrix;
 
-        MatrixBase<ValueType>::operatorUnaryMinus(matrix);
+        MatrixBase<ValueType, ValuePointerType>::operatorUnaryMinus(matrix);
 
         return matrix;
     }
@@ -238,19 +276,22 @@ public:
     {
         Matrix<ValueType, N, M, STORAGE_INTERNAL> matrix;
 
-        MatrixBase<ValueType>::operatorSubtractScalar(matrix, scalar);
+        MatrixBase<ValueType, ValuePointerType>::operatorSubtractScalar(matrix,
+                                                                        scalar);
         
         return matrix;
     }
 
     // Subtraction operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
     Matrix<ValueType, N, M, STORAGE_INTERNAL> operator-(
-                           const MatrixInterface<ValueType, N, M>& matrix) const
+        const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) const
     {
         Matrix<ValueType, N, M, STORAGE_INTERNAL> resultMatrix;
 
-        MatrixBase<ValueType>::operatorSubtract(matrix, resultMatrix);
+        MatrixBase<ValueType, ValuePointerType>::operatorSubtract(matrix,
+                                                                  resultMatrix);
 
         return resultMatrix;
     }
@@ -259,52 +300,63 @@ public:
     //--------------------------------------------------------------------------
     MatrixInterface<ValueType, N, M>& operator-=(const ValueType scalar)
     {
-        MatrixBase<ValueType>::operatorSubtractEqualsScalar(scalar);
+        MatrixBase<ValueType, ValuePointerType>::operatorSubtractEqualsScalar(
+                                                                        scalar);
 
         return (*this);
     }
 
     // Multiplication operator (scalar)
     //--------------------------------------------------------------------------
-    Matrix<ValueType, N, M, STORAGE_INTERNAL> operator*(const ValueType scalar) const
+    Matrix<ValueType, N, M, STORAGE_INTERNAL> operator*(
+                                                   const ValueType scalar) const
     {
         Matrix<ValueType, N, M, STORAGE_INTERNAL> matrix;
 
-        MatrixBase<ValueType>::operatorMultiplyScalar(matrix, scalar);
+        MatrixBase<ValueType, ValuePointerType>::operatorMultiplyScalar(matrix,
+                                                                        scalar);
 
         return matrix;
     }
 
     // Multiplication operator (N by M)
     //--------------------------------------------------------------------------
-    template <uint32_t M2>
+    template <uint32_t M2, typename ValuePointerType2>
     Matrix<ValueType, N, M2, STORAGE_INTERNAL> operator*(
-                          const MatrixInterface<ValueType, M, M2>& matrix) const
+        const MatrixInterface<ValueType, M, M2, ValuePointerType2>& matrix)
+                                                                           const
     {
         Matrix<ValueType, N, M2, STORAGE_INTERNAL> resultMatrix;
 
-        MatrixBase<ValueType>::operatorMultiplyNByM(matrix, resultMatrix);
+        MatrixBase<ValueType, ValuePointerType>::operatorMultiplyNByM(
+                                                                  matrix,                                                          
+                                                                  resultMatrix);
         
         return resultMatrix;
     }
 
     // Multiplication operator (N by 1)
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
     Matrix<ValueType, N, 1, STORAGE_INTERNAL> operator*(
-                           const MatrixInterface<ValueType, M, 1>& matrix) const
+        const MatrixInterface<ValueType, M, 1, ValuePointerType2>& matrix) const
     {
         Matrix<ValueType, N, 1, STORAGE_INTERNAL> resultMatrix;
 
-        MatrixBase<ValueType>::operatorMultiplyNBy1(matrix, resultMatrix);
+        MatrixBase<ValueType, ValuePointerType>::operatorMultiplyNBy1(
+                                                                  matrix,
+                                                                  resultMatrix);
 
         return resultMatrix;
     }
 
     // Multiplication-equals operator (scalar)
     //--------------------------------------------------------------------------
-    MatrixInterface<ValueType, N, M>& operator*=(const ValueType scalar)
+    MatrixInterface<ValueType, N, M, ValuePointerType>& operator*=(
+                                                         const ValueType scalar)
     {
-        MatrixBase<ValueType>::operatorMultiplyEqualsScalar(scalar);
+        MatrixBase<ValueType, ValuePointerType>::operatorMultiplyEqualsScalar(
+                                                                        scalar);
 
         return (*this);
     }
@@ -313,42 +365,44 @@ public:
     // Public methods
     //--------------------------------------------------------------------------
 
-    using MatrixBase<ValueType>::setValues;
+    using MatrixBase<ValueType, ValuePointerType>::setValues;
 
     //--------------------------------------------------------------------------
     void setValues(const ValueType values[N][M])
     {
-        MatrixBase<ValueType>::setValuesProtected((ValueType*) values);
+        MatrixBase<ValueType, ValuePointerType>::setValuesProtected((
+                                                            ValueType*) values);
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, 1, N, STORAGE_INTERNAL> getRow(const uint32_t row)
+    Matrix<ValueType, 1, N, STORAGE_INTERNAL> getRow(const uint32_t row) const
     {
         Matrix<ValueType, 1, N, STORAGE_INTERNAL> matrix;
 
-        MatrixBase<ValueType>::getRow(matrix, row);
+        MatrixBase<ValueType, ValuePointerType>::getRow(matrix, row);
 
         return matrix;
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, 1, N, STORAGE_INTERNAL> row(const uint32_t row)
+    Matrix<ValueType, 1, N, STORAGE_INTERNAL> row(const uint32_t row) const
     {
         return getRow(row);
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, N, 1, STORAGE_INTERNAL> getColumn(const uint32_t column)
+    Matrix<ValueType, N, 1, STORAGE_INTERNAL> getColumn(
+                                                    const uint32_t column) const
     {
         Matrix<ValueType, N, 1, STORAGE_INTERNAL> matrix;
 
-        MatrixBase<ValueType>::getColumn(matrix, column);
+        MatrixBase<ValueType, ValuePointerType>::getColumn(matrix, column);
 
         return matrix;
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, N, 1, STORAGE_INTERNAL> col(const uint32_t column)
+    Matrix<ValueType, N, 1, STORAGE_INTERNAL> col(const uint32_t column) const
     {
         return getColumn(column);
     }
@@ -358,7 +412,7 @@ public:
     {
         Matrix<ValueType, M, N, STORAGE_INTERNAL> matrix;
 
-        MatrixBase<ValueType>::transpose(matrix);
+        MatrixBase<ValueType, ValuePointerType>::transpose(matrix);
 
         return matrix;
     }
