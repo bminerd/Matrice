@@ -99,16 +99,17 @@ public:
 
     //
     //--------------------------------------------------------------------------
-    ValueType& operator()(const uint32_t row, const uint32_t column)
+    ValueType& operator()(const uint32_t rowIndex, const uint32_t columnIndex)
     {
-        return getValue(row, column);
+        return getValue(rowIndex, columnIndex);
     }
 
     //
     //--------------------------------------------------------------------------
-    const ValueType& operator()(const uint32_t row, const uint32_t column) const
+    const ValueType& operator()(const uint32_t rowIndex,
+                                const uint32_t columnIndex) const
     {
-        return getValue(row, column);
+        return getValue(rowIndex, columnIndex);
     }
 
     //--------------------------------------------------------------------------
@@ -134,13 +135,17 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    ValueType& getValue(const uint32_t row, const uint32_t column)
+    ValueType& getValue(const uint32_t rowIndex, const uint32_t columnIndex)
     {
         ValueType* value = 0;
 
-        if ((row <= myRows) && (column <= myColumns))
+        if ((rowIndex < myRows) && (columnIndex < myColumns))
         {
-            value = &getValueFast(row, column);
+            value = &(getValueFast(rowIndex, columnIndex));
+        }
+        else
+        {
+            // Throw error
         }
 
         return (*value);
@@ -148,62 +153,68 @@ public:
 
     //
     //--------------------------------------------------------------------------
-    const ValuePointerType& getValue(const uint32_t row, const uint32_t column) const
+    const ValuePointerType& getValue(const uint32_t rowIndex,
+                                     const uint32_t columnIndex) const
     {
         const ValuePointerType* value = 0;
 
-        if ((row <= myRows) && (column <= myColumns))
+        if ((rowIndex < myRows) && (columnIndex < myColumns))
         {
-            value = &getValueFast(row, column);
+            value = &(getValueFast(rowIndex, columnIndex));
+        }
+        else
+        {
+            // Throw error
         }
 
         return (*value);
     }
 
     ///
-    /// @brief Gets the value at (row, column) of this matrix.
-    /// @param row Row of value to get.
-    /// @param row Column of value to get.
-    /// @return Reference to the value at (row, column).
+    /// @brief Gets the value at (rowIndex, columnIndex) of this matrix.
+    /// @param rowIndex Row index of value to get.
+    /// @param columnIndex Column index of value to get.
+    /// @return Reference to the value at (rowIndex, columnIndex).
     /// @note This method doesn't perform any index error checking and is meant
     /// for internal use only. The method getValue() should be used instead.
     ///
     //--------------------------------------------------------------------------
-    ValuePointerType& getValueFast(const uint32_t row, const uint32_t column)
+    ValuePointerType& getValueFast(const uint32_t rowIndex,
+                                   const uint32_t columnIndex)
     {
         ValuePointerType (& arrayReference)[myRows][myColumns] =
                      *(ValuePointerType (*)[myRows][myColumns]) myValuesPointer;
 
-        return (arrayReference[row][column]);
+        return (arrayReference[rowIndex][columnIndex]);
     }
 
     ///
-    /// @brief Gets the value at (row, column) of this matrix.
-    /// @param row Row of value to get.
-    /// @param row Column of value to get.
-    /// @return Constant reference to the value at (row, column).
+    /// @brief Gets the value at (rowIndex, columnIndex) of this matrix.
+    /// @param rowIndex Row index of value to get.
+    /// @param columnIndex Column index of value to get.
+    /// @return Constant reference to the value at (rowIndex, columnIndex).
     /// @note This method doesn't perform any index error checking and is meant
     /// for internal use only. The method getValue() should be used instead.
     ///
     //--------------------------------------------------------------------------
-    const ValueType& getValueFast(const uint32_t row,
-                                  const uint32_t column) const
+    const ValueType& getValueFast(const uint32_t rowIndex,
+                                  const uint32_t columnIndex) const
     {
         ValueType (& arrayReference)[myRows][myColumns] =
-                             *(ValueType (*)[myRows][myColumns]) myValuesPointer;
+                            *(ValueType (*)[myRows][myColumns]) myValuesPointer;
 
-        return (arrayReference[row][column]);
+        return (arrayReference[rowIndex][columnIndex]);
     }
 
     //--------------------------------------------------------------------------
-    void setValue(const uint32_t row,
-                  const uint32_t column,
+    void setValue(const uint32_t rowIndex,
+                  const uint32_t columnIndex,
                   const ValueType value)
     {
         ValueType (* arrayPointer)[myColumns] =
                                      (ValueType (*)[myColumns]) myValuesPointer;
 
-        arrayPointer[row][column] = value;
+        arrayPointer[rowIndex][columnIndex] = value;
     }
 
     //--------------------------------------------------------------------------
@@ -1291,9 +1302,9 @@ protected:
 
     //--------------------------------------------------------------------------
     void getRow(MatrixBase<ValueType>& matrix,
-                const uint32_t row) const
+                const uint32_t rowIndex) const
     {
-        const ValuePointerType* myValuePointer = &(getValueFast(row, 0));
+        const ValuePointerType* myValuePointer = &(getValueFast(rowIndex, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
         uint32_t i = myColumns;
@@ -1306,9 +1317,10 @@ protected:
 
     //--------------------------------------------------------------------------
     void getColumn(MatrixBase<ValueType>& matrix,
-                   const uint32_t column) const
+                   const uint32_t columnIndex) const
     {
-        const ValuePointerType* myValuePointer = &(getValueFast(0, column));
+        const ValuePointerType* myValuePointer =
+                                                &(getValueFast(0, columnIndex));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
         uint32_t i = myRows;
