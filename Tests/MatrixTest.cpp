@@ -49,6 +49,7 @@ using Plat4m::UnitTest;
 
 const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
 {
+<<<<<<< HEAD
     &MatrixTest::operatorValueTypeCastTest,
     &MatrixTest::operatorAssignmentTest,
     &MatrixTest::operatorEqualsTest,
@@ -83,6 +84,92 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::submatrixOperatorMultiplyScalarTest,
     &MatrixTest::submatrixOperatorMultiplyTest,
     &MatrixTest::submatrixOperatorMultiplyEqualsScalarTest
+=======
+    &MatrixTest::operatorValueTypeCastInternalTest,
+    &MatrixTest::operatorValueTypeCastExternalTest,
+    &MatrixTest::operatorValueTypeCastConstantTest,
+    &MatrixTest::operatorAssignmentInternalTest,
+    &MatrixTest::operatorAssignmentExternalTest,
+    &MatrixTest::operatorAssignmentConstantTest,
+    &MatrixTest::operatorEqualsInternalTest,
+    &MatrixTest::operatorEqualsExternalTest,
+    &MatrixTest::operatorEqualsConstantTest,
+    &MatrixTest::operatorParenthesesInternalTest,
+    &MatrixTest::operatorParenthesesExternalTest,
+    &MatrixTest::operatorParenthesesConstantTest,
+    &MatrixTest::operatorAddScalarInternalTest,
+    &MatrixTest::operatorAddScalarExternalTest,
+    &MatrixTest::operatorAddScalarConstantTest,
+    &MatrixTest::operatorAddInternalTest,
+    &MatrixTest::operatorAddExternalTest,
+    &MatrixTest::operatorAddConstantTest,
+    &MatrixTest::operatorAddEqualsScalarInternalTest,
+    &MatrixTest::operatorAddEqualsScalarExternalTest,
+    &MatrixTest::operatorUnaryMinusInternalTest,
+    &MatrixTest::operatorUnaryMinusExternalTest,
+    &MatrixTest::operatorUnaryMinusConstantTest,
+    &MatrixTest::operatorSubtractScalarInternalTest,
+    &MatrixTest::operatorSubtractScalarExternalTest,
+    &MatrixTest::operatorSubtractScalarConstantTest,
+    &MatrixTest::operatorSubtractInternalTest,
+    &MatrixTest::operatorSubtractExternalTest,
+    &MatrixTest::operatorSubtractConstantTest,
+    &MatrixTest::operatorSubtractEqualsScalarInternalTest,
+    &MatrixTest::operatorSubtractEqualsScalarExternalTest,
+    &MatrixTest::operatorMultiplyScalarInternalTest,
+    &MatrixTest::operatorMultiplyScalarExternalTest,
+    &MatrixTest::operatorMultiplyScalarConstantTest,
+    &MatrixTest::operatorMultiplyInternalTest,
+    &MatrixTest::operatorMultiplyExternalTest,
+    &MatrixTest::operatorMultiplyConstantTest,
+    &MatrixTest::operatorMultiplyEqualsScalarInternalTest,
+    &MatrixTest::operatorMultiplyEqualsScalarExternalTest,
+    &MatrixTest::getValueInternalTest,
+    &MatrixTest::getValueExternalTest,
+    &MatrixTest::getValueConstantTest,
+    &MatrixTest::getValueInternalTest2,
+    &MatrixTest::getValueExternalTest2,
+    &MatrixTest::setValuesInternalTest,
+    &MatrixTest::setValuesExternalTest,
+    &MatrixTest::getRowInternalTest,
+    &MatrixTest::getRowExternalTest,
+    &MatrixTest::getRowConstantTest,
+    &MatrixTest::getColumnInternalTest,
+    &MatrixTest::getColumnExternalTest,
+    &MatrixTest::getColumnConstantTest,
+    &MatrixTest::transposeInternalTest,
+    &MatrixTest::transposeExternalTest,
+    &MatrixTest::transposeConstantTest,
+    &MatrixTest::magnitudeInternalTest,
+    &MatrixTest::magnitudeExternalTest,
+    &MatrixTest::magnitudeConstantTest,
+    &MatrixTest::crossProduct3by1InternalTest,
+    &MatrixTest::crossProduct3by1ExternalTest,
+    &MatrixTest::crossProduct3by1ConstantTest,
+    &MatrixTest::dotProductInternalTest,
+    &MatrixTest::dotProductExternalTest,
+    &MatrixTest::dotProductConstantTest,
+    &MatrixTest::toCrossProductEquivalentMatrixInternalTest,
+    &MatrixTest::toCrossProductEquivalentMatrixExternalTest,
+    &MatrixTest::toCrossProductEquivalentMatrixConstantTest,
+    &MatrixTest::submatrixOperatorAddScalarExternalTest,
+    &MatrixTest::submatrixOperatorAddScalarConstantTest,
+    &MatrixTest::submatrixOperatorAddExternalTest,
+    &MatrixTest::submatrixOperatorAddConstantTest,
+    &MatrixTest::submatrixOperatorAddEqualsScalarExternalTest,
+    &MatrixTest::submatrixOperatorUnaryMinusExternalTest,
+    &MatrixTest::submatrixOperatorUnaryMinusConstantTest,
+    &MatrixTest::submatrixOperatorSubtractScalarExternalTest,
+    &MatrixTest::submatrixOperatorSubtractScalarConstantTest,
+    &MatrixTest::submatrixOperatorSubtractExternalTest,
+    &MatrixTest::submatrixOperatorSubtractConstantTest,
+    &MatrixTest::submatrixOperatorSubtractEqualsScalarExternalTest,
+    &MatrixTest::submatrixOperatorMultiplyScalarExternalTest,
+    &MatrixTest::submatrixOperatorMultiplyScalarConstantTest,
+    &MatrixTest::submatrixOperatorMultiplyExternalTest,
+    &MatrixTest::submatrixOperatorMultiplyConstantTest,
+    &MatrixTest::submatrixOperatorMultiplyEqualsScalarExternalTest
+>>>>>>> 17: Added acceptance tests for Matrix and Vector to better cover interactions between objects with different storage options.
 };
 
 //------------------------------------------------------------------------------
@@ -111,108 +198,68 @@ MatrixTest::~MatrixTest()
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorValueTypeCastTest()
+bool MatrixTest::operatorValueTypeCastInternalTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[1][3] =
+    const float values[1][1] =
     {
-        { 1.0, 2.0, 3.0 }
+        { 1.0 }
     };
 
-    Matrix<float, 1, 3> matrix1(values1);
-
-    float values2[3][1] =
-    {
-        { 1.0 },
-        { 2.0 },
-        { 3.0 }
-    };
-
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix2(values2);
-
-
-    Matrix<float, 1, 1> matrix3 = matrix1 * matrix2;
+    Matrix<float, 1, 1> matrix(values);
 
     // Test
     
-    float result1 = matrix3;
+    float result = matrix;
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 14.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 1.0f));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorAssignmentTest()
+bool MatrixTest::operatorValueTypeCastExternalTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    float values[1][1] =
     {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
+        { 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix1;
-
-    float values2[3][3] =
-    {
-        { 0.0, 0.0, 0.0 },
-        { 0.0, 0.0, 0.0 },
-        { 0.0, 0.0, 0.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 1, 1, STORAGE_EXTERNAL> matrix(values);
 
     // Test
+    
+    float result = matrix;
 
-    matrix1 = values1;
-    matrix2 = values1;
-    Matrix<float, 3, 3> result1 = matrix1;
-    Matrix<float, 3, 3> result2 = matrix2;
-
-    Matrix<float, 3, 3> result3;
-    Matrix<float, 3, 3> result4;
-
-    result3 = matrix1;
-    result4 = matrix2;
-
-    Matrix<float, 3, 3> expected(values1);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-    bool compare3 = (result3 == expected);
-    bool compare4 = (result4 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 1.0f));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorEqualsTest()
+bool MatrixTest::operatorValueTypeCastConstantTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values[1][1] =
+    {
+        { 1.0 }
+    };
+
+    const Matrix<float, 1, 1, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+    
+    float result = matrix;
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 1.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAssignmentInternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -232,6 +279,220 @@ bool MatrixTest::operatorEqualsTest()
 
     const float values3[3][3] =
     {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix3(values3);
+
+    // Test
+
+    Matrix<float, 3, 3> result1;
+    result1 = matrix1;
+
+    Matrix<float, 3, 3> result2;
+    result2 = matrix2;
+
+    Matrix<float, 3, 3> result3;
+    result3 = matrix3;
+
+    const float expectedValues[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAssignmentExternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    const float values3[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix3(values3);
+
+    // Test
+
+    float resultValues1[3][3];
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> result1(resultValues1);
+    result1 = matrix1;
+
+    float resultValues2[3][3];
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> result2(resultValues2);
+    result2 = matrix2;
+
+    float resultValues3[3][3];
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> result3(resultValues3);
+    result3 = matrix3;
+
+    const float expectedValues[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAssignmentConstantTest()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+
+    const float resultValues[3][3] =
+    {
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_CONSTANT> result(resultValues);
+    result = matrix;
+
+    Matrix<float, 3, 3> expected(values);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAssignmentInternalTest2()
+{
+    // Setup / Operation
+
+    Matrix<float, 3, 3> matrix;
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    // Test
+
+    matrix = values;
+    Matrix<float, 3, 3> result = matrix;
+
+    Matrix<float, 3, 3> expected(values);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAssignmentConstantTest2()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values1);
+
+    const float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    // Test
+
+    matrix = values2;
+    Matrix<float, 3, 3> result = matrix;
+
+    Matrix<float, 3, 3> expected(values2);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorEqualsInternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    const float values3[3][3] =
+    {
         { 1.0, 2.0,  3.0 },
         { 4.0, 5.0,  6.0 },
         { 7.0, 8.0, 10.0 }
@@ -239,95 +500,355 @@ bool MatrixTest::operatorEqualsTest()
 
     Matrix<float, 3, 3> matrix3(values3);
 
+    float values4[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix4(values4);
+
+    float values5[3][3] =
+    {
+        { 1.0, 2.0,  3.0 },
+        { 4.0, 5.0,  6.0 },
+        { 7.0, 8.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix5(values5);
+
+    const float values6[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix6(values6);
+
+    const float values7[3][3] =
+    {
+        { 1.0, 2.0,  3.0 },
+        { 4.0, 5.0,  6.0 },
+        { 7.0, 8.0, 10.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix7(values7);
+
     // Test
 
     bool result1 = matrix1 == matrix2;
     bool result2 = matrix1 == matrix3;
+    bool result3 = matrix1 == matrix4;
+    bool result4 = matrix1 == matrix5;
+    bool result5 = matrix1 == matrix6;
+    bool result6 = matrix1 == matrix7;
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true) &
-                            UNIT_TEST_CASE_EQUAL(result2, false));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true)  &
+                            UNIT_TEST_CASE_EQUAL(result2, false) &
+                            UNIT_TEST_CASE_EQUAL(result3, true)  &
+                            UNIT_TEST_CASE_EQUAL(result4, false) &
+                            UNIT_TEST_CASE_EQUAL(result5, true)  &
+                            UNIT_TEST_CASE_EQUAL(result6, false));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorParenthesesTest()
+bool MatrixTest::operatorEqualsExternalTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
 
-    float values2[3][3] =
+    const float values2[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 3, 3> matrix2(values2);
+
+    const float values3[3][3] =
+    {
+        { 1.0, 2.0,  3.0 },
+        { 4.0, 5.0,  6.0 },
+        { 7.0, 8.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3> matrix3(values3);
+
+    float values4[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix4(values4);
+
+    float values5[3][3] =
+    {
+        { 1.0, 2.0,  3.0 },
+        { 4.0, 5.0,  6.0 },
+        { 7.0, 8.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix5(values5);
+
+    const float values6[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix6(values6);
+
+    const float values7[3][3] =
+    {
+        { 1.0, 2.0,  3.0 },
+        { 4.0, 5.0,  6.0 },
+        { 7.0, 8.0, 10.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix7(values7);
 
     // Test
 
-    matrix1(2, 2) = 10.0;
-    matrix2(2, 2) = 10.0;
+    bool result1 = matrix1 == matrix2;
+    bool result2 = matrix1 == matrix3;
+    bool result3 = matrix1 == matrix4;
+    bool result4 = matrix1 == matrix5;
+    bool result5 = matrix1 == matrix6;
+    bool result6 = matrix1 == matrix7;
 
-    float result1 = matrix1(0, 1);
-    float result2 = matrix2(0, 1);
-    float result3 = matrix1(2, 2);
-    float result4 = matrix2(2, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 2.0f) &
-                            UNIT_TEST_CASE_EQUAL(result2, 2.0f) &
-                            UNIT_TEST_CASE_EQUAL(result3, 10.0f) &
-                            UNIT_TEST_CASE_EQUAL(result4, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true)  &
+                            UNIT_TEST_CASE_EQUAL(result2, false) &
+                            UNIT_TEST_CASE_EQUAL(result3, true)  &
+                            UNIT_TEST_CASE_EQUAL(result4, false) &
+                            UNIT_TEST_CASE_EQUAL(result5, true)  &
+                            UNIT_TEST_CASE_EQUAL(result6, false));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorAddScalarTest()
+bool MatrixTest::operatorEqualsConstantTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
 
-    float values2[3][3] =
+    const float values2[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 3, 3> matrix2(values2);
+
+    const float values3[3][3] =
+    {
+        { 1.0, 2.0,  3.0 },
+        { 4.0, 5.0,  6.0 },
+        { 7.0, 8.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3> matrix3(values3);
+
+    float values4[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix4(values4);
+
+    float values5[3][3] =
+    {
+        { 1.0, 2.0,  3.0 },
+        { 4.0, 5.0,  6.0 },
+        { 7.0, 8.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix5(values5);
+
+    const float values6[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix6(values6);
+
+    const float values7[3][3] =
+    {
+        { 1.0, 2.0,  3.0 },
+        { 4.0, 5.0,  6.0 },
+        { 7.0, 8.0, 10.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix7(values7);
 
     // Test
 
-    Matrix<float, 3, 3> result1 = matrix1 + 1;
-    Matrix<float, 3, 3> result2 = matrix2 + 1;
+    bool result1 = matrix1 == matrix2;
+    bool result2 = matrix1 == matrix3;
+    bool result3 = matrix1 == matrix4;
+    bool result4 = matrix1 == matrix5;
+    bool result5 = matrix1 == matrix6;
+    bool result6 = matrix1 == matrix7;
 
-    static const float expectedValues[3][3] =
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true)  &
+                            UNIT_TEST_CASE_EQUAL(result2, false) &
+                            UNIT_TEST_CASE_EQUAL(result3, true)  &
+                            UNIT_TEST_CASE_EQUAL(result4, false) &
+                            UNIT_TEST_CASE_EQUAL(result5, true)  &
+                            UNIT_TEST_CASE_EQUAL(result6, false));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorParenthesesInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    float result = matrix(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorParenthesesExternalTest()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    float result = matrix(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorParenthesesConstantTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+
+    float result = matrix(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorParenthesesInternalTest2()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    matrix(1, 2) = 10.0;
+    float result = matrix(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorParenthesesExternalTest2()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+        matrix(1, 2) = 10.0;
+    float result = matrix(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAddScalarInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = matrix + 1;
+
+    const float expectedValues[3][3] =
     {
         { 2.0, 3.0,  4.0 },
         { 5.0, 6.0,  7.0 },
@@ -335,572 +856,13 @@ bool MatrixTest::operatorAddScalarTest()
     };
 
     Matrix<float, 3, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
+    const bool compare = (result == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorAddTest()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 9.0, 8.0, 7.0 },
-        { 6.0, 5.0, 4.0 },
-        { 3.0, 2.0, 1.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    Matrix<float, 3, 3> result1 = matrix1 + matrix2;
-    Matrix<float, 3, 3> result2 = matrix2 + matrix1;
-
-    static const float expectedValues[3][3] =
-    {
-        { 10.0, 10.0, 10.0 },
-        { 10.0, 10.0, 10.0 },
-        { 10.0, 10.0, 10.0 }
-    };
-
-    Matrix<float, 3, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::operatorAddEqualsScalarTest()
-{
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    matrix1 += 1;
-    Matrix<float, 3, 3> result1 = matrix1;
-    matrix2 += 1;
-    Matrix<float, 3, 3> result2 = matrix2;
-
-    static const float expectedValues[3][3] =
-    {
-        { 2.0, 3.0,  4.0 },
-        { 5.0, 6.0,  7.0 },
-        { 8.0, 9.0, 10.0 }
-    };
-
-    Matrix<float, 3, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::operatorUnaryMinusTest()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { -1.0, -2.0, -3.0 },
-        { -4.0, -5.0, -6.0 },
-        { -7.0, -8.0, -9.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { -1.0, -2.0, -3.0 },
-        { -4.0, -5.0, -6.0 },
-        { -7.0, -8.0, -9.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    Matrix<float, 3, 3> result1 = - matrix1;
-    Matrix<float, 3, 3> result2 = - matrix2;
-
-    static const float expectedValues[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::operatorSubtractScalarTest()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    Matrix<float, 3, 3> result1 = matrix1 - 1;
-    Matrix<float, 3, 3> result2 = matrix2 - 1;
-
-    static const float expectedValues[3][3] =
-    {
-        { 0.0, 1.0, 2.0 },
-        { 3.0, 4.0, 5.0 },
-        { 6.0, 7.0, 8.0 }
-    };
-
-    Matrix<float, 3, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::operatorSubtractTest()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 9.0, 8.0, 7.0 },
-        { 6.0, 5.0, 4.0 },
-        { 3.0, 2.0, 1.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    Matrix<float, 3, 3> result1 = matrix1 - matrix2;
-    Matrix<float, 3, 3> result2 = matrix2 - matrix1;
-
-    static const float expectedValues1[3][3] =
-    {
-        { -8.0, -6.0, -4.0 },
-        { -2.0,  0.0,  2.0 },
-        {  4.0,  6.0,  8.0 }
-    };
-
-    static const float expectedValues2[3][3] =
-    {
-        {  8.0,  6.0,  4.0 },
-        {  2.0,  0.0, -2.0 },
-        { -4.0, -6.0, -8.0 }
-    };
-
-    Matrix<float, 3, 3> expected1(expectedValues1);
-    Matrix<float, 3, 3> expected2(expectedValues2);
-    bool compare1 = (result1 == expected1);
-    bool compare2 = (result2 == expected2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::operatorSubtractEqualsScalarTest()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    matrix1 -= 1;
-    Matrix<float, 3, 3> result1 = matrix1;
-    matrix2 -= 1;
-    Matrix<float, 3, 3> result2 = matrix2;
-
-    static const float expectedValues[3][3] =
-    {
-        { 0.0, 1.0, 2.0 },
-        { 3.0, 4.0, 5.0 },
-        { 6.0, 7.0, 8.0 }
-    };
-
-    Matrix<float, 3, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiplyScalarTest()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    Matrix<float, 3, 3> result1 = matrix1 * 2;
-    Matrix<float, 3, 3> result2 = matrix2 * 2;
-
-    static const float expectedValues[3][3] =
-    {
-        {  2.0,  4.0,  6.0 },
-        {  8.0, 10.0, 12.0 },
-        { 14.0, 16.0, 18.0 }
-    };
-
-    Matrix<float, 3, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiplyTest()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 9.0, 8.0, 7.0 },
-        { 6.0, 5.0, 4.0 },
-        { 3.0, 2.0, 1.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    Matrix<float, 3, 3> result1 = matrix1 * matrix2;
-    Matrix<float, 3, 3> result2 = matrix2 * matrix1;
-
-    static const float expectedValues1[3][3] =
-    {
-        {  30.0,  24.0, 18.0 },
-        {  84.0,  69.0, 54.0 },
-        { 138.0, 114.0, 90.0 }
-    };
-
-    static const float expectedValues2[3][3] =
-    {
-        { 90.0, 114.0, 138.0 },
-        { 54.0,  69.0,  84.0 },
-        { 18.0,  24.0,  30.0 }
-    };
-
-    Matrix<float, 3, 3> expected1(expectedValues1);
-    Matrix<float, 3, 3> expected2(expectedValues2);
-    bool compare1 = (result1 == expected1);
-    bool compare2 = (result2 == expected2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiplyEqualsScalarTest()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    matrix1 *= 2;
-    Matrix<float, 3, 3> result1 = matrix1;
-    matrix2 *= 2;
-    Matrix<float, 3, 3> result2 = matrix2;
-
-    static const float expectedValues[3][3] =
-    {
-        {  2.0,  4.0,  6.0 },
-        {  8.0, 10.0, 12.0 },
-        { 14.0, 16.0, 18.0 }
-    };
-
-    Matrix<float, 3, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::getValueTest()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    matrix1.getValue(2, 2) = 10.0;
-    matrix2.getValue(2, 2) = 10.0;
-
-    float result1 = matrix1.getValue(0, 1);
-    float result2 = matrix2.getValue(0, 1);
-    float result3 = matrix1.getValue(2, 2);
-    float result4 = matrix2.getValue(2, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 2.0f) &
-                            UNIT_TEST_CASE_EQUAL(result2, 2.0f) &
-                            UNIT_TEST_CASE_EQUAL(result3, 10.0f) &
-                            UNIT_TEST_CASE_EQUAL(result4, 10.0f));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::setValuesTest()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1;
-
-    float values2[3][3] =
-    {
-        { 0.0, 0.0, 0.0 },
-        { 0.0, 0.0, 0.0 },
-        { 0.0, 0.0, 0.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    matrix1.setValues(values1);
-    matrix2.setValues(values1);
-    Matrix<float, 3, 3> result1 = matrix1;
-    Matrix<float, 3, 3> result2 = matrix2;
-
-    static const float expectedValues[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
+<<<<<<< HEAD
 bool MatrixTest::setValuesTest2()
 {
     //
@@ -953,16 +915,76 @@ bool MatrixTest::setValuesTest2()
 
 //------------------------------------------------------------------------------
 bool MatrixTest::getRowTest()
+=======
+bool MatrixTest::operatorAddScalarExternalTest()
+>>>>>>> 17: Added acceptance tests for Matrix and Vector to better cover interactions between objects with different storage options.
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = matrix + 1;
+
+    const float expectedValues[3][3] =
+    {
+        { 2.0, 3.0,  4.0 },
+        { 5.0, 6.0,  7.0 },
+        { 8.0, 9.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAddScalarConstantTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = matrix + 1;
+
+    const float expectedValues[3][3] =
+    {
+        { 2.0, 3.0,  4.0 },
+        { 5.0, 6.0,  7.0 },
+        { 8.0, 9.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAddInternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -971,76 +993,1336 @@ bool MatrixTest::getRowTest()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    float values2[3][3] =
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    Matrix<float, 3, 3> result1 = matrix1 + matrix2;
+    Matrix<float, 3, 3> result2 = matrix1 + matrix3;
+    Matrix<float, 3, 3> result3 = matrix1 + matrix4;
+
+    const float expectedValues[3][3] =
+    {
+        { 10.0, 10.0, 10.0 },
+        { 10.0, 10.0, 10.0 },
+        { 10.0, 10.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAddExternalTest()
+{
+    // Setup / Operation
+
+    float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
 
     // Test
 
-    Matrix<float, 1, 3> result1 = matrix1.getRow(1);
-    Matrix<float, 1, 3> result2 = matrix2.getRow(1);
-    Matrix<float, 1, 3> result3 = matrix1.row(1);
-    Matrix<float, 1, 3> result4 = matrix2.row(1);
+    Matrix<float, 3, 3> result1 = matrix1 + matrix2;
+    Matrix<float, 3, 3> result2 = matrix1 + matrix3;
+    Matrix<float, 3, 3> result3 = matrix1 + matrix4;
 
-    static const float expectedValues[1][3] =
+    const float expectedValues[3][3] =
+    {
+        { 10.0, 10.0, 10.0 },
+        { 10.0, 10.0, 10.0 },
+        { 10.0, 10.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAddConstantTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    Matrix<float, 3, 3> result1 = matrix1 + matrix2;
+    Matrix<float, 3, 3> result2 = matrix1 + matrix3;
+    Matrix<float, 3, 3> result3 = matrix1 + matrix4;
+
+    const float expectedValues[3][3] =
+    {
+        { 10.0, 10.0, 10.0 },
+        { 10.0, 10.0, 10.0 },
+        { 10.0, 10.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAddEqualsScalarInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    matrix += 1;
+    Matrix<float, 3, 3> result = matrix;
+
+    const float expectedValues[3][3] =
+    {
+        { 2.0, 3.0,  4.0 },
+        { 5.0, 6.0,  7.0 },
+        { 8.0, 9.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorAddEqualsScalarExternalTest()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    matrix += 1;
+    Matrix<float, 3, 3> result = matrix;
+
+    const float expectedValues[3][3] =
+    {
+        { 2.0, 3.0,  4.0 },
+        { 5.0, 6.0,  7.0 },
+        { 8.0, 9.0, 10.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorUnaryMinusInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { -1.0, -2.0, -3.0 },
+        { -4.0, -5.0, -6.0 },
+        { -7.0, -8.0, -9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = - matrix;
+
+    const float expectedValues[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorUnaryMinusExternalTest()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { -1.0, -2.0, -3.0 },
+        { -4.0, -5.0, -6.0 },
+        { -7.0, -8.0, -9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = - matrix;
+
+    const float expectedValues[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorUnaryMinusConstantTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { -1.0, -2.0, -3.0 },
+        { -4.0, -5.0, -6.0 },
+        { -7.0, -8.0, -9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = - matrix;
+
+    const float expectedValues[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorSubtractScalarInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = matrix - 1;
+
+    const float expectedValues[3][3] =
+    {
+        { 0.0, 1.0, 2.0 },
+        { 3.0, 4.0, 5.0 },
+        { 6.0, 7.0, 8.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorSubtractScalarExternalTest()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = matrix - 1;
+
+    const float expectedValues[3][3] =
+    {
+        { 0.0, 1.0, 2.0 },
+        { 3.0, 4.0, 5.0 },
+        { 6.0, 7.0, 8.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorSubtractScalarConstantTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = matrix - 1;
+
+    const float expectedValues[3][3] =
+    {
+        { 0.0, 1.0, 2.0 },
+        { 3.0, 4.0, 5.0 },
+        { 6.0, 7.0, 8.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorSubtractInternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    Matrix<float, 3, 3> result1 = matrix1 - matrix2;
+    Matrix<float, 3, 3> result2 = matrix1 - matrix3;
+    Matrix<float, 3, 3> result3 = matrix1 - matrix4;
+
+    const float expectedValues[3][3] =
+    {
+        { -8.0, -6.0, -4.0 },
+        { -2.0,  0.0,  2.0 },
+        {  4.0,  6.0,  8.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorSubtractExternalTest()
+{
+    // Setup / Operation
+
+    float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    Matrix<float, 3, 3> result1 = matrix1 - matrix2;
+    Matrix<float, 3, 3> result2 = matrix1 - matrix3;
+    Matrix<float, 3, 3> result3 = matrix1 - matrix4;
+
+    const float expectedValues[3][3] =
+    {
+        { -8.0, -6.0, -4.0 },
+        { -2.0,  0.0,  2.0 },
+        {  4.0,  6.0,  8.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorSubtractConstantTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    Matrix<float, 3, 3> result1 = matrix1 - matrix2;
+    Matrix<float, 3, 3> result2 = matrix1 - matrix3;
+    Matrix<float, 3, 3> result3 = matrix1 - matrix4;
+
+    const float expectedValues[3][3] =
+    {
+        { -8.0, -6.0, -4.0 },
+        { -2.0,  0.0,  2.0 },
+        {  4.0,  6.0,  8.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorSubtractEqualsScalarInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    matrix -= 1;
+    Matrix<float, 3, 3> result = matrix;
+
+    const float expectedValues[3][3] =
+    {
+        { 0.0, 1.0, 2.0 },
+        { 3.0, 4.0, 5.0 },
+        { 6.0, 7.0, 8.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorSubtractEqualsScalarExternalTest()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    matrix -= 1;
+    Matrix<float, 3, 3> result = matrix;
+
+    const float expectedValues[3][3] =
+    {
+        { 0.0, 1.0, 2.0 },
+        { 3.0, 4.0, 5.0 },
+        { 6.0, 7.0, 8.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyScalarInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = matrix * 2;
+
+    const float expectedValues[3][3] =
+    {
+        {  2.0,  4.0,  6.0 },
+        {  8.0, 10.0, 12.0 },
+        { 14.0, 16.0, 18.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyScalarExternalTest()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = matrix * 2;
+
+    const float expectedValues[3][3] =
+    {
+        {  2.0,  4.0,  6.0 },
+        {  8.0, 10.0, 12.0 },
+        { 14.0, 16.0, 18.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyScalarConstantTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 3> result = matrix * 2;
+
+    const float expectedValues[3][3] =
+    {
+        {  2.0,  4.0,  6.0 },
+        {  8.0, 10.0, 12.0 },
+        { 14.0, 16.0, 18.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyInternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 3, 3> result1 = matrix1 * matrix2;
+    const Matrix<float, 3, 3> result2 = matrix1 * matrix3;
+    const Matrix<float, 3, 3> result3 = matrix1 * matrix4;
+
+    const float expectedValues[3][3] =
+    {
+        {  30.0,  24.0, 18.0 },
+        {  84.0,  69.0, 54.0 },
+        { 138.0, 114.0, 90.0 }
+    };
+
+    const Matrix<float, 3, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyExternalTest()
+{
+    // Setup / Operation
+
+    float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 3, 3> result1 = matrix1 * matrix2;
+    const Matrix<float, 3, 3> result2 = matrix1 * matrix3;
+    const Matrix<float, 3, 3> result3 = matrix1 * matrix4;
+
+    const float expectedValues[3][3] =
+    {
+        {  30.0,  24.0, 18.0 },
+        {  84.0,  69.0, 54.0 },
+        { 138.0, 114.0, 90.0 }
+    };
+
+    const Matrix<float, 3, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyConstantTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 3, 3> result1 = matrix1 * matrix2;
+    const Matrix<float, 3, 3> result2 = matrix1 * matrix3;
+    const Matrix<float, 3, 3> result3 = matrix1 * matrix4;
+
+    const float expectedValues[3][3] =
+    {
+        {  30.0,  24.0, 18.0 },
+        {  84.0,  69.0, 54.0 },
+        { 138.0, 114.0, 90.0 }
+    };
+
+    const Matrix<float, 3, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyEqualsScalarInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    matrix *= 2;
+    Matrix<float, 3, 3> result = matrix;
+
+    const float expectedValues[3][3] =
+    {
+        {  2.0,  4.0,  6.0 },
+        {  8.0, 10.0, 12.0 },
+        { 14.0, 16.0, 18.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyEqualsScalarExternalTest()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    matrix *= 2;
+    Matrix<float, 3, 3> result = matrix;
+
+    const float expectedValues[3][3] =
+    {
+        {  2.0,  4.0,  6.0 },
+        {  8.0, 10.0, 12.0 },
+        { 14.0, 16.0, 18.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getValueInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    float result = matrix.getValue(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getValueExternalTest()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    float result = matrix.getValue(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getValueConstantTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+
+    float result = matrix.getValue(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getValueInternalTest2()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    matrix.getValue(1, 2) = 10.0f;
+    float result = matrix.getValue(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getValueExternalTest2()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    matrix.getValue(1, 2) = 10.0f;
+    float result = matrix.getValue(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::setValuesInternalTest()
+{
+    // Setup / Operation
+
+    Matrix<float, 3, 3> matrix;
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    // Test
+
+    matrix.setValues(values);
+    Matrix<float, 3, 3> result = matrix;
+
+    const float expectedValues[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::setValuesExternalTest()
+{
+    // Setup / Operation
+
+    float values1[3][3] =
+    {
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values1);
+
+    const float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    // Test
+
+    matrix.setValues(values2);
+    Matrix<float, 3, 3> result = matrix;
+
+    const float expectedValues[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getRowInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    Matrix<float, 1, 3> result1 = matrix.getRow(1);
+    Matrix<float, 1, 3> result2 = matrix.row(1);
+
+    const float expectedValues[1][3] =
     {
         { 4.0, 5.0, 6.0 }
     };
 
     Matrix<float, 1, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-    bool compare3 = (result3 == expected);
-    bool compare4 = (result4 == expected);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true));
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::getColumnTest()
+bool MatrixTest::getRowExternalTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    float values[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
-    Matrix<float, 3, 1> result1 = matrix1.getColumn(1);
-    Matrix<float, 3, 1> result2 = matrix2.getColumn(1);
-    Matrix<float, 3, 1> result3 = matrix1.col(1);
-    Matrix<float, 3, 1> result4 = matrix2.col(1);
+    Matrix<float, 1, 3> result1 = matrix.getRow(1);
+    Matrix<float, 1, 3> result2 = matrix.row(1);
 
-    static const float expectedValues[3][1] =
+    const float expectedValues[1][3] =
+    {
+        { 4.0, 5.0, 6.0 }
+    };
+
+    Matrix<float, 1, 3> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getRowConstantTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+
+    Matrix<float, 1, 3> result1 = matrix.getRow(1);
+    Matrix<float, 1, 3> result2 = matrix.row(1);
+
+    const float expectedValues[1][3] =
+    {
+        { 4.0, 5.0, 6.0 }
+    };
+
+    Matrix<float, 1, 3> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getColumnInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 1> result1 = matrix.getColumn(1);
+    Matrix<float, 3, 1> result2 = matrix.col(1);
+
+    const float expectedValues[3][1] =
     {
         { 2.0 },
         { 5.0 },
@@ -1048,52 +2330,100 @@ bool MatrixTest::getColumnTest()
     };
 
     Matrix<float, 3, 1> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-    bool compare3 = (result3 == expected);
-    bool compare4 = (result4 == expected);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true));
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::transposeTest()
+bool MatrixTest::getColumnExternalTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[2][3] =
+    const float values[3][3] =
     {
         { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 }
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 2, 3> matrix1(values1);
-
-    float values2[2][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 }
-    };
-
-    Matrix<float, 2, 3, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 3, 3> matrix(values);
 
     // Test
 
-    Matrix<float, 3, 2> result1 = matrix1.transpose();
-    Matrix<float, 3, 2> result2 = matrix2.transpose();
-    Matrix<float, 3, 2> result3 = matrix1.T();
-    Matrix<float, 3, 2> result4 = matrix2.T();
+    Matrix<float, 3, 1> result1 = matrix.getColumn(1);
+    Matrix<float, 3, 1> result2 = matrix.col(1);
 
-    static const float expectedValues[3][2] =
+    const float expectedValues[3][1] =
+    {
+        { 2.0 },
+        { 5.0 },
+        { 8.0 }
+    };
+
+    Matrix<float, 3, 1> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::getColumnConstantTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 1> result1 = matrix.getColumn(1);
+    Matrix<float, 3, 1> result2 = matrix.col(1);
+
+    const float expectedValues[3][1] =
+    {
+        { 2.0 },
+        { 5.0 },
+        { 8.0 }
+    };
+
+    Matrix<float, 3, 1> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::transposeInternalTest()
+{
+    // Setup / Operation
+
+    const float values[2][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 }
+    };
+
+    Matrix<float, 2, 3> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 2> result1 = matrix.transpose();
+    Matrix<float, 3, 2> result2 = matrix.T();
+
+    const float expectedValues[3][2] =
     {
         { 1.0, 4.0 },
         { 2.0, 5.0 },
@@ -1101,89 +2431,204 @@ bool MatrixTest::transposeTest()
     };
 
     Matrix<float, 3, 2> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-    bool compare3 = (result3 == expected);
-    bool compare4 = (result4 == expected);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true));
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::magnitudeTest()
+bool MatrixTest::transposeExternalTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    float values[2][3] =
     {
         { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
+        { 4.0, 5.0, 6.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 2, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
-    const float result1 = matrix1.magnitude();
-    const float result2 = matrix2.magnitude();
-    const float result3 = matrix1.norm();
-    const float result4 = matrix2.norm();
+    Matrix<float, 3, 2> result1 = matrix.transpose();
+    Matrix<float, 3, 2> result2 = matrix.T();
+
+    const float expectedValues[3][2] =
+    {
+        { 1.0, 4.0 },
+        { 2.0, 5.0 },
+        { 3.0, 6.0 }
+    };
+
+    Matrix<float, 3, 2> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+
+//------------------------------------------------------------------------------
+bool MatrixTest::transposeConstantTest()
+{
+    // Setup / Operation
+
+    const float values[2][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 }
+    };
+
+    const Matrix<float, 2, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+
+    Matrix<float, 3, 2> result1 = matrix.transpose();
+    Matrix<float, 3, 2> result2 = matrix.T();
+
+    const float expectedValues[3][2] =
+    {
+        { 1.0, 4.0 },
+        { 2.0, 5.0 },
+        { 3.0, 6.0 }
+    };
+
+    Matrix<float, 3, 2> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::magnitudeInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    const float result1 = matrix.magnitude();
+    const float result2 = matrix.norm();
 
     const float expected =
                       sqrt(1*1 + 2*2 + 3*3 + 4*4 + 5*5 + 6*6 + 7*7 + 8*8 + 9*9);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
-                            UNIT_TEST_CASE_EQUAL(result2, expected) &
-                            UNIT_TEST_CASE_EQUAL(result3, expected) &
-                            UNIT_TEST_CASE_EQUAL(result4, expected));
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::crossProductTest()
+bool MatrixTest::magnitudeExternalTest()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    const float result1 = matrix.magnitude();
+    const float result2 = matrix.norm();
+
+    const float expected =
+                      sqrt(1*1 + 2*2 + 3*3 + 4*4 + 5*5 + 6*6 + 7*7 + 8*8 + 9*9);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::magnitudeConstantTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+
+    const float result1 = matrix.magnitude();
+    const float result2 = matrix.norm();
+
+    const float expected =
+                      sqrt(1*1 + 2*2 + 3*3 + 4*4 + 5*5 + 6*6 + 7*7 + 8*8 + 9*9);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::crossProduct3by1InternalTest()
 {
     // Setup
 
-    float values3[3][1] =
+    const float values1[3][1] =
     {
         { 1.0 },
         { 2.0 },
         { 3.0 }
     };
 
-    Matrix<float, 3, 1> matrix1(values3);
+    Matrix<float, 3, 1> matrix1(values1);
 
-    float values4[3][1] =
+    const float values2[3][1] =
     {
         { 4.0 },
         { 5.0 },
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix2(values4);
+    Matrix<float, 3, 1> matrix2(values2);
+
+    float values3[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
 
     // Test
 
     Matrix<float, 3, 1> result1 = matrix1.cross(matrix2);
-    Matrix<float, 3, 1> result2 = matrix1.cross(matrix2);
+    Matrix<float, 3, 1> result2 = matrix1.cross(matrix3);
+    Matrix<float, 3, 1> result3 = matrix1.cross(matrix4);
 
     float expectedValues[3][1] =
     {
@@ -1194,52 +2639,147 @@ bool MatrixTest::crossProductTest()
 
     Matrix<float, 3, 1> expected(expectedValues);
 
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::dotProductTest()
+bool MatrixTest::crossProduct3by1ExternalTest()
 {
     // Setup
 
-    const float values1[3][1] =
+    float values1[3][1] =
     {
         { 1.0 },
         { 2.0 },
         { 3.0 }
     };
 
-    Matrix<float, 3, 1> matrix1(values1);
+    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix1(values1);
 
-    float values2[3][1] =
+    const float values2[3][1] =
     {
         { 4.0 },
         { 5.0 },
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 3, 1> matrix2(values2);
+
+    float values3[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
 
     // Test
 
-    float result1 = matrix1.dot(matrix2);
-    float result2 = matrix2.dot(matrix1);
+    Matrix<float, 3, 1> result1 = matrix1.cross(matrix2);
+    Matrix<float, 3, 1> result2 = matrix1.cross(matrix3);
+    Matrix<float, 3, 1> result3 = matrix1.cross(matrix4);
 
-    float expected = 32.0f;
+    float expectedValues[3][1] =
+    {
+        { -3.0 },
+        {  6.0 },
+        { -3.0 }
+    };
 
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
+    Matrix<float, 3, 1> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::toCrossProductEquivalentMatrixTest()
+bool MatrixTest::crossProduct3by1ConstantTest()
+{
+    // Setup
+
+    const float values1[3][1] =
+    {
+        { 1.0 },
+        { 2.0 },
+        { 3.0 }
+    };
+
+    Matrix<float, 3, 1, STORAGE_CONSTANT> matrix1(values1);
+
+    const float values2[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    Matrix<float, 3, 1> matrix2(values2);
+
+    float values3[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    Matrix<float, 3, 1> result1 = matrix1.cross(matrix2);
+    Matrix<float, 3, 1> result2 = matrix1.cross(matrix3);
+    Matrix<float, 3, 1> result3 = matrix1.cross(matrix4);
+
+    float expectedValues[3][1] =
+    {
+        { -3.0 },
+        {  6.0 },
+        { -3.0 }
+    };
+
+    Matrix<float, 3, 1> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::dotProductInternalTest()
 {
     // Setup
 
@@ -1252,23 +2792,186 @@ bool MatrixTest::toCrossProductEquivalentMatrixTest()
 
     Matrix<float, 3, 1> matrix1(values1);
 
-    float values2[3][1] =
+    const float values2[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    Matrix<float, 3, 1> matrix2(values2);
+
+    float values3[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    float result1 = matrix1.dot(matrix2);
+    float result2 = matrix1.dot(matrix3);
+    float result3 = matrix1.dot(matrix4);
+
+    float expected = 32.0f;
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::dotProductExternalTest()
+{
+    // Setup
+
+    float values1[3][1] =
     {
         { 1.0 },
         { 2.0 },
         { 3.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix1(values1);
+
+    const float values2[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    Matrix<float, 3, 1> matrix2(values2);
+
+    float values3[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    float result1 = matrix1.dot(matrix2);
+    float result2 = matrix1.dot(matrix3);
+    float result3 = matrix1.dot(matrix4);
+
+    float expected = 32.0f;
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::dotProductConstantTest()
+{
+    // Setup
+
+    const float values1[3][1] =
+    {
+        { 1.0 },
+        { 2.0 },
+        { 3.0 }
+    };
+
+    Matrix<float, 3, 1, STORAGE_CONSTANT> matrix1(values1);
+
+    const float values2[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    Matrix<float, 3, 1> matrix2(values2);
+
+    float values3[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][1] =
+    {
+        { 4.0 },
+        { 5.0 },
+        { 6.0 }
+    };
+
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    float result1 = matrix1.dot(matrix2);
+    float result2 = matrix1.dot(matrix3);
+    float result3 = matrix1.dot(matrix4);
+
+    float expected = 32.0f;
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::toCrossProductEquivalentMatrixInternalTest()
+{
+    // Setup
+
+    const float values1[3][1] =
+    {
+        { 1.0 },
+        { 2.0 },
+        { 3.0 }
+    };
+
+    Matrix<float, 3, 1> matrix1(values1);
 
     // Test
 
     Matrix<float, 3, 3> result1 = matrix1.toCrossProductEquivalentMatrix();
-    Matrix<float, 3, 3> result2 = matrix2.toCrossProductEquivalentMatrix();
-    Matrix<float, 3, 3> result3 = matrix1.skew();
-    Matrix<float, 3, 3> result4 = matrix2.skew();
+    Matrix<float, 3, 3> result2 = matrix1.skew();
 
-    float expectedValues[3][3] =
+    const float expectedValues[3][3] =
     {
         {  0.0, -3.0,  2.0 },
         {  3.0,  0.0, -1.0 },
@@ -1277,55 +2980,104 @@ bool MatrixTest::toCrossProductEquivalentMatrixTest()
 
     Matrix<float, 3, 3> expected(expectedValues);
 
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-    bool compare3 = (result3 == expected);
-    bool compare4 = (result4 == expected);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true));
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorAddScalarTest()
+bool MatrixTest::toCrossProductEquivalentMatrixExternalTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
+    // Setup
 
-    // Setup / Operation
-
-    static const float values1[3][3] =
+    float values1[3][1] =
     {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
+        { 1.0 },
+        { 2.0 },
+        { 3.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
-
-    float values2[3][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix2, 1, 1);
+    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix1(values1);
 
     // Test
 
-    Matrix<float, 2, 2> result1 = submatrix1 + 1;
-    Matrix<float, 2, 2> result2 = submatrix2 + 1;
+    Matrix<float, 3, 3> result1 = matrix1.toCrossProductEquivalentMatrix();
+    Matrix<float, 3, 3> result2 = matrix1.skew();
 
-    static const float expectedValues[2][2] =
+    const float expectedValues[3][3] =
+    {
+        {  0.0, -3.0,  2.0 },
+        {  3.0,  0.0, -1.0 },
+        { -2.0,  1.0,  0.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::toCrossProductEquivalentMatrixConstantTest()
+{
+    // Setup
+
+    const float values1[3][1] =
+    {
+        { 1.0 },
+        { 2.0 },
+        { 3.0 }
+    };
+
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix1(values1);
+
+    // Test
+
+    Matrix<float, 3, 3> result1 = matrix1.toCrossProductEquivalentMatrix();
+    Matrix<float, 3, 3> result2 = matrix1.skew();
+
+    const float expectedValues[3][3] =
+    {
+        {  0.0, -3.0,  2.0 },
+        {  3.0,  0.0, -1.0 },
+        { -2.0,  1.0,  0.0 }
+    };
+
+    Matrix<float, 3, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorAddScalarExternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+
+    // Test
+
+    Matrix<float, 2, 2> result = submatrix + 1;
+
+    const float expectedValues[2][2] =
     {
         { 6.0,  7.0 },
         { 9.0, 10.0 }
@@ -1333,25 +3085,50 @@ bool MatrixTest::submatrixOperatorAddScalarTest()
 
     Matrix<float, 2, 2> expected(expectedValues);
 
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
+    const bool compare = (result == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorAddTest()
+bool MatrixTest::submatrixOperatorAddScalarConstantTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
+
+    // Test
+
+    Matrix<float, 2, 2> result = submatrix + 1;
+
+    const float expectedValues[2][2] =
+    {
+        { 6.0,  7.0 },
+        { 9.0, 10.0 }
+    };
+
+    Matrix<float, 2, 2> expected(expectedValues);
+
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorAddExternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -1360,24 +3137,23 @@ bool MatrixTest::submatrixOperatorAddTest()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    float values2[3][3] =
+    const float values2[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 3, 3> matrix2(values2);
 
     Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
     Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix2, 1, 1);
 
     // Test
 
-    Matrix<float, 2, 2> result1 = submatrix1 + submatrix2;
-    Matrix<float, 2, 2> result2 = submatrix2 + submatrix1;
+    Matrix<float, 2, 2> result = submatrix1 + submatrix2;
 
-    static const float expectedValues[2][2] =
+    const float expectedValues[2][2] =
     {
         { 10.0, 12.0 },
         { 16.0, 18.0 }
@@ -1385,25 +3161,60 @@ bool MatrixTest::submatrixOperatorAddTest()
 
     Matrix<float, 2, 2> expected(expectedValues);
 
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
+    const bool compare1 = (result == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorAddEqualsScalarTest()
+bool MatrixTest::submatrixOperatorAddConstantTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix2(matrix2, 1, 1);
+
+    // Test
+
+    Matrix<float, 2, 2> result = submatrix1 + submatrix2;
+
+    const float expectedValues[2][2] =
+    {
+        { 10.0, 12.0 },
+        { 16.0, 18.0 }
+    };
+
+    Matrix<float, 2, 2> expected(expectedValues);
+
+    const bool compare1 = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorAddEqualsScalarExternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -1433,13 +3244,13 @@ bool MatrixTest::submatrixOperatorAddEqualsScalarTest()
     Matrix<float, 2, 2> result3 = submatrix2;
     Matrix<float, 3, 3> result4 = matrix2;
 
-    static const float expectedValues1[2][2] =
+    const float expectedValues1[2][2] =
     {
         { 6.0,  7.0 },
         { 9.0, 10.0 }
     };
 
-    static const float expectedValues2[3][3] =
+    const float expectedValues2[3][3] =
     {
         { 1.0, 2.0,  3.0 },
         { 4.0, 6.0,  7.0 },
@@ -1449,10 +3260,10 @@ bool MatrixTest::submatrixOperatorAddEqualsScalarTest()
     Matrix<float, 2, 2> expected1(expectedValues1);
     Matrix<float, 3, 3> expected2(expectedValues2);
 
-    bool compare1 = (result1 == expected1);
-    bool compare2 = (result2 == expected2);
-    bool compare3 = (result3 == expected1);
-    bool compare4 = (result4 == expected2);
+    const bool compare1 = (result1 == expected1);
+    const bool compare2 = (result2 == expected2);
+    const bool compare3 = (result3 == expected1);
+    const bool compare4 = (result4 == expected2);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
                             UNIT_TEST_CASE_EQUAL(compare2, true) &
@@ -1461,17 +3272,11 @@ bool MatrixTest::submatrixOperatorAddEqualsScalarTest()
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorUnaryMinusTest()
+bool MatrixTest::submatrixOperatorUnaryMinusExternalTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -1497,7 +3302,7 @@ bool MatrixTest::submatrixOperatorUnaryMinusTest()
     Matrix<float, 2, 2> result1 = -submatrix1;
     Matrix<float, 2, 2> result2 = -submatrix2;
 
-    static const float expectedValues[2][2] =
+    const float expectedValues[2][2] =
     {
         { -5.0, -6.0 },
         { -8.0, -9.0 }
@@ -1505,25 +3310,65 @@ bool MatrixTest::submatrixOperatorUnaryMinusTest()
 
     Matrix<float, 2, 2> expected(expectedValues);
 
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
                             UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorSubtractScalarTest()
+bool MatrixTest::submatrixOperatorUnaryMinusConstantTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix2(matrix2, 1, 1);
+
+    // Test
+
+    Matrix<float, 2, 2> result1 = -submatrix1;
+    Matrix<float, 2, 2> result2 = -submatrix2;
+
+    const float expectedValues[2][2] =
+    {
+        { -5.0, -6.0 },
+        { -8.0, -9.0 }
+    };
+
+    Matrix<float, 2, 2> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorSubtractScalarExternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -1549,7 +3394,7 @@ bool MatrixTest::submatrixOperatorSubtractScalarTest()
     Matrix<float, 2, 2> result1 = submatrix1 - 1;
     Matrix<float, 2, 2> result2 = submatrix2 - 1;
 
-    static const float expectedValues[2][2] =
+    const float expectedValues[2][2] =
     {
         { 4.0, 5.0 },
         { 7.0, 8.0 }
@@ -1557,25 +3402,65 @@ bool MatrixTest::submatrixOperatorSubtractScalarTest()
 
     Matrix<float, 2, 2> expected(expectedValues);
 
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
                             UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorSubtractTest()
+bool MatrixTest::submatrixOperatorSubtractScalarConstantTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix2(matrix2, 1, 1);
+
+    // Test
+
+    Matrix<float, 2, 2> result1 = submatrix1 - 1;
+    Matrix<float, 2, 2> result2 = submatrix2 - 1;
+
+    const float expectedValues[2][2] =
+    {
+        { 4.0, 5.0 },
+        { 7.0, 8.0 }
+    };
+
+    Matrix<float, 2, 2> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorSubtractExternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -1601,13 +3486,13 @@ bool MatrixTest::submatrixOperatorSubtractTest()
     Matrix<float, 2, 2> result1 = submatrix1 - submatrix2;
     Matrix<float, 2, 2> result2 = submatrix2 - submatrix1;
 
-    static const float expectedValues1[2][2] =
+    const float expectedValues1[2][2] =
     {
         { 0.0, 2.0 },
         { 6.0, 8.0 }
     };
 
-    static const float expectedValues2[2][2] =
+    const float expectedValues2[2][2] =
     {
         {  0.0, -2.0 },
         { -6.0, -8.0 }
@@ -1616,25 +3501,73 @@ bool MatrixTest::submatrixOperatorSubtractTest()
     Matrix<float, 2, 2> expected1(expectedValues1);
     Matrix<float, 2, 2> expected2(expectedValues2);
 
-    bool compare1 = (result1 == expected1);
-    bool compare2 = (result2 == expected2);
+    const bool compare1 = (result1 == expected1);
+    const bool compare2 = (result2 == expected2);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
                             UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorSubtractEqualsScalarTest()
+bool MatrixTest::submatrixOperatorSubtractConstantTest()
 {
-        //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix2(matrix2, 1, 1);
+
+    // Test
+
+    Matrix<float, 2, 2> result1 = submatrix1 - submatrix2;
+    Matrix<float, 2, 2> result2 = submatrix2 - submatrix1;
+
+    const float expectedValues1[2][2] =
+    {
+        { 0.0, 2.0 },
+        { 6.0, 8.0 }
+    };
+
+    const float expectedValues2[2][2] =
+    {
+        {  0.0, -2.0 },
+        { -6.0, -8.0 }
+    };
+
+    Matrix<float, 2, 2> expected1(expectedValues1);
+    Matrix<float, 2, 2> expected2(expectedValues2);
+
+    const bool compare1 = (result1 == expected1);
+    const bool compare2 = (result2 == expected2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorSubtractEqualsScalarExternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -1665,13 +3598,13 @@ bool MatrixTest::submatrixOperatorSubtractEqualsScalarTest()
     Matrix<float, 2, 2> result3 = submatrix2;
     Matrix<float, 3, 3> result4 = matrix2;
 
-    static const float expectedValues1[2][2] =
+    const float expectedValues1[2][2] =
     {
         { 4.0, 5.0 },
         { 7.0, 8.0 }
     };
 
-    static const float expectedValues2[3][3] =
+    const float expectedValues2[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 4.0, 5.0 },
@@ -1680,10 +3613,10 @@ bool MatrixTest::submatrixOperatorSubtractEqualsScalarTest()
 
     Matrix<float, 2, 2> expected1(expectedValues1);
     Matrix<float, 3, 3> expected2(expectedValues2);
-    bool compare1 = (result1 == expected1);
-    bool compare2 = (result2 == expected2);
-    bool compare3 = (result3 == expected1);
-    bool compare4 = (result4 == expected2);
+    const bool compare1 = (result1 == expected1);
+    const bool compare2 = (result2 == expected2);
+    const bool compare3 = (result3 == expected1);
+    const bool compare4 = (result4 == expected2);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
                             UNIT_TEST_CASE_EQUAL(compare2, true) &
@@ -1692,17 +3625,11 @@ bool MatrixTest::submatrixOperatorSubtractEqualsScalarTest()
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorMultiplyScalarTest()
+bool MatrixTest::submatrixOperatorMultiplyScalarExternalTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -1728,7 +3655,7 @@ bool MatrixTest::submatrixOperatorMultiplyScalarTest()
     Matrix<float, 2, 2> result1 = submatrix1 * 2;
     Matrix<float, 2, 2> result2 = submatrix2 * 2;
 
-    static const float expectedValues[2][2] =
+    const float expectedValues[2][2] =
     {
         { 10.0, 12.0 },
         { 16.0, 18.0 }
@@ -1736,25 +3663,65 @@ bool MatrixTest::submatrixOperatorMultiplyScalarTest()
 
     Matrix<float, 2, 2> expected(expectedValues);
 
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
                             UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorMultiplyTest()
+bool MatrixTest::submatrixOperatorMultiplyScalarConstantTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    float values2[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix2(matrix2, 1, 1);
+
+    // Test
+
+    Matrix<float, 2, 2> result1 = submatrix1 * 2;
+    Matrix<float, 2, 2> result2 = submatrix2 * 2;
+
+    const float expectedValues[2][2] =
+    {
+        { 10.0, 12.0 },
+        { 16.0, 18.0 }
+    };
+
+    Matrix<float, 2, 2> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorMultiplyExternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -1772,49 +3739,75 @@ bool MatrixTest::submatrixOperatorMultiplyTest()
 
     Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
 
-    Matrix<float, 3, 2, STORAGE_EXTERNAL> submatrix(matrix1, 0, 1);
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix2, 1, 1);
 
     // Test
 
-    Matrix<float, 3, 2> result1 = matrix2 * submatrix;
-    Matrix<float, 3, 2> result2 = matrix2 * submatrix;
+    Matrix<float, 2, 2> result = submatrix1 * submatrix2;
 
-    static const float expectedValues1[3][2] =
+    const float expectedValues[2][2] =
     {
-        { 114.0, 138.0 },
-        {  69.0,  84.0 },
-        {  24.0,  30.0 }
+        { 37.0,  26.0 },
+        { 58.0,  41.0 }
     };
 
-    static const float expectedValues2[3][3] =
-    {
-        { 1.0, 114.0, 138.0 },
-        { 4.0,  69.0,  84.0 },
-        { 7.0,  24.0,  30.0 }
-    };
+    Matrix<float, 2, 2> expected(expectedValues);
 
-    Matrix<float, 3, 2> expected1(expectedValues1);
-    Matrix<float, 3, 2> expected2(expectedValues1);
+    const bool compare = (result == expected);
 
-    bool compare1 = (result1 == expected1);
-    bool compare2 = (result2 == expected2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorMultiplyEqualsScalarTest()
+bool MatrixTest::submatrixOperatorMultiplyConstantTest()
 {
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix2(matrix2, 1, 1);
+
+    // Test
+
+    Matrix<float, 2, 2> result = submatrix1 * submatrix2;
+
+    const float expectedValues[2][2] =
+    {
+        { 37.0,  26.0 },
+        { 58.0,  41.0 }
+    };
+
+    Matrix<float, 2, 2> expected(expectedValues);
+
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorMultiplyEqualsScalarExternalTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -1845,13 +3838,13 @@ bool MatrixTest::submatrixOperatorMultiplyEqualsScalarTest()
     Matrix<float, 2, 2> result3 = submatrix2;
     Matrix<float, 3, 3> result4 = matrix2;
 
-    static const float expectedValues1[2][2] =
+    const float expectedValues1[2][2] =
     {
         { 10.0, 12.0 },
         { 16.0, 18.0 }
     };
 
-    static const float expectedValues2[3][3] =
+    const float expectedValues2[3][3] =
     {
         { 1.0,  2.0,  3.0 },
         { 4.0, 10.0, 12.0 },
@@ -1861,10 +3854,10 @@ bool MatrixTest::submatrixOperatorMultiplyEqualsScalarTest()
     Matrix<float, 2, 2> expected1(expectedValues1);
     Matrix<float, 3, 3> expected2(expectedValues2);
 
-    bool compare1 = (result1 == expected1);
-    bool compare2 = (result2 == expected2);
-    bool compare3 = (result3 == expected1);
-    bool compare4 = (result4 == expected2);
+    const bool compare1 = (result1 == expected1);
+    const bool compare2 = (result2 == expected2);
+    const bool compare3 = (result3 == expected1);
+    const bool compare4 = (result4 == expected2);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
                             UNIT_TEST_CASE_EQUAL(compare2, true) &

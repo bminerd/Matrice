@@ -91,7 +91,7 @@ bool MatrixVectorTest::matrixTimesVectorStorageInternalTest()
 
     // Setup / Operation
 
-    static const float values1[3][3] =
+    const float values1[3][3] =
     {
         { 1.0, 2.0, 3.0 },
         { 4.0, 5.0, 6.0 },
@@ -100,11 +100,21 @@ bool MatrixVectorTest::matrixTimesVectorStorageInternalTest()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    static const float values2[3] = { 1.0, 2.0, 3.0 };
+    const float values2[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
 
     Vector<float, 3> vector1(values2);
 
-    static const float values3[3] = { 14.0, 32.0,  50.0 };
+    const float values3[3] =
+    {
+        14.0,
+        32.0,
+        50.0
+    };
 
     Vector<float, 3> expected(values3);
 

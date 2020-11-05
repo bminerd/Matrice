@@ -69,73 +69,189 @@ public:
     // Public static methods
     //--------------------------------------------------------------------------
 
-    static bool operatorValueTypeCastTest();
+    static bool operatorValueTypeCastInternalTest();
 
-    static bool operatorAssignmentTest();
+    static bool operatorValueTypeCastExternalTest();
 
-    static bool operatorEqualsTest();
+    static bool operatorValueTypeCastConstantTest();
 
-    static bool operatorParenthesesTest();
+    static bool operatorAssignmentInternalTest();
 
-    static bool operatorAddScalarTest();
+    static bool operatorAssignmentExternalTest();
 
-    static bool operatorAddTest();
+    static bool operatorAssignmentConstantTest();
 
-    static bool operatorAddEqualsScalarTest();
+    static bool operatorAssignmentInternalTest2();
 
-    static bool operatorUnaryMinusTest();
+    static bool operatorAssignmentExternalTest2();
 
-    static bool operatorSubtractScalarTest();
+    static bool operatorAssignmentConstantTest2();
 
-    static bool operatorSubtractTest();
+    static bool operatorEqualsInternalTest();
 
-    static bool operatorSubtractEqualsScalarTest();
+    static bool operatorEqualsExternalTest();
 
-    static bool operatorMultiplyScalarTest();
+    static bool operatorEqualsConstantTest();
 
-    static bool operatorMultiplyTest();
+    static bool operatorParenthesesInternalTest();
 
-    static bool operatorMultiplyEqualsScalarTest();
+    static bool operatorParenthesesExternalTest();
 
-    static bool getValueTest();
+    static bool operatorParenthesesConstantTest();
 
-    static bool setValuesTest();
+    static bool operatorParenthesesInternalTest2();
 
+<<<<<<< HEAD
     static bool setValuesTest2();
 
     static bool getRowTest();
+=======
+    static bool operatorParenthesesExternalTest2();
+>>>>>>> 17: Added acceptance tests for Matrix and Vector to better cover interactions between objects with different storage options.
 
-    static bool getColumnTest();
+    static bool operatorAddScalarInternalTest();
 
-    static bool transposeTest();
+    static bool operatorAddScalarExternalTest();
 
-    static bool magnitudeTest();
+    static bool operatorAddScalarConstantTest();
 
-    static bool crossProductTest();
+    static bool operatorAddInternalTest();
 
-    static bool dotProductTest();
+    static bool operatorAddExternalTest();
 
-    static bool toCrossProductEquivalentMatrixTest();
+    static bool operatorAddConstantTest();
 
-    static bool submatrixOperatorAddScalarTest();
+    static bool operatorAddEqualsScalarInternalTest();
 
-    static bool submatrixOperatorAddTest();
+    static bool operatorAddEqualsScalarExternalTest();
 
-    static bool submatrixOperatorAddEqualsScalarTest();
+    static bool operatorUnaryMinusInternalTest();
 
-    static bool submatrixOperatorUnaryMinusTest();
+    static bool operatorUnaryMinusExternalTest();
 
-    static bool submatrixOperatorSubtractScalarTest();
+    static bool operatorUnaryMinusConstantTest();
 
-    static bool submatrixOperatorSubtractTest();
+    static bool operatorSubtractScalarInternalTest();
 
-    static bool submatrixOperatorSubtractEqualsScalarTest();
+    static bool operatorSubtractScalarExternalTest();
 
-    static bool submatrixOperatorMultiplyScalarTest();
+    static bool operatorSubtractScalarConstantTest();
 
-    static bool submatrixOperatorMultiplyTest();
+    static bool operatorSubtractInternalTest();
 
-    static bool submatrixOperatorMultiplyEqualsScalarTest();
+    static bool operatorSubtractExternalTest();
+
+    static bool operatorSubtractConstantTest();
+
+    static bool operatorSubtractEqualsScalarInternalTest();
+
+    static bool operatorSubtractEqualsScalarExternalTest();
+
+    static bool operatorMultiplyScalarInternalTest();
+
+    static bool operatorMultiplyScalarExternalTest();
+
+    static bool operatorMultiplyScalarConstantTest();
+
+    static bool operatorMultiplyInternalTest();
+
+    static bool operatorMultiplyExternalTest();
+
+    static bool operatorMultiplyConstantTest();
+
+    static bool operatorMultiplyEqualsScalarInternalTest();
+
+    static bool operatorMultiplyEqualsScalarExternalTest();
+
+    static bool getValueInternalTest();
+
+    static bool getValueExternalTest();
+
+    static bool getValueConstantTest();
+
+    static bool getValueInternalTest2();
+
+    static bool getValueExternalTest2();
+
+    static bool setValuesInternalTest();
+
+    static bool setValuesExternalTest();
+
+    static bool getRowInternalTest();
+
+    static bool getRowExternalTest();
+
+    static bool getRowConstantTest();
+
+    static bool getColumnInternalTest();
+
+    static bool getColumnExternalTest();
+
+    static bool getColumnConstantTest();
+
+    static bool transposeInternalTest();
+
+    static bool transposeExternalTest();
+
+    static bool transposeConstantTest();
+
+    static bool magnitudeInternalTest();
+
+    static bool magnitudeExternalTest();
+
+    static bool magnitudeConstantTest();
+
+    static bool crossProduct3by1InternalTest();
+
+    static bool crossProduct3by1ExternalTest();
+
+    static bool crossProduct3by1ConstantTest();
+
+    static bool dotProductInternalTest();
+
+    static bool dotProductExternalTest();
+
+    static bool dotProductConstantTest();
+
+    static bool toCrossProductEquivalentMatrixInternalTest();
+
+    static bool toCrossProductEquivalentMatrixExternalTest();
+
+    static bool toCrossProductEquivalentMatrixConstantTest();
+
+    static bool submatrixOperatorAddScalarExternalTest();
+
+    static bool submatrixOperatorAddScalarConstantTest();
+
+    static bool submatrixOperatorAddExternalTest();
+
+    static bool submatrixOperatorAddConstantTest();
+
+    static bool submatrixOperatorAddEqualsScalarExternalTest();
+
+    static bool submatrixOperatorUnaryMinusExternalTest();
+
+    static bool submatrixOperatorUnaryMinusConstantTest();
+
+    static bool submatrixOperatorSubtractScalarExternalTest();
+
+    static bool submatrixOperatorSubtractScalarConstantTest();
+
+    static bool submatrixOperatorSubtractExternalTest();
+
+    static bool submatrixOperatorSubtractConstantTest();
+
+    static bool submatrixOperatorSubtractEqualsScalarExternalTest();
+
+    static bool submatrixOperatorMultiplyScalarExternalTest();
+
+    static bool submatrixOperatorMultiplyScalarConstantTest();
+
+    static bool submatrixOperatorMultiplyExternalTest();
+
+    static bool submatrixOperatorMultiplyConstantTest();
+
+    static bool submatrixOperatorMultiplyEqualsScalarExternalTest();
 
 private:
 
