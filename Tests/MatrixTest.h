@@ -101,13 +101,7 @@ public:
 
     static bool operatorParenthesesInternalTest2();
 
-<<<<<<< HEAD
-    static bool setValuesTest2();
-
-    static bool getRowTest();
-=======
     static bool operatorParenthesesExternalTest2();
->>>>>>> 17: Added acceptance tests for Matrix and Vector to better cover interactions between objects with different storage options.
 
     static bool operatorAddScalarInternalTest();
 

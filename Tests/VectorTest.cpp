@@ -48,40 +48,6 @@ using Plat4m::UnitTest;
 
 const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
 {
-<<<<<<< HEAD
-    &VectorTest::operatorValueTypeCastTest,
-    &VectorTest::operatorAssignmentTest,
-    &VectorTest::operatorEqualsTest,
-    &VectorTest::operatorParenthesesTest,
-    &VectorTest::operatorAddScalarTest,
-    &VectorTest::operatorAddTest,
-    &VectorTest::operatorAddEqualsScalarTest,
-    &VectorTest::operatorUnaryMinusTest,
-    &VectorTest::operatorSubtractScalarTest,
-    &VectorTest::operatorSubtractTest,
-    &VectorTest::operatorSubtractEqualsScalarTest,
-    &VectorTest::operatorMultiplyScalarTest,
-    &VectorTest::operatorMultiplyTest,
-    &VectorTest::operatorMultiplyEqualsScalarTest,
-    &VectorTest::getValueTest,
-    &VectorTest::setValuesTest,
-    &VectorTest::setValuesTest2,
-    &VectorTest::transposeTest,
-    &VectorTest::magnitudeTest,
-    &VectorTest::crossProductTest,
-    &VectorTest::dotProductTest,
-    &VectorTest::toCrossProductEquivalentMatrixTest,
-    &VectorTest::submatrixOperatorAddScalarTest,
-    &VectorTest::submatrixOperatorAddTest,
-    &VectorTest::submatrixOperatorAddEqualsScalarTest,
-    &VectorTest::submatrixOperatorUnaryMinusTest,
-    &VectorTest::submatrixOperatorSubtractScalarTest,
-    &VectorTest::submatrixOperatorSubtractTest,
-    &VectorTest::submatrixOperatorSubtractEqualsScalarTest,
-    &VectorTest::submatrixOperatorMultiplyScalarTest,
-    &VectorTest::submatrixOperatorMultiplyTest,
-    &VectorTest::submatrixOperatorMultiplyEqualsScalarTest
-=======
     &VectorTest::operatorValueTypeCastInternalTest,
     &VectorTest::operatorValueTypeCastExternalTest,
     &VectorTest::operatorValueTypeCastConstantTest,
@@ -165,7 +131,6 @@ const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
     &VectorTest::submatrixOperatorMultiplyExternalTest,
     &VectorTest::submatrixOperatorMultiplyConstantTest,
     &VectorTest::submatrixOperatorMultiplyEqualsScalarExternalTest
->>>>>>> 17: Added acceptance tests for Matrix and Vector to better cover interactions between objects with different storage options.
 };
 
 //------------------------------------------------------------------------------
@@ -907,62 +872,7 @@ bool VectorTest::operatorParenthesesConstantTest()
 }
 
 //------------------------------------------------------------------------------
-<<<<<<< HEAD
-bool VectorTest::setValuesTest2()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3] =
-    {
-        0.0,
-        0.0,
-        0.0
-    };
-
-    Vector<float, 3> vector1;
-
-    float values2[3] =
-    {
-        0.0,
-        0.0,
-        0.0
-    };
-
-    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
-
-    // Test
-
-    vector1.setValues(1.0f);
-    vector2.setValues(1.0f);
-    Vector<float, 3> result1 = vector1;
-    Vector<float, 3> result2 = vector2;
-
-    static const float expectedValues[3] =
-    {
-        1.0,
-        1.0,
-        1.0
-    };
-
-    Vector<float, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool VectorTest::transposeTest()
-=======
 bool VectorTest::operatorParenthesesInternalTest2()
->>>>>>> 17: Added acceptance tests for Matrix and Vector to better cover interactions between objects with different storage options.
 {
     // Setup / Operation
 

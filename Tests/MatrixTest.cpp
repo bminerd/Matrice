@@ -49,42 +49,6 @@ using Plat4m::UnitTest;
 
 const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
 {
-<<<<<<< HEAD
-    &MatrixTest::operatorValueTypeCastTest,
-    &MatrixTest::operatorAssignmentTest,
-    &MatrixTest::operatorEqualsTest,
-    &MatrixTest::operatorParenthesesTest,
-    &MatrixTest::operatorAddScalarTest,
-    &MatrixTest::operatorAddTest,
-    &MatrixTest::operatorAddEqualsScalarTest,
-    &MatrixTest::operatorUnaryMinusTest,
-    &MatrixTest::operatorSubtractScalarTest,
-    &MatrixTest::operatorSubtractTest,
-    &MatrixTest::operatorSubtractEqualsScalarTest,
-    &MatrixTest::operatorMultiplyScalarTest,
-    &MatrixTest::operatorMultiplyTest,
-    &MatrixTest::operatorMultiplyEqualsScalarTest,
-    &MatrixTest::getValueTest,
-    &MatrixTest::setValuesTest,
-    &MatrixTest::setValuesTest2,
-    &MatrixTest::getRowTest,
-    &MatrixTest::getColumnTest,
-    &MatrixTest::transposeTest,
-    &MatrixTest::magnitudeTest,
-    &MatrixTest::crossProductTest,
-    &MatrixTest::dotProductTest,
-    &MatrixTest::toCrossProductEquivalentMatrixTest,
-    &MatrixTest::submatrixOperatorAddScalarTest,
-    &MatrixTest::submatrixOperatorAddTest,
-    &MatrixTest::submatrixOperatorAddEqualsScalarTest,
-    &MatrixTest::submatrixOperatorUnaryMinusTest,
-    &MatrixTest::submatrixOperatorSubtractScalarTest,
-    &MatrixTest::submatrixOperatorSubtractTest,
-    &MatrixTest::submatrixOperatorSubtractEqualsScalarTest,
-    &MatrixTest::submatrixOperatorMultiplyScalarTest,
-    &MatrixTest::submatrixOperatorMultiplyTest,
-    &MatrixTest::submatrixOperatorMultiplyEqualsScalarTest
-=======
     &MatrixTest::operatorValueTypeCastInternalTest,
     &MatrixTest::operatorValueTypeCastExternalTest,
     &MatrixTest::operatorValueTypeCastConstantTest,
@@ -169,7 +133,6 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::submatrixOperatorMultiplyExternalTest,
     &MatrixTest::submatrixOperatorMultiplyConstantTest,
     &MatrixTest::submatrixOperatorMultiplyEqualsScalarExternalTest
->>>>>>> 17: Added acceptance tests for Matrix and Vector to better cover interactions between objects with different storage options.
 };
 
 //------------------------------------------------------------------------------
@@ -862,62 +825,7 @@ bool MatrixTest::operatorAddScalarInternalTest()
 }
 
 //------------------------------------------------------------------------------
-<<<<<<< HEAD
-bool MatrixTest::setValuesTest2()
-{
-    //
-    // Procedure:
-    //
-    // Test: 
-    //
-
-    // Setup / Operation
-
-    static const float values1[3][3] =
-    {
-        { 0.0, 0.0, 0.0 },
-        { 0.0, 0.0, 0.0 },
-        { 0.0, 0.0, 0.0 }
-    };
-
-    Matrix<float, 3, 3> matrix1;
-
-    float values2[3][3] =
-    {
-        { 0.0, 0.0, 0.0 },
-        { 0.0, 0.0, 0.0 },
-        { 0.0, 0.0, 0.0 }
-    };
-
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
-
-    // Test
-
-    matrix1.setValues(1.0f);
-    matrix2.setValues(1.0f);
-    Matrix<float, 3, 3> result1 = matrix1;
-    Matrix<float, 3, 3> result2 = matrix2;
-
-    static const float expectedValues[3][3] =
-    {
-        { 1.0, 1.0, 1.0 },
-        { 1.0, 1.0, 1.0 },
-        { 1.0, 1.0, 1.0 }
-    };
-
-    Matrix<float, 3, 3> expected(expectedValues);
-    bool compare1 = (result1 == expected);
-    bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::getRowTest()
-=======
 bool MatrixTest::operatorAddScalarExternalTest()
->>>>>>> 17: Added acceptance tests for Matrix and Vector to better cover interactions between objects with different storage options.
 {
     // Setup / Operation
 
