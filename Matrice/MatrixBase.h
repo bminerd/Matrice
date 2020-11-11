@@ -556,6 +556,53 @@ protected:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
+    template <typename ValueType2, typename ValuePointerType2>
+    void operatorTypeCast(
+                        MatrixBase<ValueType2, ValuePointerType2>& matrix) const
+    {
+        const ValuePointerType* myValuePointer = &(getValueFast(0, 0));
+        ValuePointerType2* valuePointer = &(matrix.getValueFast(0, 0));
+
+        int32_t i = myRows * myColumns;
+
+        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        {
+            while (i--)
+            {
+                (*valuePointer++) = (ValueType2) (*myValuePointer++);
+            }
+        }
+        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
+        {
+            while (i--)
+            {
+                (*valuePointer++) = (ValueType2) (*myValuePointer);
+
+                incrementValuePointer(myValuePointer, i);
+            }
+        }
+        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
+        {
+            while (i--)
+            {
+                (*valuePointer) = (ValueType2) (*myValuePointer++);
+
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*valuePointer) = (ValueType2) (*myValuePointer);
+
+                incrementValuePointer(myValuePointer, i);
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------
     template <typename ValuePointerType2>
     bool operatorEquals(
                    const MatrixBase<ValueType, ValuePointerType2>& matrix) const
