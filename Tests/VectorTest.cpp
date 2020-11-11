@@ -51,6 +51,9 @@ const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
     &VectorTest::operatorValueTypeCastInternalTest,
     &VectorTest::operatorValueTypeCastExternalTest,
     &VectorTest::operatorValueTypeCastConstantTest,
+    &VectorTest::operatorValueTypeCastInternalTest2,
+    &VectorTest::operatorValueTypeCastExternalTest2,
+    &VectorTest::operatorValueTypeCastConstantTest2,
     &VectorTest::operatorAssignmentInternalTest,
     &VectorTest::operatorAssignmentExternalTest,
     &VectorTest::operatorAssignmentConstantTest,
@@ -215,6 +218,137 @@ bool VectorTest::operatorValueTypeCastConstantTest()
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 1.0f));
 }
 
+//------------------------------------------------------------------------------
+bool VectorTest::operatorValueTypeCastInternalTest2()
+{
+    // Setup / Operation
+
+    const float values[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3> vector(values);
+
+    // Test
+    
+    Vector<double, 3> result1 = static_cast<Vector<double, 3>>(vector);
+
+    double resultValues[3] =
+    {
+        0.0,
+        0.0,
+        0.0
+    };
+
+    Vector<double, 3, STORAGE_EXTERNAL> result2(resultValues);
+    result2 = static_cast<Vector<double, 3>>(vector);
+
+    const double expectedValues[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<double, 3> expected(expectedValues);
+    
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool VectorTest::operatorValueTypeCastExternalTest2()
+{
+    // Setup / Operation
+
+    float values[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector(values);
+
+    // Test
+    
+    Vector<double, 3> result1 = static_cast<Vector<double, 3>>(vector);
+
+    double resultValues[3] =
+    {
+        0.0,
+        0.0,
+        0.0
+    };
+
+    Vector<double, 3, STORAGE_EXTERNAL> result2(resultValues);
+    result2 = static_cast<Vector<double, 3>>(vector);
+
+    const double expectedValues[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<double, 3> expected(expectedValues);
+    
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool VectorTest::operatorValueTypeCastConstantTest2()
+{
+    // Setup / Operation
+
+    const float values[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<float, 3, STORAGE_CONSTANT> vector(values);
+
+    // Test
+    
+    Vector<double, 3> result1 = static_cast<Vector<double, 3>>(vector);
+
+    double resultValues[3] =
+    {
+        0.0,
+        0.0,
+        0.0
+    };
+
+    Vector<double, 3, STORAGE_EXTERNAL> result2(resultValues);
+    result2 = static_cast<Vector<double, 3>>(vector);
+
+    const double expectedValues[3] =
+    {
+        1.0,
+        2.0,
+        3.0
+    };
+
+    Vector<double, 3> expected(expectedValues);
+    
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
 
 //------------------------------------------------------------------------------
 bool VectorTest::operatorAssignmentInternalTest()

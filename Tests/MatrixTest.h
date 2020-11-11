@@ -75,6 +75,12 @@ public:
 
     static bool operatorValueTypeCastConstantTest();
 
+    static bool operatorValueTypeCastInternalTest2();
+
+    static bool operatorValueTypeCastExternalTest2();
+
+    static bool operatorValueTypeCastConstantTest2();
+
     static bool operatorAssignmentInternalTest();
 
     static bool operatorAssignmentExternalTest();

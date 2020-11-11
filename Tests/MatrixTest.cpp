@@ -52,6 +52,9 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::operatorValueTypeCastInternalTest,
     &MatrixTest::operatorValueTypeCastExternalTest,
     &MatrixTest::operatorValueTypeCastConstantTest,
+    &MatrixTest::operatorValueTypeCastInternalTest2,
+    &MatrixTest::operatorValueTypeCastExternalTest2,
+    &MatrixTest::operatorValueTypeCastConstantTest2,
     &MatrixTest::operatorAssignmentInternalTest,
     &MatrixTest::operatorAssignmentExternalTest,
     &MatrixTest::operatorAssignmentConstantTest,
@@ -215,6 +218,138 @@ bool MatrixTest::operatorValueTypeCastConstantTest()
     float result = matrix;
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 1.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorValueTypeCastInternalTest2()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+    
+    Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(matrix);
+
+    double resultValues[3][3] =
+    {
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 }
+    };
+
+    Matrix<double, 3, 3, STORAGE_EXTERNAL> result2(resultValues);
+    result2 = static_cast<Matrix<double, 3, 3>>(matrix);
+
+    const double expectedValues[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<double, 3, 3> expected(expectedValues);
+    
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorValueTypeCastExternalTest2()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+    
+    Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(matrix);
+
+    double resultValues[3][3] =
+    {
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 }
+    };
+
+    Matrix<double, 3, 3, STORAGE_EXTERNAL> result2(resultValues);
+    result2 = static_cast<Matrix<double, 3, 3>>(matrix);
+
+    const double expectedValues[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<double, 3, 3> expected(expectedValues);
+    
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorValueTypeCastConstantTest2()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    // Test
+    
+    Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(matrix);
+
+    double resultValues[3][3] =
+    {
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 },
+        { 0.0, 0.0, 0.0 }
+    };
+
+    Matrix<double, 3, 3, STORAGE_EXTERNAL> result2(resultValues);
+    result2 = static_cast<Matrix<double, 3, 3>>(matrix);
+
+    const double expectedValues[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<double, 3, 3> expected(expectedValues);
+    
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
 //------------------------------------------------------------------------------
