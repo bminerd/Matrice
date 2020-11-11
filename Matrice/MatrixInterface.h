@@ -55,6 +55,9 @@ namespace Matrice
 template <typename ValueType, uint32_t N, uint32_t M, Storage>
 class Matrix;
 
+template <typename ValueType, uint32_t N, Storage>
+class Vector;
+
 //------------------------------------------------------------------------------
 // Classes
 //------------------------------------------------------------------------------
@@ -80,82 +83,30 @@ class MatrixInterface : public MatrixBase<ValueType, ValuePointerType>
 public:
 
     //--------------------------------------------------------------------------
-    // Public constructors
-    //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
-    MatrixInterface(ValuePointerType storageValues[N][M]) :
-        MatrixBase<ValueType, ValuePointerType>(N, M, (ValuePointerType*) storageValues, 0)
-    {
-    }
-
-    //--------------------------------------------------------------------------
-    MatrixInterface(ValuePointerType storageValues[N][M],
-                    const ValuePointerType initializationValues[N][M]) :
-        MatrixBase<ValueType, ValuePointerType>(N,
-                              M,
-                              (ValuePointerType*) storageValues,
-                              0,
-                              (ValuePointerType*) initializationValues)
-    {
-    }
-    
-    //--------------------------------------------------------------------------
-    template <typename ValuePointerType2>
-    MatrixInterface(
-            ValuePointerType storageValues[N][M],
-            const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) :
-        MatrixBase<ValueType, ValuePointerType>(
-                                               N,                                
-                                               M,
-                                               (ValuePointerType*)storageValues,
-                                               0, matrix)
-    {
-    }
-
-    //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM>
-    MatrixInterface(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
-                    const uint32_t row,
-                    const uint32_t column) :
-        MatrixBase<ValueType, ValuePointerType>(
-                             N,
-                             M,
-                             &(matrix.getValue(row, column)), (ParentM - M) + 1)
-    {
-        if (((row + N + 1) > ParentN) || ((column + M + 1) > ParentM))
-        {
-            // Error, submatrix beyond parent matrix bounds
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    MatrixInterface(
-            const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
-        MatrixBase<ValueType, ValuePointerType>(matrix)
-    {
-    }
-
-    //--------------------------------------------------------------------------
-    template <typename ValuePointerType2>
-    MatrixInterface(
-            const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) :
-        MatrixBase<ValueType, ValuePointerType>(matrix)
-    {
-    }
-
-    //--------------------------------------------------------------------------
-    // Public destructors
-    //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
-    ~MatrixInterface()
-    {
-    }
-
-    //--------------------------------------------------------------------------
     // Public overloaded operators
     //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    template <typename ValueType2>
+    operator Matrix<ValueType2, N, M, STORAGE_INTERNAL>() const
+    {
+        Matrix<ValueType2, N, M, STORAGE_INTERNAL> matrix;
+
+        MatrixBase<ValueType, ValuePointerType>::operatorTypeCast(matrix);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    template <typename ValueType2>
+    operator Vector<ValueType2, N, STORAGE_INTERNAL>() const
+    {
+        Vector<ValueType2, N, STORAGE_INTERNAL> vector;
+
+        MatrixBase<ValueType, ValuePointerType>::operatorTypeCast(vector);
+
+        return vector;
+    }
 
     // Assignment operator
     //--------------------------------------------------------------------------
@@ -421,6 +372,83 @@ public:
     Matrix<ValueType, M, N, STORAGE_INTERNAL> T() const
     {
         return transpose();
+    }
+
+protected:
+
+    //--------------------------------------------------------------------------
+    // Protected constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    MatrixInterface(ValuePointerType storageValues[N][M]) :
+        MatrixBase<ValueType, ValuePointerType>(N, M, (ValuePointerType*) storageValues, 0)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixInterface(ValuePointerType storageValues[N][M],
+                    const ValuePointerType initializationValues[N][M]) :
+        MatrixBase<ValueType, ValuePointerType>(N,
+                              M,
+                              (ValuePointerType*) storageValues,
+                              0,
+                              (ValuePointerType*) initializationValues)
+    {
+    }
+    
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    MatrixInterface(
+            ValuePointerType storageValues[N][M],
+            const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) :
+        MatrixBase<ValueType, ValuePointerType>(
+                                              N,                                
+                                              M,
+                                              (ValuePointerType*) storageValues,
+                                              0,
+                                              matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <uint32_t ParentN, uint32_t ParentM>
+    MatrixInterface(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
+                    const uint32_t row,
+                    const uint32_t column) :
+        MatrixBase<ValueType, ValuePointerType>(
+                             N,
+                             M,
+                             &(matrix.getValue(row, column)), (ParentM - M) + 1)
+    {
+        if (((row + N + 1) > ParentN) || ((column + M + 1) > ParentM))
+        {
+            // Error, submatrix beyond parent matrix bounds
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    MatrixInterface(
+            const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
+        MatrixBase<ValueType, ValuePointerType>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    MatrixInterface(
+            const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) :
+        MatrixBase<ValueType, ValuePointerType>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ~MatrixInterface()
+    {
     }
 };
 
