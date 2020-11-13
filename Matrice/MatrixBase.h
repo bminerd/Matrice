@@ -182,10 +182,10 @@ public:
     ValuePointerType& getValueFast(const uint32_t rowIndex,
                                    const uint32_t columnIndex)
     {
-        ValuePointerType (& arrayReference)[myRows][myColumns] =
-                     *(ValuePointerType (*)[myRows][myColumns]) myValuesPointer;
+        uint32_t valueOffset = 
+                          (rowIndex * (myColumns + myColumnJump)) + columnIndex;
 
-        return (arrayReference[rowIndex][columnIndex]);
+        return (myValuesPointer[valueOffset]);
     }
 
     ///
@@ -200,10 +200,10 @@ public:
     const ValueType& getValueFast(const uint32_t rowIndex,
                                   const uint32_t columnIndex) const
     {
-        ValueType (& arrayReference)[myRows][myColumns] =
-                            *(ValueType (*)[myRows][myColumns]) myValuesPointer;
+        uint32_t valueOffset = 
+                          (rowIndex * (myColumns + myColumnJump)) + columnIndex;
 
-        return (arrayReference[rowIndex][columnIndex]);
+        return (myValuesPointer[valueOffset]);
     }
 
     //--------------------------------------------------------------------------
@@ -462,7 +462,7 @@ public:
     {
         if ((i % myColumns) == 0)
         {
-            valuePointer += myColumnJump;
+            valuePointer += myColumnJump + 1;
         }
         else
         {
@@ -476,7 +476,7 @@ public:
     {
         if ((i % myColumns) == 0)
         {
-            valuePointer += myColumnJump;
+            valuePointer += myColumnJump + 1;
         }
         else
         {
@@ -919,7 +919,6 @@ protected:
                 // the current row of the left matrix
                 //
                 leftPointer = &(getValueFast((i / resultColumns), 0));
-                leftPointer += (i / resultColumns) * (myColumnJump - 1);
 
                 //
                 // Integer modulo i % resultColumns gives the first element in
@@ -942,7 +941,7 @@ protected:
                 {
                     (*resultPointer) += (*leftPointer++) * (*rightPointer);
 
-                    rightPointer += resultColumns + matrix.getColumnJump() - 1;
+                    rightPointer += resultColumns + matrix.getColumnJump();
                 }
 
                 resultPointer++;
@@ -974,7 +973,7 @@ protected:
                 {
                     (*resultPointer) += (*leftPointer++) * (*rightPointer);
 
-                    rightPointer += resultColumns + matrix.getColumnJump() - 1;
+                    rightPointer += resultColumns + matrix.getColumnJump();
                 }
 
                 resultPointer++;
@@ -984,7 +983,6 @@ protected:
                 // the current row of the left matrix
                 //
                 leftPointer = &(getValueFast((i / resultColumns), 0));
-                leftPointer += (i / resultColumns) * (myColumnJump - 1);
 
                 //
                 // Integer modulo i % resultColumns gives the first element in
