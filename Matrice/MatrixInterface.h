@@ -211,6 +211,17 @@ public:
         return (*this);
     }
 
+    // Addition-equals operator
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    MatrixInterface<ValueType, N, M, ValuePointerType>& operator+=(
+              const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix)
+    {
+        MatrixBase<ValueType, ValuePointerType>::operatorAddEquals(matrix);
+
+        return (*this);
+    }
+
     // Unary minus operator
     //--------------------------------------------------------------------------
     Matrix<ValueType, N, M, STORAGE_INTERNAL> operator-() const
@@ -255,6 +266,17 @@ public:
     {
         MatrixBase<ValueType, ValuePointerType>::operatorSubtractEqualsScalar(
                                                                         scalar);
+
+        return (*this);
+    }
+
+    // Subtraction-equals operator
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    MatrixInterface<ValueType, N, M>& operator-=(
+              const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix)
+    {
+        MatrixBase<ValueType, ValuePointerType>::operatorSubtractEquals(matrix);
 
         return (*this);
     }
