@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[BUG FIX]` Fixed getValueFast() calculation for submatrices. [Resolves #24].
 * `[FEATURE]` Added typecast operators for Matrix and Vector that allow conversion between different value types. [Resolves #20].
 * `[BUG FIX]` Fixed bounds checking in MatrixBase::getValue(). [Resolves #19].
 * `[FEATURE]` Added constant memory mapping support to Matrix and Vector classes. Increased acceptance test coverage to include operations between Matrix and Vector objects with different memory mappings. [Resolves #17].
