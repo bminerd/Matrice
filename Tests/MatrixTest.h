@@ -253,6 +253,10 @@ public:
 
     static bool submatrixOperatorMultiplyEqualsScalarExternalTest();
 
+    static bool submatrixGetValueExternalTest();
+
+    static bool submatrixGetValueConstantTest();
+
 private:
 
     //--------------------------------------------------------------------------

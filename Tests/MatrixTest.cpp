@@ -135,7 +135,9 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::submatrixOperatorMultiplyScalarConstantTest,
     &MatrixTest::submatrixOperatorMultiplyExternalTest,
     &MatrixTest::submatrixOperatorMultiplyConstantTest,
-    &MatrixTest::submatrixOperatorMultiplyEqualsScalarExternalTest
+    &MatrixTest::submatrixOperatorMultiplyEqualsScalarExternalTest,
+    &MatrixTest::submatrixGetValueExternalTest,
+    &MatrixTest::submatrixGetValueConstantTest
 };
 
 //------------------------------------------------------------------------------
@@ -3906,4 +3908,62 @@ bool MatrixTest::submatrixOperatorMultiplyEqualsScalarExternalTest()
                             UNIT_TEST_CASE_EQUAL(compare2, true) &
                             UNIT_TEST_CASE_EQUAL(compare3, true) &
                             UNIT_TEST_CASE_EQUAL(compare4, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixGetValueExternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+
+    // Test
+
+    const float result1 = submatrix.getValue(0, 0);
+    const float result2 = submatrix.getValue(0, 1);
+    const float result3 = submatrix.getValue(1, 0);
+    const float result4 = submatrix.getValue(1, 1);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 5.0f) &
+                            UNIT_TEST_CASE_EQUAL(result2, 6.0f) &
+                            UNIT_TEST_CASE_EQUAL(result3, 8.0f) &
+                            UNIT_TEST_CASE_EQUAL(result4, 9.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixGetValueConstantTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
+
+    // Test
+
+    const float result1 = submatrix.getValue(0, 0);
+    const float result2 = submatrix.getValue(0, 1);
+    const float result3 = submatrix.getValue(1, 0);
+    const float result4 = submatrix.getValue(1, 1);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 5.0f) &
+                            UNIT_TEST_CASE_EQUAL(result2, 6.0f) &
+                            UNIT_TEST_CASE_EQUAL(result3, 8.0f) &
+                            UNIT_TEST_CASE_EQUAL(result4, 9.0f));
 }

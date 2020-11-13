@@ -133,7 +133,9 @@ const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
     &VectorTest::submatrixOperatorMultiplyScalarConstantTest,
     &VectorTest::submatrixOperatorMultiplyExternalTest,
     &VectorTest::submatrixOperatorMultiplyConstantTest,
-    &VectorTest::submatrixOperatorMultiplyEqualsScalarExternalTest
+    &VectorTest::submatrixOperatorMultiplyEqualsScalarExternalTest,
+    &VectorTest::submatrixGetValueExternalTest,
+    &VectorTest::submatrixGetValueConstantTest
 };
 
 //------------------------------------------------------------------------------
@@ -3837,4 +3839,54 @@ bool VectorTest::submatrixOperatorMultiplyEqualsScalarExternalTest()
                             UNIT_TEST_CASE_EQUAL(compare2, true) &
                             UNIT_TEST_CASE_EQUAL(compare3, true) &
                             UNIT_TEST_CASE_EQUAL(compare4, true));
+}
+
+//------------------------------------------------------------------------------
+bool VectorTest::submatrixGetValueExternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    Vector<float, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+
+    // Test
+
+    const float result1 = submatrix.getValue(0);
+    const float result2 = submatrix.getValue(1);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 5.0f) &
+                            UNIT_TEST_CASE_EQUAL(result2, 8.0f));
+}
+
+//------------------------------------------------------------------------------
+bool VectorTest::submatrixGetValueConstantTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    const Vector<float, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
+
+    // Test
+
+    const float result1 = submatrix.getValue(0);
+    const float result2 = submatrix.getValue(1);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 5.0f) &
+                            UNIT_TEST_CASE_EQUAL(result2, 8.0f));
 }
