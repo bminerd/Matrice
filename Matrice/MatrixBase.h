@@ -1150,6 +1150,54 @@ protected:
         }
     }
 
+    // Addition-equals operator
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    void operatorAddEquals(
+                         const MatrixBase<ValueType, ValuePointerType2>& matrix)
+    {
+        ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
+        const ValueType* valuePointer = &(matrix.getValueFast(0, 0));
+
+        uint32_t i = myRows * myColumns;
+
+        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        {
+            while (i--)
+            {
+                (*thisValuePointer++) += (*valuePointer++);
+            }
+        }
+        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
+        {
+            while (i--)
+            {
+                (*thisValuePointer) += (*valuePointer++);
+            
+                incrementValuePointer(thisValuePointer, i);
+            }
+        }
+        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
+        {
+            while (i--)
+            {
+                (*thisValuePointer++) += (*valuePointer);
+                
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*thisValuePointer) += (*valuePointer);
+                
+                incrementValuePointer(thisValuePointer, i);
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+    }
+
     // Subtraction operator (scalar)
     //--------------------------------------------------------------------------
     void operatorSubtractScalar(MatrixBase<ValueType>& matrix,
@@ -1200,6 +1248,54 @@ protected:
                 (*thisValuePointer) -= scalar;
 
                 incrementValuePointer(thisValuePointer, i);
+            }
+        }
+    }
+
+    // Subtract-equals operator
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    void operatorSubtractEquals(
+                         const MatrixBase<ValueType, ValuePointerType2>& matrix)
+    {
+        ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
+        const ValueType* valuePointer = &(matrix.getValueFast(0, 0));
+
+        uint32_t i = myRows * myColumns;
+
+        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        {
+            while (i--)
+            {
+                (*thisValuePointer++) -= (*valuePointer++);
+            }
+        }
+        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
+        {
+            while (i--)
+            {
+                (*thisValuePointer) -= (*valuePointer++);
+            
+                incrementValuePointer(thisValuePointer, i);
+            }
+        }
+        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
+        {
+            while (i--)
+            {
+                (*thisValuePointer++) -= (*valuePointer);
+                
+                matrix.incrementValuePointer(valuePointer, i);
+            }
+        }
+        else
+        {
+            while (i--)
+            {
+                (*thisValuePointer) -= (*valuePointer);
+                
+                incrementValuePointer(thisValuePointer, i);
+                matrix.incrementValuePointer(valuePointer, i);
             }
         }
     }
@@ -1257,7 +1353,7 @@ protected:
             }
         }
     }
-
+    
     //--------------------------------------------------------------------------
     void setValuesPointerProtected(ValuePointerType* values)
     {
