@@ -125,6 +125,10 @@ public:
 
     static bool operatorAddEqualsScalarExternalTest();
 
+    static bool operatorAddEqualsInternalTest();
+
+    static bool operatorAddEqualsExternalTest();
+
     static bool operatorUnaryMinusInternalTest();
 
     static bool operatorUnaryMinusExternalTest();
@@ -146,6 +150,10 @@ public:
     static bool operatorSubtractEqualsScalarInternalTest();
 
     static bool operatorSubtractEqualsScalarExternalTest();
+
+    static bool operatorSubtractEqualsInternalTest();
+
+    static bool operatorSubtractEqualsExternalTest();
 
     static bool operatorMultiplyScalarInternalTest();
 
@@ -221,6 +229,8 @@ public:
 
     static bool submatrixOperatorAddEqualsScalarExternalTest();
 
+    static bool submatrixOperatorAddEqualsExternalTest();
+
     static bool submatrixOperatorUnaryMinusExternalTest();
 
     static bool submatrixOperatorUnaryMinusConstantTest();
@@ -234,6 +244,8 @@ public:
     static bool submatrixOperatorSubtractConstantTest();
 
     static bool submatrixOperatorSubtractEqualsScalarExternalTest();
+
+    static bool submatrixOperatorSubtractEqualsExternalTest();
 
     static bool submatrixOperatorMultiplyScalarExternalTest();
 
