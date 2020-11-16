@@ -211,10 +211,10 @@ public:
                   const uint32_t columnIndex,
                   const ValueType value)
     {
-        ValueType (* arrayPointer)[myColumns] =
-                                     (ValueType (*)[myColumns]) myValuesPointer;
+        uint32_t valueOffset = 
+                          (rowIndex * (myColumns + myColumnJump)) + columnIndex;
 
-        arrayPointer[rowIndex][columnIndex] = value;
+        myValuesPointer[valueOffset] = value;
     }
 
     //--------------------------------------------------------------------------
