@@ -151,13 +151,15 @@ public:
     //--------------------------------------------------------------------------
     ValueType& operator()(const uint32_t row, const uint32_t column)
     {
-        return MatrixBase<ValueType, ValuePointerType>::getValue(row, column);
+        return MatrixBase<ValueType, ValuePointerType>::getValueFast(row,
+                                                                     column);
     }
 
     //--------------------------------------------------------------------------
     const ValueType& operator()(const uint32_t row, const uint32_t column) const
     {
-        return MatrixBase<ValueType, ValuePointerType>::getValue(row, column);
+        return MatrixBase<ValueType, ValuePointerType>::getValueFast(row,
+                                                                     column);
     }
 
     // Unary plus operator
