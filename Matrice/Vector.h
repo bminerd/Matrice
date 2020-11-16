@@ -192,6 +192,12 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    void setValue(const uint32_t row, const ValueType value)
+    {
+        return MatrixBase<ValueType>::setValue(row, 0, value);
+    }
+
+    //--------------------------------------------------------------------------
     void setValues(const ValueType values[N])
     {
         MatrixBase<ValueType>::setValuesProtected(values);
@@ -327,6 +333,12 @@ public:
     const ValueType& getValue(const uint32_t row) const
     {
         return MatrixBase<ValueType>::getValue(row, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    void setValue(const uint32_t row, const ValueType value)
+    {
+        return MatrixBase<ValueType>::setValue(row, 0, value);
     }
 
     //--------------------------------------------------------------------------
