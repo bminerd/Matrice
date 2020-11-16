@@ -173,6 +173,10 @@ public:
 
     static bool getValueExternalTest2();
 
+    static bool setValueInternalTest();
+
+    static bool setValueExternalTest();
+
     static bool setValuesInternalTest();
 
     static bool setValuesExternalTest();
@@ -244,6 +248,8 @@ public:
     static bool submatrixGetValueExternalTest();
 
     static bool submatrixGetValueConstantTest();
+
+    static bool submatrixSetValueExternalTest();
 
 private:
 

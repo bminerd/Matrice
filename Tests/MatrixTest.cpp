@@ -96,6 +96,8 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::getValueConstantTest,
     &MatrixTest::getValueInternalTest2,
     &MatrixTest::getValueExternalTest2,
+    &MatrixTest::setValueInternalTest,
+    &MatrixTest::setValueExternalTest,
     &MatrixTest::setValuesInternalTest,
     &MatrixTest::setValuesExternalTest,
     &MatrixTest::getRowInternalTest,
@@ -137,7 +139,8 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::submatrixOperatorMultiplyConstantTest,
     &MatrixTest::submatrixOperatorMultiplyEqualsScalarExternalTest,
     &MatrixTest::submatrixGetValueExternalTest,
-    &MatrixTest::submatrixGetValueConstantTest
+    &MatrixTest::submatrixGetValueConstantTest,
+    &MatrixTest::submatrixSetValueExternalTest
 };
 
 //------------------------------------------------------------------------------
@@ -2182,6 +2185,52 @@ bool MatrixTest::getValueExternalTest2()
 }
 
 //------------------------------------------------------------------------------
+bool MatrixTest::setValueInternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    // Test
+
+    matrix.setValue(1, 2, 10.0f);
+
+    const float result = matrix.getValue(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::setValueExternalTest()
+{
+    // Setup / Operation
+
+    float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    // Test
+
+    matrix.setValue(1, 2, 10.0f);
+
+    const float result = matrix.getValue(1, 2);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+}
+
+//------------------------------------------------------------------------------
 bool MatrixTest::setValuesInternalTest()
 {
     // Setup / Operation
@@ -3966,4 +4015,29 @@ bool MatrixTest::submatrixGetValueConstantTest()
                             UNIT_TEST_CASE_EQUAL(result2, 6.0f) &
                             UNIT_TEST_CASE_EQUAL(result3, 8.0f) &
                             UNIT_TEST_CASE_EQUAL(result4, 9.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixSetValueExternalTest()
+{
+    // Setup / Operation
+
+    const float values[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+
+    // Test
+
+    submatrix.setValue(1, 0, 10.0f);
+
+    const float result = submatrix.getValue(1, 0);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
 }
