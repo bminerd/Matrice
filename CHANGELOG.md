@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[BUG FIX]` Fixed setValue() calculation for submatrices. Added setValue() to Vector. [Resolves #28].
 * `[FEATURE]` Changed MatrixInterface::operator() to call MatrixBase::getValueFast(). [Resolves #29].
 * `[BUG FIX]` Fixed getValueFast() calculation for submatrices. [Resolves #24].
 * `[FEATURE]` Added typecast operators for Matrix and Vector that allow conversion between different value types. [Resolves #20].
