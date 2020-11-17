@@ -251,6 +251,8 @@ public:
 
     static bool submatrixSetValueExternalTest();
 
+    static bool nestedSubmatrixOperatorEquals();
+
 private:
 
     //--------------------------------------------------------------------------

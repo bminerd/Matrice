@@ -138,7 +138,8 @@ const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
     &VectorTest::submatrixOperatorMultiplyEqualsScalarExternalTest,
     &VectorTest::submatrixGetValueExternalTest,
     &VectorTest::submatrixGetValueConstantTest,
-    &VectorTest::submatrixSetValueExternalTest
+    &VectorTest::submatrixSetValueExternalTest,
+    &VectorTest::nestedSubmatrixOperatorEquals
 };
 
 //------------------------------------------------------------------------------
@@ -3963,4 +3964,39 @@ bool VectorTest::submatrixSetValueExternalTest()
     const float result = submatrix.getValue(1);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+}
+
+//------------------------------------------------------------------------------
+bool VectorTest::nestedSubmatrixOperatorEquals()
+{
+    // Setup / Operation
+
+    const float values[5][5] =
+    {
+        { 1.0, 2.0, 3.0, 4.0, 5.0 },
+        { 6.0, 7.0, 8.0, 9.0, 8.0 },
+        { 7.0, 6.0, 5.0, 4.0, 3.0 },
+        { 2.0, 1.0, 2.0, 3.0, 4.0 },
+        { 5.0, 6.0, 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 5, 5> matrix(values);
+
+    Matrix<float, 4, 4, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+
+    Vector<float, 2, STORAGE_EXTERNAL> nestedSubmatrix(submatrix, 1, 1);
+
+    // Test
+    
+    const float expectedValues[2] =
+    {
+        5.0,
+        2.0
+    };
+
+    Vector<float, 2> expected(expectedValues);
+
+    const bool compare = nestedSubmatrix == expected;
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
 }
