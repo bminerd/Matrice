@@ -423,9 +423,10 @@ protected:
                     const uint32_t row,
                     const uint32_t column) :
         MatrixBase<ValueType, ValuePointerType>(
-                                 N,
-                                 M,
-                                 &(matrix.getValue(row, column)), (ParentM - M))
+                                         N,
+                                         M,
+                                         &(matrix.getValue(row, column)),
+                                         matrix.getColumnJump() + (ParentM - M))
     {
         if (((row + N + 1) > ParentN) || ((column + M + 1) > ParentM))
         {
