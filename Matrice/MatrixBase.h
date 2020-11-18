@@ -850,7 +850,7 @@ protected:
     //
     //--------------------------------------------------------------------------
     template <typename ValuePointerType2>
-    void operatorMultiplyNByM(
+    void operatorMultiplyMByM2(
                          const MatrixBase<ValueType, ValuePointerType2>& matrix,
                          MatrixBase<ValueType>& resultMatrix) const
     {
@@ -995,7 +995,7 @@ protected:
 
     //--------------------------------------------------------------------------
     template <typename ValuePointerType2>
-    void operatorMultiplyNBy1(
+    void operatorMultiplyMBy1(
                          const MatrixBase<ValueType, ValuePointerType2>& matrix,
                          MatrixBase<ValueType>& resultMatrix) const
     {
@@ -1003,7 +1003,7 @@ protected:
         const ValuePointerType2* rightPointer = &(matrix.getValueFast(0, 0));
         ValueType* resultPointer = &(resultMatrix.getValueFast(0, 0));
 
-        uint32_t i = myColumns;
+        uint32_t i = myRows;
 
         if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
         {
