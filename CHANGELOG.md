@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[FEATURE]` Added constructor to Vector for subvectors. [Resolves #26].
 * `[BUG FIX]` Fixed submatrix column jump calculation to include parent matrix column jump. [Resolves #27].
 * `[BUG FIX]` Fixed setValue() calculation for submatrices. Added setValue() to Vector. [Resolves #28].
 * `[FEATURE]` Changed MatrixInterface::operator() to call MatrixBase::getValueFast(). [Resolves #29].
