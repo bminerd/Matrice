@@ -242,6 +242,14 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    template <uint32_t ParentN, Storage StorageOption2>
+    Vector(Vector<ValueType, ParentN, StorageOption2>& vector,
+           const uint32_t row) :
+        Matrix<ValueType, N, 1, STORAGE_EXTERNAL>(vector, row, 0)
+    {
+    }
+
+    //--------------------------------------------------------------------------
     Vector(const MatrixInterface<ValueType, N, 1>& matrix) :
         Matrix<ValueType, N, 1, STORAGE_EXTERNAL>(matrix)
     {
@@ -383,6 +391,14 @@ public:
            const uint32_t row,
            const uint32_t column) :
         Matrix<ValueType, N, 1, STORAGE_CONSTANT>(matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <uint32_t ParentN, Storage StorageOption2>
+    Vector(Vector<ValueType, ParentN, StorageOption2>& vector,
+           const uint32_t row) :
+        Matrix<ValueType, N, 1, STORAGE_CONSTANT>(vector, row, 0)
     {
     }
 
