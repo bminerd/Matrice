@@ -253,6 +253,8 @@ public:
 
     static bool nestedSubmatrixOperatorEquals();
 
+    static bool subvectorOperatorEquals();
+
 private:
 
     //--------------------------------------------------------------------------
