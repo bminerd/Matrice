@@ -272,7 +272,7 @@ public:
         return matrix;
     }
 
-    // Multiplication operator (N by M)
+    // Multiplication operator (this * M by M2)
     //--------------------------------------------------------------------------
     template <uint32_t M2, typename ValuePointerType2>
     Matrix<ValueType, N, M2, STORAGE_INTERNAL> operator*(
@@ -281,14 +281,14 @@ public:
     {
         Matrix<ValueType, N, M2, STORAGE_INTERNAL> resultMatrix;
 
-        MatrixBase<ValueType, ValuePointerType>::operatorMultiplyNByM(
+        MatrixBase<ValueType, ValuePointerType>::operatorMultiplyMByM2(
                                                                   matrix,                                                          
                                                                   resultMatrix);
         
         return resultMatrix;
     }
 
-    // Multiplication operator (N by 1)
+    // Multiplication operator (this * M by 1)
     //--------------------------------------------------------------------------
     template <typename ValuePointerType2>
     Matrix<ValueType, N, 1, STORAGE_INTERNAL> operator*(
@@ -296,7 +296,7 @@ public:
     {
         Matrix<ValueType, N, 1, STORAGE_INTERNAL> resultMatrix;
 
-        MatrixBase<ValueType, ValuePointerType>::operatorMultiplyNBy1(
+        MatrixBase<ValueType, ValuePointerType>::operatorMultiplyMBy1(
                                                                   matrix,
                                                                   resultMatrix);
 
