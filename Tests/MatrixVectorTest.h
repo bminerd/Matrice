@@ -73,6 +73,12 @@ public:
 
     static bool matrixTimesVectorStorageExternalTest();
 
+    static bool matrix4By5TimesVectorStorageInternalTest();
+
+    static bool matrix4By5TimesVectorStorageExternalTest();
+
+    static bool matrix4By5TimesVectorStorageConstantTest();
+
 private:
 
     //--------------------------------------------------------------------------

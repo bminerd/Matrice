@@ -52,7 +52,10 @@ const UnitTest::TestCallbackFunction
     MatrixVectorTest::myTestCallbackFunctions[] =
 {
     &MatrixVectorTest::matrixTimesVectorStorageInternalTest,
-    &MatrixVectorTest::matrixTimesVectorStorageExternalTest
+    &MatrixVectorTest::matrixTimesVectorStorageExternalTest,
+    &MatrixVectorTest::matrix4By5TimesVectorStorageInternalTest,
+    &MatrixVectorTest::matrix4By5TimesVectorStorageExternalTest,
+    &MatrixVectorTest::matrix4By5TimesVectorStorageConstantTest
 };
 
 //------------------------------------------------------------------------------
@@ -183,4 +186,139 @@ bool MatrixVectorTest::matrixTimesVectorStorageExternalTest()
     bool result1 = (actual == expected);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixVectorTest::matrix4By5TimesVectorStorageInternalTest()
+{
+    // Setup / Operation
+
+    const float values1[4][5] =
+    {
+        {  1.0,  2.0,  3.0,  4.0,  5.0 },
+        {  6.0,  7.0,  8.0,  9.0, 10.0 },
+        { 11.0, 12.0, 13.0, 14.0, 15.0 },
+        { 16.0, 17.0, 18.0, 19.0, 20.0 }
+    };
+
+    Matrix<float, 4, 5> matrix1(values1);
+
+    const float values2[5] =
+    {
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0
+    };
+
+    Vector<float, 5> vector1(values2);
+
+    const float values3[4] =
+    {
+         55.0,
+        130.0,
+        205.0,
+        280.0
+    };
+
+    Vector<float, 4> expected(values3);
+
+    // Test
+
+    Vector<float, 4> result = matrix1 * vector1;
+
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixVectorTest::matrix4By5TimesVectorStorageExternalTest()
+{
+    // Setup / Operation
+
+    float values1[4][5] =
+    {
+        {  1.0,  2.0,  3.0,  4.0,  5.0 },
+        {  6.0,  7.0,  8.0,  9.0, 10.0 },
+        { 11.0, 12.0, 13.0, 14.0, 15.0 },
+        { 16.0, 17.0, 18.0, 19.0, 20.0 }
+    };
+
+    Matrix<float, 4, 5, STORAGE_EXTERNAL> matrix1(values1);
+
+    const float values2[5] =
+    {
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0
+    };
+
+    Vector<float, 5> vector1(values2);
+
+    const float values3[4] =
+    {
+         55.0,
+        130.0,
+        205.0,
+        280.0
+    };
+
+    Vector<float, 4> expected(values3);
+
+    // Test
+
+    Vector<float, 4> result = matrix1 * vector1;
+
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixVectorTest::matrix4By5TimesVectorStorageConstantTest()
+{
+    // Setup / Operation
+
+    const float values1[4][5] =
+    {
+        {  1.0,  2.0,  3.0,  4.0,  5.0 },
+        {  6.0,  7.0,  8.0,  9.0, 10.0 },
+        { 11.0, 12.0, 13.0, 14.0, 15.0 },
+        { 16.0, 17.0, 18.0, 19.0, 20.0 }
+    };
+
+    const Matrix<float, 4, 5, STORAGE_CONSTANT> matrix1(values1);
+
+    const float values2[5] =
+    {
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0
+    };
+
+    Vector<float, 5> vector1(values2);
+
+    const float values3[4] =
+    {
+         55.0,
+        130.0,
+        205.0,
+        280.0
+    };
+
+    Vector<float, 4> expected(values3);
+
+    // Test
+
+    Vector<float, 4> result = matrix1 * vector1;
+
+    const bool compare = (result == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
 }

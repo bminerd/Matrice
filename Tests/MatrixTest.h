@@ -153,11 +153,17 @@ public:
 
     static bool operatorMultiplyScalarConstantTest();
 
-    static bool operatorMultiplyInternalTest();
+    static bool operatorMultiply4By5InternalTest();
 
-    static bool operatorMultiplyExternalTest();
+    static bool operatorMultiply4By5ExternalTest();
 
-    static bool operatorMultiplyConstantTest();
+    static bool operatorMultiply4By5ConstantTest();
+
+    static bool operatorMultiply3By3InternalTest();
+
+    static bool operatorMultiply3By3ExternalTest();
+
+    static bool operatorMultiply3By3ConstantTest();
 
     static bool operatorMultiplyEqualsScalarInternalTest();
 

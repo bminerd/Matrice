@@ -86,9 +86,12 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::operatorMultiplyScalarInternalTest,
     &MatrixTest::operatorMultiplyScalarExternalTest,
     &MatrixTest::operatorMultiplyScalarConstantTest,
-    &MatrixTest::operatorMultiplyInternalTest,
-    &MatrixTest::operatorMultiplyExternalTest,
-    &MatrixTest::operatorMultiplyConstantTest,
+    &MatrixTest::operatorMultiply4By5InternalTest,
+    &MatrixTest::operatorMultiply4By5ExternalTest,
+    &MatrixTest::operatorMultiply4By5ConstantTest,
+    &MatrixTest::operatorMultiply3By3InternalTest,
+    &MatrixTest::operatorMultiply3By3ExternalTest,
+    &MatrixTest::operatorMultiply3By3ConstantTest,
     &MatrixTest::operatorMultiplyEqualsScalarInternalTest,
     &MatrixTest::operatorMultiplyEqualsScalarExternalTest,
     &MatrixTest::getValueInternalTest,
@@ -1819,8 +1822,228 @@ bool MatrixTest::operatorMultiplyScalarConstantTest()
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
 }
 
+
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiplyInternalTest()
+bool MatrixTest::operatorMultiply4By5InternalTest()
+{
+    // Setup / Operation
+
+    const float values1[4][5] =
+    {
+        {  1.0,  2.0,  3.0,  4.0,  5.0 },
+        {  6.0,  7.0,  8.0,  9.0, 10.0 },
+        { 11.0, 12.0, 13.0, 14.0, 15.0 },
+        { 16.0, 17.0, 18.0, 19.0, 20.0 }
+    };
+
+    Matrix<float, 4, 5> matrix1(values1);
+
+    const float values2[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4> matrix2(values2);
+
+    float values3[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    const Matrix<float, 5, 4, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 4, 4> result1 = matrix1 * matrix2;
+    const Matrix<float, 4, 4> result2 = matrix1 * matrix3;
+    const Matrix<float, 4, 4> result3 = matrix1 * matrix4;
+
+    const float expectedValues[4][4] =
+    {
+        {  140.0, 125.0, 110.0,  95.0 },
+        {  440.0, 400.0, 360.0, 320.0 },
+        {  740.0, 675.0, 610.0, 545.0 },
+        { 1040.0, 950.0, 860.0, 770.0 }
+    };
+
+    const Matrix<float, 4, 4> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiply4By5ExternalTest()
+{
+    // Setup / Operation
+
+    float values1[4][5] =
+    {
+        {  1.0,  2.0,  3.0,  4.0,  5.0 },
+        {  6.0,  7.0,  8.0,  9.0, 10.0 },
+        { 11.0, 12.0, 13.0, 14.0, 15.0 },
+        { 16.0, 17.0, 18.0, 19.0, 20.0 }
+    };
+
+    Matrix<float, 4, 5, STORAGE_EXTERNAL> matrix1(values1);
+
+    const float values2[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4> matrix2(values2);
+
+    float values3[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    const Matrix<float, 5, 4, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 4, 4> result1 = matrix1 * matrix2;
+    const Matrix<float, 4, 4> result2 = matrix1 * matrix3;
+    const Matrix<float, 4, 4> result3 = matrix1 * matrix4;
+
+    const float expectedValues[4][4] =
+    {
+        {  140.0, 125.0, 110.0,  95.0 },
+        {  440.0, 400.0, 360.0, 320.0 },
+        {  740.0, 675.0, 610.0, 545.0 },
+        { 1040.0, 950.0, 860.0, 770.0 }
+    };
+
+    const Matrix<float, 4, 4> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiply4By5ConstantTest()
+{
+    // Setup / Operation
+
+    const float values1[4][5] =
+    {
+        {  1.0,  2.0,  3.0,  4.0,  5.0 },
+        {  6.0,  7.0,  8.0,  9.0, 10.0 },
+        { 11.0, 12.0, 13.0, 14.0, 15.0 },
+        { 16.0, 17.0, 18.0, 19.0, 20.0 }
+    };
+
+    const Matrix<float, 4, 5, STORAGE_CONSTANT> matrix1(values1);
+
+    const float values2[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4> matrix2(values2);
+
+    float values3[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    const Matrix<float, 5, 4, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 4, 4> result1 = matrix1 * matrix2;
+    const Matrix<float, 4, 4> result2 = matrix1 * matrix3;
+    const Matrix<float, 4, 4> result3 = matrix1 * matrix4;
+
+    const float expectedValues[4][4] =
+    {
+        {  140.0, 125.0, 110.0,  95.0 },
+        {  440.0, 400.0, 360.0, 320.0 },
+        {  740.0, 675.0, 610.0, 545.0 },
+        { 1040.0, 950.0, 860.0, 770.0 }
+    };
+
+    const Matrix<float, 4, 4> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiply3By3InternalTest()
 {
     // Setup / Operation
 
@@ -1885,7 +2108,7 @@ bool MatrixTest::operatorMultiplyInternalTest()
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiplyExternalTest()
+bool MatrixTest::operatorMultiply3By3ExternalTest()
 {
     // Setup / Operation
 
@@ -1950,7 +2173,7 @@ bool MatrixTest::operatorMultiplyExternalTest()
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiplyConstantTest()
+bool MatrixTest::operatorMultiply3By3ConstantTest()
 {
     // Setup / Operation
 
