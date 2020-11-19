@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[FEATURE]` Added += and -= operators for Matrix and Vector types. [Resolves #25].
 * `[BUG FIX]` Fixed result iteration size in MatrixBase::operatorMultiplyMBy1(). [Resolves #33].
 * `[FEATURE]` Added constructor to Vector for subvectors. [Resolves #26].
 * `[BUG FIX]` Fixed submatrix column jump calculation to include parent matrix column jump. [Resolves #27].
