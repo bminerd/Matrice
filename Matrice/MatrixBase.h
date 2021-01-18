@@ -911,135 +911,40 @@ protected:
         uint32_t i = 0;
 
         const uint32_t resultColumns = resultMatrix.getColumns();
-        const uint32_t resultSize = myRows * resultColumns;
 
-        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        uint32_t rightPointerIncrement = resultColumns;
+
+        if (matrix.getColumnJump() != 0)
         {
-            // Loop through every element (myRows * myColumns2) in the resulting
-            // Matrix starting at (1, 1) moving left-to-right, top-to-bottom
-            // until (N, M2)
-            while (i++ < resultSize)
-            {
-                uint32_t columns = myColumns;
-
-                // Loop
-                while (columns--)
-                {
-                    (*resultPointer) += (*leftPointer++) * (*rightPointer);
-
-                    rightPointer += resultColumns;
-                }
-
-                resultPointer++;
-
-                //
-                // Integer divide i / resultColumns gives the first element in
-                // the current row of the left matrix
-                //
-                leftPointer = &(getValueFast((i / resultColumns), 0));
-
-                //
-                // Integer modulo i % resultColumns gives the first element in
-                // the current column of the right matrix
-                //
-                rightPointer = &(matrix.getValueFast(0, (i % resultColumns)));
-            }
+            rightPointerIncrement += matrix.getColumnJump();
         }
-        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
+        
+        while (i < myRows)
         {
-            // Loop through every element (myRows * myColumns2) in the resulting
-            // Matrix starting at (1, 1) moving left-to-right, top-to-bottom
-            // until (N, M2)
-            while (i++ < resultSize)
+            uint32_t j = 0;
+
+            while (j < resultColumns)
             {
+                leftPointer = &(getValueFast(i, 0));
+                rightPointer = &(matrix.getValueFast(0, j));
+
                 uint32_t columns = myColumns;
+                ValueType temp = 0;
 
                 // Loop
                 while (columns--)
                 {
-                    (*resultPointer) += (*leftPointer++) * (*rightPointer);
+                    temp += (*leftPointer++) * (*rightPointer);
 
-                    rightPointer += resultColumns;
+                    rightPointer += rightPointerIncrement;
                 }
 
-                resultPointer++;
+                (*resultPointer++) = temp;
 
-                //
-                // Integer divide i / resultColumns gives the first element in
-                // the current row of the left matrix
-                //
-                leftPointer = &(getValueFast((i / resultColumns), 0));
-
-                //
-                // Integer modulo i % resultColumns gives the first element in
-                // the current column of the right matrix
-                //
-                rightPointer = &(matrix.getValueFast(0, (i % resultColumns)));
+                j++;
             }
-        }
-        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
-        {
-            // Loop through every element (myRows * myColumns2) in the resulting
-            // Matrix starting at (1, 1) moving left-to-right, top-to-bottom
-            // until (N, M2)
-            while (i++ < resultSize)
-            {
-                uint32_t columns = myColumns;
 
-                // Loop
-                while (columns--)
-                {
-                    (*resultPointer) += (*leftPointer++) * (*rightPointer);
-
-                    rightPointer += resultColumns + matrix.getColumnJump();
-                }
-
-                resultPointer++;
-
-                //
-                // Integer divide i / resultColumns gives the first element in
-                // the current row of the left matrix
-                //
-                leftPointer = &(getValueFast((i / resultColumns), 0));
-
-                //
-                // Integer modulo i % resultColumns gives the first element in
-                // the current column of the right matrix
-                //
-                rightPointer = &(matrix.getValueFast(0, (i % resultColumns)));
-            }
-        }
-        else
-        {
-            // Loop through every element (myRows * myColumns2) in the resulting
-            // Matrix starting at (1, 1) moving left-to-right, top-to-bottom
-            // until (N, M2)
-            while (i++ < resultSize)
-            {
-                uint32_t columns = myColumns;
-
-                // Loop
-                while (columns--)
-                {
-                    (*resultPointer) += (*leftPointer++) * (*rightPointer);
-
-                    rightPointer += resultColumns + matrix.getColumnJump();
-                }
-
-                resultPointer++;
-
-                //
-                // Integer divide i / resultColumns gives the first element in
-                // the current row of the left matrix
-                //
-                leftPointer = &(getValueFast((i / resultColumns), 0));
-
-                //
-                // Integer modulo i % resultColumns gives the first element in
-                // the current column of the right matrix
-                //
-                rightPointer = &(matrix.getValueFast(0, (i % resultColumns)));
-            }
+            i++;
         }
     }
 
