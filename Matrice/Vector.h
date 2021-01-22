@@ -233,8 +233,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
-    Vector(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
+    template <uint32_t ParentN, uint32_t ParentM>
+    Vector(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
            const uint32_t row,
            const uint32_t column) :
         Matrix<ValueType, N, 1, STORAGE_EXTERNAL>(matrix, row, column)
@@ -242,9 +242,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, Storage StorageOption2>
-    Vector(Vector<ValueType, ParentN, StorageOption2>& vector,
-           const uint32_t row) :
+    template <uint32_t ParentN>
+    Vector(MatrixInterface<ValueType, ParentN, 1>& vector, const uint32_t row) :
         Matrix<ValueType, N, 1, STORAGE_EXTERNAL>(vector, row, 0)
     {
     }
@@ -386,17 +385,18 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
-    Vector(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
-           const uint32_t row,
-           const uint32_t column) :
+    template <uint32_t ParentN, uint32_t ParentM, typename ValuePointerType>
+    Vector(
+         MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
+         const uint32_t row,
+         const uint32_t column) :
         Matrix<ValueType, N, 1, STORAGE_CONSTANT>(matrix, row, column)
     {
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, Storage StorageOption2>
-    Vector(Vector<ValueType, ParentN, StorageOption2>& vector,
+    template <uint32_t ParentN, typename ValuePointerType>
+    Vector(MatrixInterface<ValueType, ParentN, 1, ValuePointerType>& vector,
            const uint32_t row) :
         Matrix<ValueType, N, 1, STORAGE_CONSTANT>(vector, row, 0)
     {

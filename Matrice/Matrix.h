@@ -183,8 +183,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
-    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
+    template <uint32_t ParentN, uint32_t ParentM>
+    Matrix(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
            const uint32_t row,
            const uint32_t column) :
         MatrixInterface<ValueType, N, M>(matrix, row, column)
@@ -269,10 +269,11 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
-    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
-           const uint32_t row,
-           const uint32_t column) :
+    template <uint32_t ParentN, uint32_t ParentM, typename ValuePointerType>
+    Matrix(
+         MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
+         const uint32_t row,
+         const uint32_t column) :
         MatrixInterface<ValueType, N, M, const ValueType>(matrix, row, column)
     {
     }
@@ -437,8 +438,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
-    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
+    template <uint32_t ParentN, uint32_t ParentM>
+    Matrix(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
            const uint32_t row,
            const uint32_t column) :
         MatrixInterface<ValueType, N, N>(matrix, row, column)
@@ -523,10 +524,11 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
-    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
-           const uint32_t row,
-           const uint32_t column) :
+    template <uint32_t ParentN, uint32_t ParentM, typename ValuePointerType>
+    Matrix(
+         MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
+         const uint32_t row,
+         const uint32_t column) :
         MatrixInterface<ValueType, N, N, const ValueType>(matrix, row, column)
     {
     }
@@ -723,8 +725,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
-    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
+    template <uint32_t ParentN, uint32_t ParentM>
+    Matrix(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
            const uint32_t row,
            const uint32_t column) :
         MatrixInterface<ValueType, N, 1>(matrix, row, column)
@@ -836,10 +838,11 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
-    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
-           const uint32_t row,
-           const uint32_t column) :
+    template <uint32_t ParentN, uint32_t ParentM, typename ValuePointerType>
+    Matrix(
+         MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
+         const uint32_t row,
+         const uint32_t column) :
         MatrixInterface<ValueType, N, 1, const ValueType>(matrix, row, column)
     {
     }
@@ -1062,8 +1065,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
-    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
+    template <uint32_t ParentN, uint32_t ParentM>
+    Matrix(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
            const uint32_t row,
            const uint32_t column) :
         MatrixInterface<ValueType, 3, 1>(matrix, row, column)
@@ -1211,10 +1214,11 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, Storage StorageOption2>
-    Matrix(Matrix<ValueType, ParentN, ParentM, StorageOption2>& matrix,
-           const uint32_t row,
-           const uint32_t column) :
+    template <uint32_t ParentN, uint32_t ParentM, typename ValuePointerType>
+    Matrix(
+         MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
+         const uint32_t row,
+         const uint32_t column) :
         MatrixInterface<ValueType, 3, 1, const ValueType>(matrix, row, column)
     {
     }
