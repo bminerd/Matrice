@@ -23,58 +23,28 @@
 //------------------------------------------------------------------------------
 
 ///
-/// @file Matrice.h
+/// @file Matrice.cpp
 /// @author Ben Minerd
-/// @date 8/29/2016
-/// @brief Matrice namespace functions.
+/// @date 1/25/2021
+/// @brief Matrice namespace source file.
 ///
-
-#ifndef MATRICE_H
-#define MATRICE_H
 
 //------------------------------------------------------------------------------
 // Include files
 //------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
-// Namespaces
-//------------------------------------------------------------------------------
+#include <Matrice/Matrice.h>
 
-namespace Matrice
+using namespace Matrice;
+
+//------------------------------------------------------------------------------
+void Matrice::setPrintCallback(PrintCallback callback)
 {
-    //--------------------------------------------------------------------------
-    // Types
-    //--------------------------------------------------------------------------
+    printCallback = callback;
+}
 
-    enum Storage
-    {
-        STORAGE_INTERNAL = 0,
-        STORAGE_EXTERNAL,
-        STORAGE_CONSTANT
-    };
-
-    typedef void (*PrintCallback)(const char*);
-
-    //--------------------------------------------------------------------------
-    // Variables
-    //--------------------------------------------------------------------------
-
-    static PrintCallback printCallback = 0;
-
-    //--------------------------------------------------------------------------
-    // Functions
-    //--------------------------------------------------------------------------
-
-    void setPrintCallback(PrintCallback callback);
-
-    void print(const char* string);
-
-    //--------------------------------------------------------------------------
-    template <typename TValue>
-    inline TValue square(const TValue value)
-    {
-        return (value * value);
-    }
-}; // namespace Matrice
-
-#endif // MATRICE_H
+//------------------------------------------------------------------------------
+void Matrice::print(const char* string)
+{
+    (*printCallback)(string);
+}
