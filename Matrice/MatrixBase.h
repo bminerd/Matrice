@@ -40,6 +40,7 @@
 #include <limits>
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
 
 #include <Matrice/Matrice.h>
 
@@ -482,6 +483,55 @@ public:
         {
             valuePointer++;
         }
+    }
+
+    //--------------------------------------------------------------------------
+    void toString(char* string, const uint8_t precision = 6) const
+    {
+        int max = (int) (maxValue());
+        int min = (int) (minValue());
+
+        uint32_t maxWidth = sprintf(string, "%i", max);
+        uint32_t minWidth = sprintf(string, "%i", min);
+
+        uint32_t width = precision + 2;
+
+        if (maxWidth > minWidth)
+        {
+            width += maxWidth;
+        }
+        else
+        {
+            width += minWidth;
+        }
+
+        uint32_t nCharacters = 0;
+
+        for (int i = 0; i < myRows; i++)
+        {
+            nCharacters += sprintf(&(string[nCharacters]), "[");
+
+            for (int j = 0; j < myColumns; j++)
+            {
+                nCharacters += sprintf(&(string[nCharacters]),
+                                       "%*.*g",
+                                       width,
+                                       precision,
+                                       getValueFast(i, j));
+            }
+
+            nCharacters += sprintf(&(string[nCharacters]), " ]\n");
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    void print() const
+    {
+        char matrixString[128000];
+
+        toString(matrixString);
+
+        Matrice::print(matrixString);
     }
 
 protected:
