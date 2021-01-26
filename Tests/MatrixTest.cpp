@@ -128,6 +128,9 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::toCrossProductEquivalentMatrixInternalTest,
     &MatrixTest::toCrossProductEquivalentMatrixExternalTest,
     &MatrixTest::toCrossProductEquivalentMatrixConstantTest,
+    &MatrixTest::printInternalTest,
+    &MatrixTest::printExternalTest,
+    &MatrixTest::printConstantTest,
     &MatrixTest::submatrixOperatorAddScalarExternalTest,
     &MatrixTest::submatrixOperatorAddScalarConstantTest,
     &MatrixTest::submatrixOperatorAddExternalTest,
@@ -150,6 +153,8 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::submatrixGetValueExternalTest,
     &MatrixTest::submatrixGetValueConstantTest,
     &MatrixTest::submatrixSetValueExternalTest,
+    &MatrixTest::submatrixPrintExternalTest,
+    &MatrixTest::submatrixPrintConstantTest,
     &MatrixTest::nestedSubmatrixOperatorEquals
 };
 
@@ -3688,6 +3693,66 @@ bool MatrixTest::toCrossProductEquivalentMatrixConstantTest()
 }
 
 //------------------------------------------------------------------------------
+bool MatrixTest::printInternalTest()
+{
+    // Setup
+
+    const float values[3][3] =
+    {
+        { 0.00001, 0.0001,    0.01 },
+        {     0.1,    1.0,    10.0 },
+        {   100.0, 1000.0, 10000.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    Matrice::print("\n");
+    matrix.print();
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(true, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::printExternalTest()
+{
+    // Setup
+
+    float values[3][3] =
+    {
+        { 0.00001, 0.0001,    0.01 },
+        {     0.1,    1.0,    10.0 },
+        {   100.0, 1000.0, 10000.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+
+    Matrice::print("\n");
+    matrix.print();
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(true, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::printConstantTest()
+{
+    // Setup
+
+    const float values[3][3] =
+    {
+        { 0.00001, 0.0001,    0.01 },
+        {     0.1,    1.0,    10.0 },
+        {   100.0, 1000.0, 10000.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+
+    Matrice::print("\n");
+    matrix.print();
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(true, true));
+}
+
+//------------------------------------------------------------------------------
 bool MatrixTest::submatrixOperatorAddScalarExternalTest()
 {
     // Setup / Operation
@@ -4720,6 +4785,50 @@ bool MatrixTest::submatrixSetValueExternalTest()
     const float result = submatrix.getValue(1, 0);
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixPrintExternalTest()
+{
+    // Setup
+
+    const float values[3][3] =
+    {
+        { 0.00001, 0.0001,    0.01 },
+        {     0.1,    1.0,    10.0 },
+        {   100.0, 1000.0, 10000.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+
+    Matrice::print("\n");
+    submatrix.print();
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(true, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixPrintConstantTest()
+{
+    // Setup
+
+    const float values[3][3] =
+    {
+        { 0.00001, 0.0001,    0.01 },
+        {     0.1,    1.0,    10.0 },
+        {   100.0, 1000.0, 10000.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values);
+
+    Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
+
+    Matrice::print("\n");
+    submatrix.print();
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(true, true));
 }
 
 //------------------------------------------------------------------------------

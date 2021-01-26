@@ -89,6 +89,12 @@ private:
     MatrixVectorTest myMatrixVectorTest;
 
     //--------------------------------------------------------------------------
+    // Private static methods
+    //--------------------------------------------------------------------------
+
+    static void printCallbackFunction(const char* string);
+
+    //--------------------------------------------------------------------------
     // Private methods implemented from Application
     //--------------------------------------------------------------------------
 

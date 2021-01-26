@@ -35,11 +35,11 @@
 
 #include <ApplicationMatriceTest.h>
 
-using Matrice::ApplicationMatriceTest;
+#include <Matrice/Matrice.h>
 
-//------------------------------------------------------------------------------
-// Private static data members
-//------------------------------------------------------------------------------
+#include <iostream>
+
+using Matrice::ApplicationMatriceTest;
 
 //------------------------------------------------------------------------------
 // Public constructors
@@ -55,6 +55,7 @@ ApplicationMatriceTest::ApplicationMatriceTest() :
     myMatrixTest(),
     myVectorTest()
 {
+    Matrice::setPrintCallback(ApplicationMatriceTest::printCallbackFunction);
 }
 
 //------------------------------------------------------------------------------
@@ -64,6 +65,16 @@ ApplicationMatriceTest::ApplicationMatriceTest() :
 //------------------------------------------------------------------------------
 ApplicationMatriceTest::~ApplicationMatriceTest()
 {
+}
+
+//------------------------------------------------------------------------------
+// Private static methods
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+void ApplicationMatriceTest::printCallbackFunction(const char* string)
+{
+    cout << string;
 }
 
 //------------------------------------------------------------------------------

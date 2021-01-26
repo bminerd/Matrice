@@ -237,6 +237,12 @@ public:
 
     static bool toCrossProductEquivalentMatrixConstantTest();
 
+    static bool printInternalTest();
+
+    static bool printExternalTest();
+
+    static bool printConstantTest();
+
     static bool submatrixOperatorAddScalarExternalTest();
 
     static bool submatrixOperatorAddScalarConstantTest();
@@ -280,6 +286,10 @@ public:
     static bool submatrixGetValueConstantTest();
 
     static bool submatrixSetValueExternalTest();
+
+    static bool submatrixPrintExternalTest();
+
+    static bool submatrixPrintConstantTest();
 
     static bool nestedSubmatrixOperatorEquals();
 
