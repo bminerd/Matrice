@@ -20,6 +20,7 @@ These issues have been fully implemented and merged into develop.
 
 * `[LABEL]` Description of changes. [Resolves #issue].
 
+* `[BUG FIX]` Added null pointer check for Matrice::printCallback. [Resolves #38].
 * `[FEATURE]` Added toString() and print() methods to MatrixBase. [Resolves #23].
 * `[FEATURE]` Changed Matrix and Vector submatrix/subvector constructors to accept MatrixInterface as the parent matrix. [Resolves #36].
 * `[FEATURE]` Added += and -= operators for Matrix and Vector types. [Resolves #25].
