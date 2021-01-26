@@ -46,5 +46,8 @@ void Matrice::setPrintCallback(PrintCallback callback)
 //------------------------------------------------------------------------------
 void Matrice::print(const char* string)
 {
-    (*printCallback)(string);
+    if (printCallback != 0)
+    {
+        (*printCallback)(string);
+    }
 }
