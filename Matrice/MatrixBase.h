@@ -44,23 +44,12 @@
 
 #include <Matrice/Matrice.h>
 
-#if defined(__ARMCC_VERSION)
-	#if __ARMCC_VERSION < 6000000
-#define KV5
-	#else
-#define KV6
-	#endif
-#endif	
-
 //------------------------------------------------------------------------------
 // Namespaces
 //------------------------------------------------------------------------------
 
 namespace Matrice
 {
-#if defined(KV5)
-	using namespace std;
-#endif
 	
 //------------------------------------------------------------------------------
 // Classes
@@ -460,7 +449,7 @@ public:
             }
         }
 
-        return sqrt(squaredSum);
+        return std::sqrt(squaredSum);
     }
 
     //--------------------------------------------------------------------------
@@ -502,8 +491,8 @@ public:
         int max = (int) (maxValue());
         int min = (int) (minValue());
 
-        uint32_t maxWidth = sprintf(string, "%i", max);
-        uint32_t minWidth = sprintf(string, "%i", min);
+        uint32_t maxWidth = std::sprintf(string, "%i", max);
+        uint32_t minWidth = std::sprintf(string, "%i", min);
 
         uint32_t width = precision + 2;
 
@@ -520,18 +509,18 @@ public:
 
         for (int i = 0; i < myRows; i++)
         {
-            nCharacters += sprintf(&(string[nCharacters]), "[");
+            nCharacters += std::sprintf(&(string[nCharacters]), "[");
 
             for (int j = 0; j < myColumns; j++)
             {
-                nCharacters += sprintf(&(string[nCharacters]),
-                                       "%*.*g",
-                                       width,
-                                       precision,
-                                       getValueFast(i, j));
+                nCharacters += std::sprintf(&(string[nCharacters]),
+                                            "%*.*g",
+                                            width,
+                                            precision,
+                                            getValueFast(i, j));
             }
 
-            nCharacters += sprintf(&(string[nCharacters]), " ]\n");
+            nCharacters += std::sprintf(&(string[nCharacters]), " ]\n");
         }
     }
 
@@ -681,7 +670,7 @@ protected:
                 ValueType value1 = (*thisValuePointer++);
                 ValueType value2 = (*valuePointer++);
 
-                if (fabs(value1 - value2) > epsilon)
+                if (std::abs(value1 - value2) > epsilon)
                 {
                     return false;
                 }
@@ -694,7 +683,7 @@ protected:
                 ValueType value1 = (*thisValuePointer);
                 ValueType value2 = (*valuePointer++);
 
-                if (fabs(value1 - value2) > epsilon)
+                if (std::abs(value1 - value2) > epsilon)
                 {
                     return false;
                 }
@@ -709,7 +698,7 @@ protected:
                 ValueType value1 = (*thisValuePointer++);
                 ValueType value2 = (*valuePointer);
 
-                if (fabs(value1 - value2) > epsilon)
+                if (std::abs(value1 - value2) > epsilon)
                 {
                     return false;
                 }
@@ -724,7 +713,7 @@ protected:
                 ValueType value1 = (*thisValuePointer++);
                 ValueType value2 = (*valuePointer++);
 
-                if (fabs(value1 - value2) > epsilon)
+                if (std::abs(value1 - value2) > epsilon)
                 {
                     return false;
                 }
