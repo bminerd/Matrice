@@ -348,6 +348,12 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType, N, N>& matrix) :
+        MatrixInterface<ValueType, N, N>(myValues, matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
     template <Storage StorageOption2>
     Matrix(const Matrix<ValueType, N, N, StorageOption2>& matrix) :
         MatrixInterface<ValueType, N, N>(myValues, matrix)
