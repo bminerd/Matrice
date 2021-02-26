@@ -958,96 +958,34 @@ protected:
         const ValuePointerType2* rightPointer = &(matrix.getValueFast(0, 0));
         ValueType* resultPointer = &(resultMatrix.getValueFast(0, 0));
 
-        uint32_t i = myRows;
+        uint32_t i = 0;
 
-        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        uint32_t rightPointerIncrement = 1;
+
+        if (matrix.getColumnJump() != 0)
         {
-            // Loop through every element (N) in the resulting Vector starting
-            // at (1) moving top-to-bottom until (N)
-            while (i--)
-            {
-                int32_t rowSize = (int32_t) myColumns;
-
-                // Loop
-                while (rowSize--)
-                {
-                    (*resultPointer) += (*leftPointer++) * (*rightPointer++);
-                }
-
-                resultPointer++;
-
-                //
-                // First element in the right matrix
-                //
-                rightPointer = &(matrix.getValueFast(0, 0));
-            }
+            rightPointerIncrement += matrix.getColumnJump();
         }
-        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
+        
+        while (i < myRows)
         {
-            while (i--)
+            leftPointer = &(getValueFast(i, 0));
+            rightPointer = &(matrix.getValueFast(0, 0));
+
+            int32_t rowSize = (int32_t) myColumns;
+            ValueType temp = 0;
+
+            // Loop
+            while (rowSize--)
             {
-                int32_t rowSize = (int32_t) myColumns;
+                temp += (*leftPointer++) * (*rightPointer);
 
-                // Loop
-                while (rowSize--)
-                {
-                    (*resultPointer) += (*leftPointer) * (*rightPointer++);
-
-                    incrementValuePointer(leftPointer, i);
-                }
-
-                resultPointer++;
-
-                //
-                // First element in the right matrix
-                //
-                rightPointer = &(matrix.getValueFast(0, 0));
+                rightPointer += rightPointerIncrement;
             }
-        }
-        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
-        {
-            while (i--)
-            {
-                int32_t rowSize = (int32_t) myColumns;
 
-                // Loop
-                while (rowSize--)
-                {
-                    (*resultPointer) += (*leftPointer++) * (*rightPointer);
+            (*resultPointer++) = temp;
 
-                    matrix.incrementValuePointer(rightPointer, i);
-                }
-
-                resultPointer++;
-
-                //
-                // First element in the right matrix
-                //
-                rightPointer = &(matrix.getValueFast(0, 0));
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                int32_t rowSize = (int32_t) myColumns;
-
-                // Loop
-                while (rowSize--)
-                {
-                    (*resultPointer) += (*leftPointer) * (*rightPointer);
-
-                    matrix.incrementValuePointer(rightPointer, i);
-                    incrementValuePointer(leftPointer, i);
-                }
-
-                resultPointer++;
-
-                //
-                // First element in the right matrix
-                //
-                rightPointer = &(matrix.getValueFast(0, 0));
-            }
+            i++;
         }
     }
 
