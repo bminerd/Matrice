@@ -39,6 +39,7 @@
 
 #include <Tests/MatrixTest.h>
 #include <Matrice/Matrix.h>
+#include <Matrice/Vector.h>
 
 using Matrice::MatrixTest;
 using Plat4m::UnitTest;
@@ -90,12 +91,24 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::operatorMultiplyScalarInternalTest,
     &MatrixTest::operatorMultiplyScalarExternalTest,
     &MatrixTest::operatorMultiplyScalarConstantTest,
-    &MatrixTest::operatorMultiply4By5InternalTest,
-    &MatrixTest::operatorMultiply4By5ExternalTest,
-    &MatrixTest::operatorMultiply4By5ConstantTest,
-    &MatrixTest::operatorMultiply3By3InternalTest,
-    &MatrixTest::operatorMultiply3By3ExternalTest,
-    &MatrixTest::operatorMultiply3By3ConstantTest,
+    &MatrixTest::operatorMultiply4By5InternalTimes5By4Test,
+    &MatrixTest::operatorMultiply4By5ExternalTimes5By4Test,
+    &MatrixTest::operatorMultiply4By5ConstantTimes5By4Test,
+    &MatrixTest::operatorMultiply3By3InternalTimes3By3Test,
+    &MatrixTest::operatorMultiply3By3ExternalTimes3By3Test,
+    &MatrixTest::operatorMultiply3By3ConstantTimes3By3Test,
+    &MatrixTest::operatorMultiply4By5InternalTimes5By4SubmatrixTest,
+    &MatrixTest::operatorMultiply4By5ExternalTimes5By4SubmatrixTest,
+    &MatrixTest::operatorMultiply4By5ConstantTimes5By4SubmatrixTest,
+    &MatrixTest::operatorMultiply3By3InternalTimes3By3SubmatrixTest,
+    &MatrixTest::operatorMultiply3By3ExternalTimes3By3SubmatrixTest,
+    &MatrixTest::operatorMultiply3By3ConstantTimes3By3SubmatrixTest,
+    &MatrixTest::operatorMultiplyInternalTimesVectorTest,
+    &MatrixTest::operatorMultiplyExternalTimesVectorTest,
+    &MatrixTest::operatorMultiplyConstantTimesVectorTest,
+    &MatrixTest::operatorMultiplyInternalTimesVectorSubmatrixTest,
+    &MatrixTest::operatorMultiplyExternalTimesVectorSubmatrixTest,
+    &MatrixTest::operatorMultiplyConstantTimesVectorSubmatrixTest,
     &MatrixTest::operatorMultiplyEqualsScalarInternalTest,
     &MatrixTest::operatorMultiplyEqualsScalarExternalTest,
     &MatrixTest::getValueInternalTest,
@@ -147,8 +160,14 @@ const UnitTest::TestCallbackFunction MatrixTest::myTestCallbackFunctions[] =
     &MatrixTest::submatrixOperatorSubtractEqualsExternalTest,
     &MatrixTest::submatrixOperatorMultiplyScalarExternalTest,
     &MatrixTest::submatrixOperatorMultiplyScalarConstantTest,
-    &MatrixTest::submatrixOperatorMultiplyExternalTest,
-    &MatrixTest::submatrixOperatorMultiplyConstantTest,
+    &MatrixTest::submatrixOperatorMultiply2By2ExternalTimes2By2Test,
+    &MatrixTest::submatrixOperatorMultiply2By2ConstantTimes2By2Test,
+    &MatrixTest::submatrixOperatorMultiply2By2ExternalTimes2By2SubmatrixTest,
+    &MatrixTest::submatrixOperatorMultiply2By2ConstantTimes2By2SubmatrixTest,
+    &MatrixTest::submatrixOperatorMultiply2By2ExternalTimesVectorTest,
+    &MatrixTest::submatrixOperatorMultiply2By2ConstantTimesVectorTest,
+    &MatrixTest::submatrixOperatorMultiply2By2ExternalTimesVectorSubmatrixTest,
+    &MatrixTest::submatrixOperatorMultiply2By2ConstantTimesVectorSubmatrixTest,
     &MatrixTest::submatrixOperatorMultiplyEqualsScalarExternalTest,
     &MatrixTest::submatrixGetValueExternalTest,
     &MatrixTest::submatrixGetValueConstantTest,
@@ -2139,9 +2158,8 @@ bool MatrixTest::operatorMultiplyScalarConstantTest()
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
 }
 
-
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiply4By5InternalTest()
+bool MatrixTest::operatorMultiply4By5InternalTimes5By4Test()
 {
     // Setup / Operation
 
@@ -2214,7 +2232,7 @@ bool MatrixTest::operatorMultiply4By5InternalTest()
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiply4By5ExternalTest()
+bool MatrixTest::operatorMultiply4By5ExternalTimes5By4Test()
 {
     // Setup / Operation
 
@@ -2287,7 +2305,7 @@ bool MatrixTest::operatorMultiply4By5ExternalTest()
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiply4By5ConstantTest()
+bool MatrixTest::operatorMultiply4By5ConstantTimes5By4Test()
 {
     // Setup / Operation
 
@@ -2360,7 +2378,7 @@ bool MatrixTest::operatorMultiply4By5ConstantTest()
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiply3By3InternalTest()
+bool MatrixTest::operatorMultiply3By3InternalTimes3By3Test()
 {
     // Setup / Operation
 
@@ -2425,7 +2443,7 @@ bool MatrixTest::operatorMultiply3By3InternalTest()
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiply3By3ExternalTest()
+bool MatrixTest::operatorMultiply3By3ExternalTimes3By3Test()
 {
     // Setup / Operation
 
@@ -2490,7 +2508,7 @@ bool MatrixTest::operatorMultiply3By3ExternalTest()
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::operatorMultiply3By3ConstantTest()
+bool MatrixTest::operatorMultiply3By3ConstantTimes3By3Test()
 {
     // Setup / Operation
 
@@ -2544,6 +2562,810 @@ bool MatrixTest::operatorMultiply3By3ConstantTest()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiply4By5InternalTimes5By4SubmatrixTest()
+{
+    // Setup / Operation
+
+    const float values1[4][5] =
+    {
+        {  1.0,  2.0,  3.0,  4.0,  5.0 },
+        {  6.0,  7.0,  8.0,  9.0, 10.0 },
+        { 11.0, 12.0, 13.0, 14.0, 15.0 },
+        { 16.0, 17.0, 18.0, 19.0, 20.0 }
+    };
+
+    Matrix<float, 4, 5> matrix1(values1);
+
+    const float values2[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4> matrix2(values2);
+
+    float values3[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    const Matrix<float, 5, 4, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 4, 4> result1 = matrix1 * matrix2;
+    const Matrix<float, 4, 4> result2 = matrix1 * matrix3;
+    const Matrix<float, 4, 4> result3 = matrix1 * matrix4;
+
+    const float expectedValues[4][4] =
+    {
+        {  140.0, 125.0, 110.0,  95.0 },
+        {  440.0, 400.0, 360.0, 320.0 },
+        {  740.0, 675.0, 610.0, 545.0 },
+        { 1040.0, 950.0, 860.0, 770.0 }
+    };
+
+    const Matrix<float, 4, 4> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiply4By5ExternalTimes5By4SubmatrixTest()
+{
+    // Setup / Operation
+
+    float values1[4][5] =
+    {
+        {  1.0,  2.0,  3.0,  4.0,  5.0 },
+        {  6.0,  7.0,  8.0,  9.0, 10.0 },
+        { 11.0, 12.0, 13.0, 14.0, 15.0 },
+        { 16.0, 17.0, 18.0, 19.0, 20.0 }
+    };
+
+    Matrix<float, 4, 5, STORAGE_EXTERNAL> matrix1(values1);
+
+    const float values2[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4> matrix2(values2);
+
+    float values3[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    const Matrix<float, 5, 4, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 4, 4> result1 = matrix1 * matrix2;
+    const Matrix<float, 4, 4> result2 = matrix1 * matrix3;
+    const Matrix<float, 4, 4> result3 = matrix1 * matrix4;
+
+    const float expectedValues[4][4] =
+    {
+        {  140.0, 125.0, 110.0,  95.0 },
+        {  440.0, 400.0, 360.0, 320.0 },
+        {  740.0, 675.0, 610.0, 545.0 },
+        { 1040.0, 950.0, 860.0, 770.0 }
+    };
+
+    const Matrix<float, 4, 4> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiply4By5ConstantTimes5By4SubmatrixTest()
+{
+    // Setup / Operation
+
+    const float values1[4][5] =
+    {
+        {  1.0,  2.0,  3.0,  4.0,  5.0 },
+        {  6.0,  7.0,  8.0,  9.0, 10.0 },
+        { 11.0, 12.0, 13.0, 14.0, 15.0 },
+        { 16.0, 17.0, 18.0, 19.0, 20.0 }
+    };
+
+    const Matrix<float, 4, 5, STORAGE_CONSTANT> matrix1(values1);
+
+    const float values2[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4> matrix2(values2);
+
+    float values3[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[5][4] =
+    {
+        { 20.0, 19.0, 18.0, 17.0 },
+        { 16.0, 15.0, 14.0, 13.0 },
+        { 12.0, 11.0, 10.0,  9.0 },
+        {  8.0,  7.0,  6.0,  5.0 },
+        {  4.0,  3.0,  2.0,  1.0 }
+    };
+
+    const Matrix<float, 5, 4, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 4, 4> result1 = matrix1 * matrix2;
+    const Matrix<float, 4, 4> result2 = matrix1 * matrix3;
+    const Matrix<float, 4, 4> result3 = matrix1 * matrix4;
+
+    const float expectedValues[4][4] =
+    {
+        {  140.0, 125.0, 110.0,  95.0 },
+        {  440.0, 400.0, 360.0, 320.0 },
+        {  740.0, 675.0, 610.0, 545.0 },
+        { 1040.0, 950.0, 860.0, 770.0 }
+    };
+
+    const Matrix<float, 4, 4> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiply3By3InternalTimes3By3SubmatrixTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 3, 3> result1 = matrix1 * matrix2;
+    const Matrix<float, 3, 3> result2 = matrix1 * matrix3;
+    const Matrix<float, 3, 3> result3 = matrix1 * matrix4;
+
+    const float expectedValues[3][3] =
+    {
+        {  30.0,  24.0, 18.0 },
+        {  84.0,  69.0, 54.0 },
+        { 138.0, 114.0, 90.0 }
+    };
+
+    const Matrix<float, 3, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiply3By3ExternalTimes3By3SubmatrixTest()
+{
+    // Setup / Operation
+
+    float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 3, 3> result1 = matrix1 * matrix2;
+    const Matrix<float, 3, 3> result2 = matrix1 * matrix3;
+    const Matrix<float, 3, 3> result3 = matrix1 * matrix4;
+
+    const float expectedValues[3][3] =
+    {
+        {  30.0,  24.0, 18.0 },
+        {  84.0,  69.0, 54.0 },
+        { 138.0, 114.0, 90.0 }
+    };
+
+    const Matrix<float, 3, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiply3By3ConstantTimes3By3SubmatrixTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
+    const float values4[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix4(values4);
+
+    // Test
+
+    const Matrix<float, 3, 3> result1 = matrix1 * matrix2;
+    const Matrix<float, 3, 3> result2 = matrix1 * matrix3;
+    const Matrix<float, 3, 3> result3 = matrix1 * matrix4;
+
+    const float expectedValues[3][3] =
+    {
+        {  30.0,  24.0, 18.0 },
+        {  84.0,  69.0, 54.0 },
+        { 138.0, 114.0, 90.0 }
+    };
+
+    const Matrix<float, 3, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyInternalTimesVectorTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values1);
+
+    const float values2[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3> vector1(values2);
+
+    float values3[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values3);
+
+    const float values4[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    const Vector<float, 3, STORAGE_CONSTANT> vector3(values4);
+
+    // Test
+
+    const Vector<float, 3> result1 = matrix * vector1;
+    const Vector<float, 3> result2 = matrix * vector2;
+    const Vector<float, 3> result3 = matrix * vector3;
+
+    const float expectedValues[3] =
+    {
+        10.0,
+        28.0,
+        46.0
+    };
+
+    const Vector<float, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyExternalTimesVectorTest()
+{
+    // Setup / Operation
+
+    float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values1);
+
+    const float values2[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3> vector1(values2);
+
+    float values3[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values3);
+
+    const float values4[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    const Vector<float, 3, STORAGE_CONSTANT> vector3(values4);
+
+    // Test
+
+    const Vector<float, 3> result1 = matrix * vector1;
+    const Vector<float, 3> result2 = matrix * vector2;
+    const Vector<float, 3> result3 = matrix * vector3;
+
+    const float expectedValues[3] =
+    {
+        10.0,
+        28.0,
+        46.0
+    };
+
+    const Vector<float, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyConstantTimesVectorTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values1);
+
+    const float values2[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3> vector1(values2);
+
+    float values3[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values3);
+
+    const float values4[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    const Vector<float, 3, STORAGE_CONSTANT> vector3(values4);
+
+    // Test
+
+    const Vector<float, 3> result1 = matrix * vector1;
+    const Vector<float, 3> result2 = matrix * vector2;
+    const Vector<float, 3> result3 = matrix * vector3;
+
+    const float expectedValues[3] =
+    {
+        10.0,
+        28.0,
+        46.0
+    };
+
+    const Vector<float, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyInternalTimesVectorSubmatrixTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values1);
+
+    const float values2[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3> vector1(values2);
+
+    float values3[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values3);
+
+    const float values4[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    const Vector<float, 3, STORAGE_CONSTANT> vector3(values4);
+
+    // Test
+
+    const Vector<float, 3> result1 = matrix * vector1;
+    const Vector<float, 3> result2 = matrix * vector2;
+    const Vector<float, 3> result3 = matrix * vector3;
+
+    const float expectedValues[3] =
+    {
+        10.0,
+        28.0,
+        46.0
+    };
+
+    const Vector<float, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyExternalTimesVectorSubmatrixTest()
+{
+    // Setup / Operation
+
+    float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values1);
+
+    const float values2[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3> vector1(values2);
+
+    float values3[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values3);
+
+    const float values4[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    const Vector<float, 3, STORAGE_CONSTANT> vector3(values4);
+
+    // Test
+
+    const Vector<float, 3> result1 = matrix * vector1;
+    const Vector<float, 3> result2 = matrix * vector2;
+    const Vector<float, 3> result3 = matrix * vector3;
+
+    const float expectedValues[3] =
+    {
+        10.0,
+        28.0,
+        46.0
+    };
+
+    const Vector<float, 3> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::operatorMultiplyConstantTimesVectorSubmatrixTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values1);
+
+    const float values2[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3> vector1(values2);
+
+    float values3[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    Vector<float, 3, STORAGE_EXTERNAL> vector2(values3);
+
+    const float values4[3] =
+    {
+        3.0,
+        2.0,
+        1.0
+    };
+
+    const Vector<float, 3, STORAGE_CONSTANT> vector3(values4);
+
+    // Test
+
+    const Vector<float, 3> result1 = matrix * vector1;
+    const Vector<float, 3> result2 = matrix * vector2;
+    const Vector<float, 3> result3 = matrix * vector3;
+
+    const float expectedValues[3] =
+    {
+        10.0,
+        28.0,
+        46.0
+    };
+
+    const Vector<float, 3> expected(expectedValues);
 
     const bool compare1 = (result1 == expected);
     const bool compare2 = (result2 == expected);
@@ -4556,7 +5378,7 @@ bool MatrixTest::submatrixOperatorMultiplyScalarConstantTest()
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorMultiplyExternalTest()
+bool MatrixTest::submatrixOperatorMultiply2By2ExternalTimes2By2Test()
 {
     // Setup / Operation
 
@@ -4569,37 +5391,57 @@ bool MatrixTest::submatrixOperatorMultiplyExternalTest()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    float values2[3][3] =
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
+
+    const float values2[2][2] =
     {
-        { 9.0, 8.0, 7.0 },
-        { 6.0, 5.0, 4.0 },
-        { 3.0, 2.0, 1.0 }
+        { 4.0, 3.0 },
+        { 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 2, 2> matrix2(values2);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix2, 1, 1);
+    float values3[2][2] =
+    {
+        { 4.0, 3.0 },
+        { 2.0, 1.0 }
+    };
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+
+    float values4[2][2] =
+    {
+        { 4.0, 3.0 },
+        { 2.0, 1.0 }
+    };
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix4(values4);
 
     // Test
 
-    Matrix<float, 2, 2> result = submatrix1 * submatrix2;
+    const Matrix<float, 2, 2> result1 = submatrix1 * matrix2;
+    const Matrix<float, 2, 2> result2 = submatrix1 * matrix3;
+    const Matrix<float, 2, 2> result3 = submatrix1 * matrix4;
 
     const float expectedValues[2][2] =
     {
-        { 37.0,  26.0 },
-        { 58.0,  41.0 }
+        { 32.0, 21.0 },
+        { 50.0, 33.0 }
     };
 
     Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &&
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &&
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
 }
 
 //------------------------------------------------------------------------------
-bool MatrixTest::submatrixOperatorMultiplyConstantTest()
+bool MatrixTest::submatrixOperatorMultiply2By2ConstantTimes2By2Test()
 {
     // Setup / Operation
 
@@ -4612,33 +5454,411 @@ bool MatrixTest::submatrixOperatorMultiplyConstantTest()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    float values2[3][3] =
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
+
+    const float values2[2][2] =
+    {
+        { 4.0, 3.0 },
+        { 2.0, 1.0 }
+    };
+
+    Matrix<float, 2, 2> matrix2(values2);
+
+    float values3[2][2] =
+    {
+        { 4.0, 3.0 },
+        { 2.0, 1.0 }
+    };
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+
+    float values4[2][2] =
+    {
+        { 4.0, 3.0 },
+        { 2.0, 1.0 }
+    };
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix4(values4);
+
+    // Test
+
+    Matrix<float, 2, 2> result1 = submatrix1 * matrix2;
+    Matrix<float, 2, 2> result2 = submatrix1 * matrix3;
+    Matrix<float, 2, 2> result3 = submatrix1 * matrix4;
+
+    const float expectedValues[2][2] =
+    {
+        { 32.0, 21.0 },
+        { 50.0, 33.0 }
+    };
+
+    const Matrix<float, 2, 2> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &&
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &&
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorMultiply2By2ExternalTimes2By2SubmatrixTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
+
+    const float values2[3][3] =
     {
         { 9.0, 8.0, 7.0 },
         { 6.0, 5.0, 4.0 },
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    Matrix<float, 3, 3> matrix2(values2);
 
-    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
-    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix2(matrix2, 1, 1);
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix2, 1, 1);
+
+    const float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix3(values3);
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix3(matrix3, 1, 1);
 
     // Test
 
-    Matrix<float, 2, 2> result = submatrix1 * submatrix2;
+    const Matrix<float, 2, 2> result1 = submatrix1 * submatrix2;
+    const Matrix<float, 2, 2> result2 = submatrix1 * submatrix3;
 
     const float expectedValues[2][2] =
     {
-        { 37.0,  26.0 },
-        { 58.0,  41.0 }
+        { 37.0, 26.0 },
+        { 58.0, 41.0 }
     };
 
-    Matrix<float, 2, 2> expected(expectedValues);
+    const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &&
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorMultiply2By2ConstantTimes2By2SubmatrixTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix2, 1, 1);
+
+    const float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix3(values3);
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix3(matrix3, 1, 1);
+
+    // Test
+
+    const Matrix<float, 2, 2> result1 = submatrix1 * submatrix2;
+    const Matrix<float, 2, 2> result2 = submatrix1 * submatrix3;
+
+    const float expectedValues[2][2] =
+    {
+        { 37.0, 26.0 },
+        { 58.0, 41.0 }
+    };
+
+    const Matrix<float, 2, 2> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &&
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorMultiply2By2ExternalTimesVectorTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values1);
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+
+    const float values2[2] =
+    {
+        2.0,
+        1.0
+    };
+
+    Vector<float, 2> vector1(values2);
+
+    float values3[2] =
+    {
+        2.0,
+        1.0
+    };
+
+    Vector<float, 2, STORAGE_EXTERNAL> vector2(values3);
+
+    const float values4[2] =
+    {
+        2.0,
+        1.0
+    };
+
+    const Vector<float, 2, STORAGE_CONSTANT> vector3(values4);
+
+    // Test
+
+    const Vector<float, 2> result1 = submatrix * vector1;
+    const Vector<float, 2> result2 = submatrix * vector2;
+    const Vector<float, 2> result3 = submatrix * vector3;
+
+    const float expectedValues[2] =
+    {
+        16.0,
+        25.0
+    };
+
+    const Vector<float, 2> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorMultiply2By2ConstantTimesVectorTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix(values1);
+
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
+
+    const float values2[2] =
+    {
+        2.0,
+        1.0
+    };
+
+    Vector<float, 2> vector1(values2);
+
+    float values3[2] =
+    {
+        2.0,
+        1.0
+    };
+
+    Vector<float, 2, STORAGE_EXTERNAL> vector2(values3);
+
+    const float values4[2] =
+    {
+        2.0,
+        1.0
+    };
+
+    const Vector<float, 2, STORAGE_CONSTANT> vector3(values4);
+
+    // Test
+
+    const Vector<float, 2> result1 = submatrix * vector1;
+    const Vector<float, 2> result2 = submatrix * vector2;
+    const Vector<float, 2> result3 = submatrix * vector3;
+
+    const float expectedValues[2] =
+    {
+        16.0,
+        25.0
+    };
+
+    const Vector<float, 2> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+    const bool compare3 = (result3 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true) &
+                            UNIT_TEST_CASE_EQUAL(compare3, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorMultiply2By2ExternalTimesVectorSubmatrixTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix1, 1, 1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    Vector<float, 2, STORAGE_EXTERNAL> vectorSubmatrix1(matrix2, 1, 2);
+
+    const float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix3(values3);
+
+    Vector<float, 2, STORAGE_CONSTANT> vectorSubmatrix2(matrix3, 1, 2);
+
+    // Test
+
+    const Vector<float, 2> result1 = submatrix * vectorSubmatrix1;
+    const Vector<float, 2> result2 = submatrix * vectorSubmatrix2;
+
+    const float expectedValues[2] =
+    {
+        26.0,
+        41.0
+    };
+
+    const Vector<float, 2> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool MatrixTest::submatrixOperatorMultiply2By2ConstantTimesVectorSubmatrixTest()
+{
+    // Setup / Operation
+
+    const float values1[3][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 },
+        { 7.0, 8.0, 9.0 }
+    };
+
+    Matrix<float, 3, 3> matrix1(values1);
+
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix1, 1, 1);
+
+    const float values2[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix2(values2);
+
+    Vector<float, 2, STORAGE_EXTERNAL> vectorSubmatrix1(matrix2, 1, 2);
+
+    const float values3[3][3] =
+    {
+        { 9.0, 8.0, 7.0 },
+        { 6.0, 5.0, 4.0 },
+        { 3.0, 2.0, 1.0 }
+    };
+
+    Matrix<float, 3, 3> matrix3(values3);
+
+    Vector<float, 2, STORAGE_CONSTANT> vectorSubmatrix2(matrix3, 1, 2);
+
+    // Test
+
+    const Vector<float, 2> result1 = submatrix * vectorSubmatrix1;
+    const Vector<float, 2> result2 = submatrix * vectorSubmatrix2;
+
+    const float expectedValues[2] =
+    {
+        26.0,
+        41.0
+    };
+
+    const Vector<float, 2> expected(expectedValues);
+
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
 }
 
 //------------------------------------------------------------------------------

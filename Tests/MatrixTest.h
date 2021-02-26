@@ -161,17 +161,41 @@ public:
 
     static bool operatorMultiplyScalarConstantTest();
 
-    static bool operatorMultiply4By5InternalTest();
+    static bool operatorMultiply4By5InternalTimes5By4Test();
 
-    static bool operatorMultiply4By5ExternalTest();
+    static bool operatorMultiply4By5ExternalTimes5By4Test();
 
-    static bool operatorMultiply4By5ConstantTest();
+    static bool operatorMultiply4By5ConstantTimes5By4Test();
 
-    static bool operatorMultiply3By3InternalTest();
+    static bool operatorMultiply3By3InternalTimes3By3Test();
 
-    static bool operatorMultiply3By3ExternalTest();
+    static bool operatorMultiply3By3ExternalTimes3By3Test();
 
-    static bool operatorMultiply3By3ConstantTest();
+    static bool operatorMultiply3By3ConstantTimes3By3Test();
+
+    static bool operatorMultiply4By5InternalTimes5By4SubmatrixTest();
+
+    static bool operatorMultiply4By5ExternalTimes5By4SubmatrixTest();
+
+    static bool operatorMultiply4By5ConstantTimes5By4SubmatrixTest();
+
+    static bool operatorMultiply3By3InternalTimes3By3SubmatrixTest();
+
+    static bool operatorMultiply3By3ExternalTimes3By3SubmatrixTest();
+
+    static bool operatorMultiply3By3ConstantTimes3By3SubmatrixTest();
+
+    static bool operatorMultiplyInternalTimesVectorTest();
+
+    static bool operatorMultiplyExternalTimesVectorTest();
+
+    static bool operatorMultiplyConstantTimesVectorTest();
+
+    static bool operatorMultiplyInternalTimesVectorSubmatrixTest();
+
+    static bool operatorMultiplyExternalTimesVectorSubmatrixTest();
+
+    static bool operatorMultiplyConstantTimesVectorSubmatrixTest();
 
     static bool operatorMultiplyEqualsScalarInternalTest();
 
@@ -275,9 +299,21 @@ public:
 
     static bool submatrixOperatorMultiplyScalarConstantTest();
 
-    static bool submatrixOperatorMultiplyExternalTest();
+    static bool submatrixOperatorMultiply2By2ExternalTimes2By2Test();
 
-    static bool submatrixOperatorMultiplyConstantTest();
+    static bool submatrixOperatorMultiply2By2ConstantTimes2By2Test();
+
+    static bool submatrixOperatorMultiply2By2ExternalTimes2By2SubmatrixTest();
+
+    static bool submatrixOperatorMultiply2By2ConstantTimes2By2SubmatrixTest();
+
+    static bool submatrixOperatorMultiply2By2ExternalTimesVectorTest();
+
+    static bool submatrixOperatorMultiply2By2ConstantTimesVectorTest();
+
+    static bool submatrixOperatorMultiply2By2ExternalTimesVectorSubmatrixTest();
+
+    static bool submatrixOperatorMultiply2By2ConstantTimesVectorSubmatrixTest();
 
     static bool submatrixOperatorMultiplyEqualsScalarExternalTest();
 
