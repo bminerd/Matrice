@@ -100,15 +100,16 @@ public:
 
     //
     //--------------------------------------------------------------------------
-    ValueType& operator()(const uint32_t rowIndex, const uint32_t columnIndex)
+    ValueType& operator()(const std::uint32_t rowIndex,
+                          const std::uint32_t columnIndex)
     {
         return getValue(rowIndex, columnIndex);
     }
 
     //
     //--------------------------------------------------------------------------
-    const ValueType& operator()(const uint32_t rowIndex,
-                                const uint32_t columnIndex) const
+    const ValueType& operator()(const std::uint32_t rowIndex,
+                                const std::uint32_t columnIndex) const
     {
         return getValue(rowIndex, columnIndex);
     }
@@ -118,25 +119,26 @@ public:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    uint32_t getRows() const
+    std::uint32_t getRows() const
     {
         return myRows;
     }
 
     //--------------------------------------------------------------------------
-    uint32_t getColumns() const
+    std::uint32_t getColumns() const
     {
         return myColumns;
     }
 
     //--------------------------------------------------------------------------
-    uint32_t getColumnJump() const
+    std::uint32_t getColumnJump() const
     {
         return myColumnJump;
     }
 
     //--------------------------------------------------------------------------
-    ValueType& getValue(const uint32_t rowIndex, const uint32_t columnIndex)
+    ValueType& getValue(const std::uint32_t rowIndex,
+                        const std::uint32_t columnIndex)
     {
         ValueType* value = 0;
 
@@ -154,8 +156,8 @@ public:
 
     //
     //--------------------------------------------------------------------------
-    const ValuePointerType& getValue(const uint32_t rowIndex,
-                                     const uint32_t columnIndex) const
+    const ValuePointerType& getValue(const std::uint32_t rowIndex,
+                                     const std::uint32_t columnIndex) const
     {
         const ValuePointerType* value = 0;
 
@@ -180,10 +182,10 @@ public:
     /// for internal use only. The method getValue() should be used instead.
     ///
     //--------------------------------------------------------------------------
-    ValuePointerType& getValueFast(const uint32_t rowIndex,
-                                   const uint32_t columnIndex)
+    ValuePointerType& getValueFast(const std::uint32_t rowIndex,
+                                   const std::uint32_t columnIndex)
     {
-        uint32_t valueOffset = 
+        std::uint32_t valueOffset = 
                           (rowIndex * (myColumns + myColumnJump)) + columnIndex;
 
         return (myValuesPointer[valueOffset]);
@@ -198,21 +200,21 @@ public:
     /// for internal use only. The method getValue() should be used instead.
     ///
     //--------------------------------------------------------------------------
-    const ValueType& getValueFast(const uint32_t rowIndex,
-                                  const uint32_t columnIndex) const
+    const ValueType& getValueFast(const std::uint32_t rowIndex,
+                                  const std::uint32_t columnIndex) const
     {
-        uint32_t valueOffset = 
+        std::uint32_t valueOffset = 
                           (rowIndex * (myColumns + myColumnJump)) + columnIndex;
 
         return (myValuesPointer[valueOffset]);
     }
 
     //--------------------------------------------------------------------------
-    void setValue(const uint32_t rowIndex,
-                  const uint32_t columnIndex,
+    void setValue(const std::uint32_t rowIndex,
+                  const std::uint32_t columnIndex,
                   const ValueType value)
     {
-        uint32_t valueOffset = 
+        std::uint32_t valueOffset = 
                           (rowIndex * (myColumns + myColumnJump)) + columnIndex;
 
         myValuesPointer[valueOffset] = value;
@@ -223,7 +225,7 @@ public:
     {
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -249,7 +251,7 @@ public:
         const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
         ValueType maxValue = (*thisValuePointer);
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -285,7 +287,7 @@ public:
         const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
         ValueType minValue = (*thisValuePointer);
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -321,7 +323,7 @@ public:
     {
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -362,7 +364,7 @@ public:
     {
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -395,7 +397,7 @@ public:
     {
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -430,7 +432,7 @@ public:
 
         const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -486,15 +488,15 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    void toString(char* string, const uint8_t precision = 6) const
+    void toString(char* string, const std::uint8_t precision = 6) const
     {
         int max = (int) (maxValue());
         int min = (int) (minValue());
 
-        uint32_t maxWidth = std::sprintf(string, "%i", max);
-        uint32_t minWidth = std::sprintf(string, "%i", min);
+        std::uint32_t maxWidth = std::sprintf(string, "%i", max);
+        std::uint32_t minWidth = std::sprintf(string, "%i", min);
 
-        uint32_t width = precision + 2;
+        std::uint32_t width = precision + 2;
 
         if (maxWidth > minWidth)
         {
@@ -505,7 +507,7 @@ public:
             width += minWidth;
         }
 
-        uint32_t nCharacters = 0;
+        std::uint32_t nCharacters = 0;
 
         for (int i = 0; i < myRows; i++)
         {
@@ -541,10 +543,10 @@ protected:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    MatrixBase(const uint32_t rows,
-               const uint32_t columns,
+    MatrixBase(const std::uint32_t rows,
+               const std::uint32_t columns,
                ValuePointerType* valuesPointer,
-               const uint32_t columnJump) :
+               const std::uint32_t columnJump) :
         myRows(rows),
         myColumns(columns),
         myValuesPointer(valuesPointer),
@@ -553,10 +555,10 @@ protected:
     }
 
     //--------------------------------------------------------------------------
-    MatrixBase(const uint32_t rows,
-               const uint32_t columns,
+    MatrixBase(const std::uint32_t rows,
+               const std::uint32_t columns,
                ValuePointerType* valuesPointer,
-               const uint32_t columnJump,
+               const std::uint32_t columnJump,
                const ValueType* initializationValuesPointer) :
         myRows(rows),
         myColumns(columns),
@@ -568,10 +570,10 @@ protected:
 
     //--------------------------------------------------------------------------
     template <typename ValuePointer2>
-    MatrixBase(const uint32_t rows,
-               const uint32_t columns,
+    MatrixBase(const std::uint32_t rows,
+               const std::uint32_t columns,
                ValuePointerType* valuesPointer,
-               const uint32_t columnJump,
+               const std::uint32_t columnJump,
                const MatrixBase<ValueType, ValuePointer2>& matrix) :
         myRows(rows),
         myColumns(columns),
@@ -613,7 +615,7 @@ protected:
         const ValuePointerType* myValuePointer = &(getValueFast(0, 0));
         ValuePointerType2* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
         {
@@ -661,7 +663,7 @@ protected:
         const ValuePointerType2* valuePointer = &(matrix.getValueFast(0, 0));
         const ValueType epsilon = std::numeric_limits<ValueType>::epsilon();
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
         {
@@ -740,7 +742,7 @@ protected:
         const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -770,7 +772,7 @@ protected:
         const ValuePointerType2* valuePointer = &(matrix.getValueFast(0, 0));
         ValueType* resultValuePointer = &(resultMatrix.getValueFast(0, 0));
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
         {
@@ -823,7 +825,7 @@ protected:
         const ValuePointerType2* valuePointer = &(matrix.getValueFast(0, 0));
         ValueType* resultValuePointer = &(resultMatrix.getValueFast(0, 0));
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
         {
@@ -908,11 +910,11 @@ protected:
         const ValuePointerType2* rightPointer = &(matrix.getValueFast(0, 0));
         ValueType* resultPointer = &(resultMatrix.getValueFast(0, 0));
 
-        uint32_t i = 0;
+        std::uint32_t i = 0;
 
-        const uint32_t resultColumns = resultMatrix.getColumns();
+        const std::uint32_t resultColumns = resultMatrix.getColumns();
 
-        uint32_t rightPointerIncrement = resultColumns;
+        std::uint32_t rightPointerIncrement = resultColumns;
 
         if (matrix.getColumnJump() != 0)
         {
@@ -921,14 +923,14 @@ protected:
         
         while (i < myRows)
         {
-            uint32_t j = 0;
+            std::uint32_t j = 0;
 
             while (j < resultColumns)
             {
                 leftPointer = &(getValueFast(i, 0));
                 rightPointer = &(matrix.getValueFast(0, j));
 
-                uint32_t columns = myColumns;
+                std::uint32_t columns = myColumns;
                 ValueType temp = 0;
 
                 // Loop
@@ -958,9 +960,9 @@ protected:
         const ValuePointerType2* rightPointer = &(matrix.getValueFast(0, 0));
         ValueType* resultPointer = &(resultMatrix.getValueFast(0, 0));
 
-        uint32_t i = 0;
+        std::uint32_t i = 0;
 
-        uint32_t rightPointerIncrement = 1;
+        std::uint32_t rightPointerIncrement = 1;
 
         if (matrix.getColumnJump() != 0)
         {
@@ -972,7 +974,7 @@ protected:
             leftPointer = &(getValueFast(i, 0));
             rightPointer = &(matrix.getValueFast(0, 0));
 
-            int32_t rowSize = (int32_t) myColumns;
+            std::int32_t rowSize = (int32_t) myColumns;
             ValueType temp = 0;
 
             // Loop
@@ -997,7 +999,7 @@ protected:
         const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -1023,7 +1025,7 @@ protected:
     {
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -1052,7 +1054,7 @@ protected:
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
         const ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
         {
@@ -1099,7 +1101,7 @@ protected:
         const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -1125,7 +1127,7 @@ protected:
     {
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -1154,7 +1156,7 @@ protected:
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
         const ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
         {
@@ -1201,7 +1203,7 @@ protected:
         const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -1227,7 +1229,7 @@ protected:
     {
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -1267,7 +1269,7 @@ protected:
         ValuePointerType* myValuePointer = &(getValueFast(0, 0));
         const ValuePointerType* valuePointer = values;
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if (myColumnJump == 0)
         {
@@ -1295,7 +1297,7 @@ protected:
         ValuePointerType* myValuePointer = &(getValueFast(0, 0));
         const ValuePointerType2* valuePointer = &(matrix.getValueFast(0, 0));
 
-        int32_t i = myRows * myColumns;
+        std::int32_t i = myRows * myColumns;
 
         if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
         {
@@ -1336,12 +1338,12 @@ protected:
 
     //--------------------------------------------------------------------------
     void getRow(MatrixBase<ValueType>& matrix,
-                const uint32_t rowIndex) const
+                const std::uint32_t rowIndex) const
     {
         const ValuePointerType* myValuePointer = &(getValueFast(rowIndex, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        uint32_t i = myColumns;
+        std::uint32_t i = myColumns;
 
         while (i--)
         {
@@ -1351,13 +1353,13 @@ protected:
 
     //--------------------------------------------------------------------------
     void getColumn(MatrixBase<ValueType>& matrix,
-                   const uint32_t columnIndex) const
+                   const std::uint32_t columnIndex) const
     {
         const ValuePointerType* myValuePointer =
                                                 &(getValueFast(0, columnIndex));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        uint32_t i = myRows;
+        std::uint32_t i = myRows;
 
         if (myColumnJump == 0)
         {
@@ -1384,7 +1386,7 @@ protected:
     {
         const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        uint32_t i = 0;
+        std::uint32_t i = 0;
 
         if (myColumnJump == 0)
         {
@@ -1416,7 +1418,7 @@ protected:
                          const MatrixBase<ValueType, ValuePointerType2>& matrix,
                          MatrixBase<ValueType>& resultMatrix)
     {
-        uint32_t i = 0;
+        std::uint32_t i = 0;
 
         while (i++ < myColumns)
         {
@@ -1464,7 +1466,7 @@ protected:
 
         ValueType result = 0;
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
         {
@@ -1515,7 +1517,7 @@ protected:
 
         ValueType result = 0;
 
-        uint32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
         {
@@ -1580,13 +1582,13 @@ private:
     // Private data members
     //--------------------------------------------------------------------------
 
-    const uint32_t myRows;
+    const std::uint32_t myRows;
 
-    const uint32_t myColumns;
+    const std::uint32_t myColumns;
 
     ValuePointerType* myValuesPointer;
 
-    const uint32_t myColumnJump;
+    const std::uint32_t myColumnJump;
 };
 
 }; // namespace Matrice

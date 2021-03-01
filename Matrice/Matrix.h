@@ -36,6 +36,8 @@
 // Include files
 //------------------------------------------------------------------------------
 
+#include <cstdint>
+
 #include <Matrice/Matrice.h>
 #include <Matrice/MatrixInterface.h>
 
@@ -60,16 +62,16 @@ namespace Matrice
 /// @tparam StorageOption Where the matrix array storage should be placed.
 ///
 template <typename ValueType,
-          uint32_t N,
-          uint32_t M,
+          std::uint32_t N,
+          std::uint32_t M,
           Storage StorageOption = STORAGE_INTERNAL>
 class Matrix : public MatrixInterface<ValueType, N, M>
 {
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = N;
-    static const uint32_t columns = M;
+    static const std::uint32_t rows = N;
+    static const std::uint32_t columns = M;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -162,15 +164,15 @@ private:
 /// @tparam N Number of matrix rows.
 /// @tparam M Number of matrix columns.
 ///
-template <typename ValueType, uint32_t N, uint32_t M>
+template <typename ValueType, std::uint32_t N, std::uint32_t M>
 class Matrix<ValueType, N, M, STORAGE_EXTERNAL> :
                                          public MatrixInterface<ValueType, N, M>
 {
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = N;
-    static const uint32_t columns = M;
+    static const std::uint32_t rows = N;
+    static const std::uint32_t columns = M;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -183,10 +185,10 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM>
+    template <std::uint32_t ParentN, std::uint32_t ParentM>
     Matrix(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
-           const uint32_t row,
-           const uint32_t column) :
+           const std::uint32_t row,
+           const std::uint32_t column) :
         MatrixInterface<ValueType, N, M>(matrix, row, column)
     {
     }
@@ -248,15 +250,15 @@ public:
 /// @tparam N Number of matrix rows.
 /// @tparam M Number of matrix columns.
 ///
-template <typename ValueType, uint32_t N, uint32_t M>
+template <typename ValueType, std::uint32_t N, std::uint32_t M>
 class Matrix<ValueType, N, M, STORAGE_CONSTANT> :
                         public MatrixInterface<ValueType, N, M, const ValueType>
 {
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = N;
-    static const uint32_t columns = M;
+    static const std::uint32_t rows = N;
+    static const std::uint32_t columns = M;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -269,11 +271,13 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, typename ValuePointerType>
+    template <std::uint32_t ParentN,
+              std::uint32_t ParentM,
+              typename ValuePointerType>
     Matrix(
          MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
-         const uint32_t row,
-         const uint32_t column) :
+         const std::uint32_t row,
+         const std::uint32_t column) :
         MatrixInterface<ValueType, N, M, const ValueType>(matrix, row, column)
     {
     }
@@ -314,15 +318,15 @@ public:
 /// @tparam N Number of matrix rows and columns.
 /// @tparam StorageOption Where the matrix array storage should be placed.
 ///
-template <typename ValueType, uint32_t N, Storage StorageOption>
+template <typename ValueType, std::uint32_t N, Storage StorageOption>
 class Matrix<ValueType, N, N, StorageOption> :
                                          public MatrixInterface<ValueType, N, N>
 {
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = N;
-    static const uint32_t columns = N;
+    static const std::uint32_t rows = N;
+    static const std::uint32_t columns = N;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -423,15 +427,15 @@ private:
 /// @tparam N Number of matrix rows and columns
 /// @tparam StorageOption Where the matrix array storage should be placed.
 ///
-template <typename ValueType, uint32_t N>
+template <typename ValueType, std::uint32_t N>
 class Matrix<ValueType, N, N, STORAGE_EXTERNAL> :
                                          public MatrixInterface<ValueType, N, N>
 {
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = N;
-    static const uint32_t columns = N;
+    static const std::uint32_t rows = N;
+    static const std::uint32_t columns = N;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -444,10 +448,10 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM>
+    template <std::uint32_t ParentN, std::uint32_t ParentM>
     Matrix(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
-           const uint32_t row,
-           const uint32_t column) :
+           const std::uint32_t row,
+           const std::uint32_t column) :
         MatrixInterface<ValueType, N, N>(matrix, row, column)
     {
     }
@@ -509,15 +513,15 @@ public:
 /// @tparam N Number of matrix rows.
 /// @tparam M Number of matrix columns.
 ///
-template <typename ValueType, uint32_t N>
+template <typename ValueType, std::uint32_t N>
 class Matrix<ValueType, N, N, STORAGE_CONSTANT> :
                         public MatrixInterface<ValueType, N, N, const ValueType>
 {
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = N;
-    static const uint32_t columns = N;
+    static const std::uint32_t rows = N;
+    static const std::uint32_t columns = N;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -530,11 +534,13 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, typename ValuePointerType>
+    template <std::uint32_t ParentN,
+              std::uint32_t ParentM,
+              typename ValuePointerType>
     Matrix(
          MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
-         const uint32_t row,
-         const uint32_t column) :
+         const std::uint32_t row,
+         const std::uint32_t column) :
         MatrixInterface<ValueType, N, N, const ValueType>(matrix, row, column)
     {
     }
@@ -593,7 +599,7 @@ public:
 /// @tparam N Number of matrix rows.
 /// @tparam StorageOption Where the matrix array storage should be placed.
 ///
-template <typename ValueType, uint32_t N, Storage StorageOption>
+template <typename ValueType, std::uint32_t N, Storage StorageOption>
 class Matrix<ValueType, N, 1, StorageOption> :
                                          public MatrixInterface<ValueType, N, 1>
 {
@@ -714,7 +720,7 @@ private:
 /// float, uint32_t, etc.).
 /// @tparam N Number of matrix rows.
 ///
-template <typename ValueType, uint32_t N>
+template <typename ValueType, std::uint32_t N>
 class Matrix<ValueType, N, 1, STORAGE_EXTERNAL> :
                                          public MatrixInterface<ValueType, N, 1>
 {
@@ -731,10 +737,10 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM>
+    template <std::uint32_t ParentN, std::uint32_t ParentM>
     Matrix(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
-           const uint32_t row,
-           const uint32_t column) :
+           const std::uint32_t row,
+           const std::uint32_t column) :
         MatrixInterface<ValueType, N, 1>(matrix, row, column)
     {
     }
@@ -823,15 +829,15 @@ public:
 /// float, uint32_t, etc.).
 /// @tparam N Number of matrix rows.
 ///
-template <typename ValueType, uint32_t N>
+template <typename ValueType, std::uint32_t N>
 class Matrix<ValueType, N, 1, STORAGE_CONSTANT> :
                         public MatrixInterface<ValueType, N, 1, const ValueType>
 {
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = N;
-    static const uint32_t columns = 1;
+    static const std::uint32_t rows = N;
+    static const std::uint32_t columns = 1;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -844,11 +850,13 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, typename ValuePointerType>
+    template <std::uint32_t ParentN,
+              std::uint32_t ParentM,
+              typename ValuePointerType>
     Matrix(
          MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
-         const uint32_t row,
-         const uint32_t column) :
+         const std::uint32_t row,
+         const std::uint32_t column) :
         MatrixInterface<ValueType, N, 1, const ValueType>(matrix, row, column)
     {
     }
@@ -1071,10 +1079,10 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM>
+    template <std::uint32_t ParentN, std::uint32_t ParentM>
     Matrix(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
-           const uint32_t row,
-           const uint32_t column) :
+           const std::uint32_t row,
+           const std::uint32_t column) :
         MatrixInterface<ValueType, 3, 1>(matrix, row, column)
     {
     }
@@ -1206,8 +1214,8 @@ class Matrix<ValueType, 3, 1, STORAGE_CONSTANT> :
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = 3;
-    static const uint32_t columns = 1;
+    static const std::uint32_t rows = 3;
+    static const std::uint32_t columns = 1;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -1220,11 +1228,13 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, typename ValuePointerType>
+    template <std::uint32_t ParentN,
+              std::uint32_t ParentM,
+              typename ValuePointerType>
     Matrix(
          MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
-         const uint32_t row,
-         const uint32_t column) :
+         const std::uint32_t row,
+         const std::uint32_t column) :
         MatrixInterface<ValueType, 3, 1, const ValueType>(matrix, row, column)
     {
     }
@@ -1343,8 +1353,8 @@ class Matrix<ValueType, 1, 1, StorageOption> :
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = 1;
-    static const uint32_t columns = 1;
+    static const std::uint32_t rows = 1;
+    static const std::uint32_t columns = 1;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -1458,8 +1468,8 @@ class Matrix<ValueType, 1, 1, STORAGE_EXTERNAL> :
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = 1;
-    static const uint32_t columns = 1;
+    static const std::uint32_t rows = 1;
+    static const std::uint32_t columns = 1;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -1531,8 +1541,8 @@ class Matrix<ValueType, 1, 1, STORAGE_CONSTANT> :
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = 1;
-    static const uint32_t columns = 1;
+    static const std::uint32_t rows = 1;
+    static const std::uint32_t columns = 1;
 
     //--------------------------------------------------------------------------
     // Public constructors

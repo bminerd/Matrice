@@ -52,10 +52,10 @@ namespace Matrice
 // Forward class declarations
 //------------------------------------------------------------------------------
 
-template <typename ValueType, uint32_t N, uint32_t M, Storage>
+template <typename ValueType, std::uint32_t N, std::uint32_t M, Storage>
 class Matrix;
 
-template <typename ValueType, uint32_t N, Storage>
+template <typename ValueType, std::uint32_t N, Storage>
 class Vector;
 
 //------------------------------------------------------------------------------
@@ -75,8 +75,8 @@ class Vector;
 /// performance gains are ~10x versus using for-loops and standard indexing.
 ///
 template <typename ValueType,
-          uint32_t N,
-          uint32_t M,
+          std::uint32_t N,
+          std::uint32_t M,
           typename ValuePointerType = ValueType>
 class MatrixInterface : public MatrixBase<ValueType, ValuePointerType>
 {
@@ -149,14 +149,15 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    ValueType& operator()(const uint32_t row, const uint32_t column)
+    ValueType& operator()(const std::uint32_t row, const std::uint32_t column)
     {
         return MatrixBase<ValueType, ValuePointerType>::getValueFast(row,
                                                                      column);
     }
 
     //--------------------------------------------------------------------------
-    const ValueType& operator()(const uint32_t row, const uint32_t column) const
+    const ValueType& operator()(const std::uint32_t row,
+                                const std::uint32_t column) const
     {
         return MatrixBase<ValueType, ValuePointerType>::getValueFast(row,
                                                                      column);
@@ -350,7 +351,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, 1, N, STORAGE_INTERNAL> getRow(const uint32_t row) const
+    Matrix<ValueType, 1, N, STORAGE_INTERNAL> getRow(
+                                                  const std::uint32_t row) const
     {
         Matrix<ValueType, 1, N, STORAGE_INTERNAL> matrix;
 
@@ -360,14 +362,14 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, 1, N, STORAGE_INTERNAL> row(const uint32_t row) const
+    Matrix<ValueType, 1, N, STORAGE_INTERNAL> row(const std::uint32_t row) const
     {
         return getRow(row);
     }
 
     //--------------------------------------------------------------------------
     Matrix<ValueType, N, 1, STORAGE_INTERNAL> getColumn(
-                                                    const uint32_t column) const
+                                               const std::uint32_t column) const
     {
         Matrix<ValueType, N, 1, STORAGE_INTERNAL> matrix;
 
@@ -377,7 +379,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, N, 1, STORAGE_INTERNAL> col(const uint32_t column) const
+    Matrix<ValueType, N, 1, STORAGE_INTERNAL> col(
+                                               const std::uint32_t column) const
     {
         return getColumn(column);
     }
@@ -440,10 +443,10 @@ protected:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM>
+    template <uint32_t ParentN, std::uint32_t ParentM>
     MatrixInterface(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
-                    const uint32_t row,
-                    const uint32_t column) :
+                    const std::uint32_t row,
+                    const std::uint32_t column) :
         MatrixBase<ValueType, ValuePointerType>(
                                          N,
                                          M,

@@ -36,6 +36,8 @@
 // Include files
 //------------------------------------------------------------------------------
 
+#include <cstdint>
+
 #include <Matrice/Matrice.h>
 #include <Matrice/Matrix.h>
 
@@ -59,15 +61,15 @@ namespace Matrice
 /// @tparam StorageOption Where the vector array storage should be placed.
 ///
 template <typename ValueType,
-          uint32_t N,
+          std::uint32_t N,
           Storage StorageOption = STORAGE_INTERNAL>
 class Vector : public Matrix<ValueType, N, 1, StorageOption>
 {
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = N;
-    static const uint32_t columns = 1;
+    static const std::uint32_t rows = N;
+    static const std::uint32_t columns = 1;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -161,13 +163,13 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    ValueType& operator()(const uint32_t row)
+    ValueType& operator()(const std::uint32_t row)
     {
         return getValue(row);
     }
 
     //--------------------------------------------------------------------------
-    const ValueType& operator()(const uint32_t row) const
+    const ValueType& operator()(const std::uint32_t row) const
     {
         return getValue(row);
     }
@@ -179,20 +181,20 @@ public:
     using MatrixBase<ValueType>::setValues;
 
     //--------------------------------------------------------------------------
-    ValueType& getValue(const uint32_t row)
+    ValueType& getValue(const std::uint32_t row)
     {
         return MatrixBase<ValueType>::getValue(row, 0);
     }
 
     //
     //--------------------------------------------------------------------------
-    const ValueType& getValue(const uint32_t row) const
+    const ValueType& getValue(const std::uint32_t row) const
     {
         return MatrixBase<ValueType>::getValue(row, 0);
     }
 
     //--------------------------------------------------------------------------
-    void setValue(const uint32_t row, const ValueType value)
+    void setValue(const std::uint32_t row, const ValueType value)
     {
         return MatrixBase<ValueType>::setValue(row, 0, value);
     }
@@ -211,15 +213,15 @@ public:
 /// float, uint32_t, etc.).
 /// @tparam N Number of vector rows.
 ///
-template <typename ValueType, uint32_t N>
+template <typename ValueType, std::uint32_t N>
 class Vector<ValueType, N, STORAGE_EXTERNAL> :
                                 public Matrix<ValueType, N, 1, STORAGE_EXTERNAL>
 {
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = N;
-    static const uint32_t columns = 1;
+    static const std::uint32_t rows = N;
+    static const std::uint32_t columns = 1;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -233,17 +235,18 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM>
+    template <std::uint32_t ParentN, std::uint32_t ParentM>
     Vector(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
-           const uint32_t row,
-           const uint32_t column) :
+           const std::uint32_t row,
+           const std::uint32_t column) :
         Matrix<ValueType, N, 1, STORAGE_EXTERNAL>(matrix, row, column)
     {
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN>
-    Vector(MatrixInterface<ValueType, ParentN, 1>& vector, const uint32_t row) :
+    template <std::uint32_t ParentN>
+    Vector(MatrixInterface<ValueType, ParentN, 1>& vector,
+           const std::uint32_t row) :
         Matrix<ValueType, N, 1, STORAGE_EXTERNAL>(vector, row, 0)
     {
     }
@@ -312,13 +315,13 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    ValueType& operator()(const uint32_t row)
+    ValueType& operator()(const std::uint32_t row)
     {
         return getValue(row);
     }
 
     //--------------------------------------------------------------------------
-    const ValueType& operator()(const uint32_t row) const
+    const ValueType& operator()(const std::uint32_t row) const
     {
         return getValue(row);
     }
@@ -330,20 +333,20 @@ public:
     using MatrixBase<ValueType>::setValues;
 
     //--------------------------------------------------------------------------
-    ValueType& getValue(const uint32_t row)
+    ValueType& getValue(const std::uint32_t row)
     {
         return MatrixBase<ValueType>::getValue(row, 0);
     }
 
     //
     //--------------------------------------------------------------------------
-    const ValueType& getValue(const uint32_t row) const
+    const ValueType& getValue(const std::uint32_t row) const
     {
         return MatrixBase<ValueType>::getValue(row, 0);
     }
 
     //--------------------------------------------------------------------------
-    void setValue(const uint32_t row, const ValueType value)
+    void setValue(const std::uint32_t row, const ValueType value)
     {
         return MatrixBase<ValueType>::setValue(row, 0, value);
     }
@@ -363,15 +366,15 @@ public:
 /// float, uint32_t, etc.).
 /// @tparam N Number of vector rows.
 ///
-template <typename ValueType, uint32_t N>
+template <typename ValueType, std::uint32_t N>
 class Vector<ValueType, N, STORAGE_CONSTANT> :
                                 public Matrix<ValueType, N, 1, STORAGE_CONSTANT>
 {
 public:
 
     typedef ValueType ValueT;
-    static const uint32_t rows = N;
-    static const uint32_t columns = 1;
+    static const std::uint32_t rows = N;
+    static const std::uint32_t columns = 1;
 
     //--------------------------------------------------------------------------
     // Public constructors
@@ -385,19 +388,21 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, uint32_t ParentM, typename ValuePointerType>
+    template <std::uint32_t ParentN,
+              std::uint32_t ParentM,
+              typename ValuePointerType>
     Vector(
          MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
-         const uint32_t row,
-         const uint32_t column) :
+         const std::uint32_t row,
+         const std::uint32_t column) :
         Matrix<ValueType, N, 1, STORAGE_CONSTANT>(matrix, row, column)
     {
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, typename ValuePointerType>
+    template <std::uint32_t ParentN, typename ValuePointerType>
     Vector(MatrixInterface<ValueType, ParentN, 1, ValuePointerType>& vector,
-           const uint32_t row) :
+           const std::uint32_t row) :
         Matrix<ValueType, N, 1, STORAGE_CONSTANT>(vector, row, 0)
     {
     }
@@ -467,13 +472,13 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    ValueType& operator()(const uint32_t row)
+    ValueType& operator()(const std::uint32_t row)
     {
         return getValue(row);
     }
 
     //--------------------------------------------------------------------------
-    const ValueType& operator()(const uint32_t row) const
+    const ValueType& operator()(const std::uint32_t row) const
     {
         return getValue(row);
     }
@@ -483,14 +488,14 @@ public:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    ValueType& getValue(const uint32_t row)
+    ValueType& getValue(const std::uint32_t row)
     {
         return MatrixBase<ValueType, const ValueType>::getValue(row, 0);
     }
 
     //
     //--------------------------------------------------------------------------
-    const ValueType& getValue(const uint32_t row) const
+    const ValueType& getValue(const std::uint32_t row) const
     {
         return MatrixBase<ValueType, const ValueType>::getValue(row, 0);
     }
