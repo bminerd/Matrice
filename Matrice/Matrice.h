@@ -59,6 +59,8 @@ namespace Matrice
     // Variables
     //--------------------------------------------------------------------------
 
+    static const char* matriceVersion = "1.0.0";
+
     static PrintCallback printCallback = 0;
 
     //--------------------------------------------------------------------------
