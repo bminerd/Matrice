@@ -18,7 +18,9 @@ Change Log entries must follow the format:
 
 These issues have been fully implemented and merged into develop.
 
-* `[LABEL]` Description of changes. [Resolves #issue].
+### v1.0.0
+
+Released: 2021-03-08
 
 * `[BUG FIX]` Fixed submatrix traversal bug in operatorMultiplyMBy1() and simplified logical flow. [Resolves #43].
 * `[FEATURE]` Improved operatorMultiplyMByM2() speed of execution. [Resolves #35].
