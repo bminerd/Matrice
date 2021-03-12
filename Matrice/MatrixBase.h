@@ -974,7 +974,7 @@ protected:
             leftPointer = &(getValueFast(i, 0));
             rightPointer = &(matrix.getValueFast(0, 0));
 
-            std::int32_t rowSize = (int32_t) myColumns;
+            std::int32_t rowSize = (std::int32_t) myColumns;
             ValueType temp = 0;
 
             // Loop

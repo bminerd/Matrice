@@ -297,7 +297,7 @@ public:
 
     // Multiplication operator (this * M by M2)
     //--------------------------------------------------------------------------
-    template <uint32_t M2, typename ValuePointerType2>
+    template <std::uint32_t M2, typename ValuePointerType2>
     Matrix<ValueType, N, M2, STORAGE_INTERNAL> operator*(
         const MatrixInterface<ValueType, M, M2, ValuePointerType2>& matrix)
                                                                            const
@@ -443,7 +443,7 @@ protected:
     }
 
     //--------------------------------------------------------------------------
-    template <uint32_t ParentN, std::uint32_t ParentM>
+    template <std::uint32_t ParentN, std::uint32_t ParentM>
     MatrixInterface(MatrixInterface<ValueType, ParentN, ParentM>& matrix,
                     const std::uint32_t row,
                     const std::uint32_t column) :
