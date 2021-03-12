@@ -18,6 +18,7 @@ Change Log entries must follow the format:
 
 These issues have been fully implemented and merged into develop.
 
+* `[BUG FIX]` Fixed more missing std:: prefix for int/uint types required by some compilers. [Resolves #46].
 * `[BUG FIX]` Fixed missing std:: prefix for int/uint types required by some compilers. [Resolves #45].
 
 ### v1.0.0
