@@ -237,6 +237,10 @@ public:
 
     static bool transposeConstantTest();
 
+    static bool submatrixTransposeExternalTest();
+
+    static bool submatrixTransposeConstantTest();
+
     static bool magnitudeInternalTest();
 
     static bool magnitudeExternalTest();

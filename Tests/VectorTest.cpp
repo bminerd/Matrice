@@ -111,6 +111,8 @@ const UnitTest::TestCallbackFunction VectorTest::myTestCallbackFunctions[] =
     &VectorTest::transposeInternalTest,
     &VectorTest::transposeExternalTest,
     &VectorTest::transposeConstantTest,
+    &VectorTest::submatrixTransposeExternalTest,
+    &VectorTest::submatrixTransposeConstantTest,
     &VectorTest::magnitudeInternalTest,
     &VectorTest::magnitudeExternalTest,
     &VectorTest::magnitudeConstantTest,
@@ -2808,6 +2810,78 @@ bool VectorTest::transposeConstantTest()
 
     Matrix<float, 1, 3> result1 = vector.transpose();
     Matrix<float, 1, 3> result2 = vector.T();
+
+    const float expectedValues[1][3] =
+    {
+        { 1.0, 2.0, 3.0 }
+    };
+
+    Matrix<float, 1, 3> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool VectorTest::submatrixTransposeExternalTest()
+{
+    // Setup / Operation
+
+    const float values[6] =
+    {
+        0.0,
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        0.0
+    };
+
+    Vector<float, 6> vector(values);
+    Vector<float, 3, STORAGE_EXTERNAL> subvector(vector, 2);
+
+    // Test
+
+    Matrix<float, 1, 3> result1 = subvector.transpose();
+    Matrix<float, 1, 3> result2 = subvector.T();
+
+    const float expectedValues[1][3] =
+    {
+        { 1.0, 2.0, 3.0 }
+    };
+
+    Matrix<float, 1, 3> expected(expectedValues);
+    const bool compare1 = (result1 == expected);
+    const bool compare2 = (result2 == expected);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
+                            UNIT_TEST_CASE_EQUAL(compare2, true));
+}
+
+//------------------------------------------------------------------------------
+bool VectorTest::submatrixTransposeConstantTest()
+{
+    // Setup / Operation
+
+    const float values[6] =
+    {
+        0.0,
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        0.0
+    };
+
+    Vector<float, 6> vector(values);
+    const Vector<float, 3, STORAGE_CONSTANT> subvector(vector, 2);
+
+    // Test
+
+    Matrix<float, 1, 3> result1 = subvector.transpose();
+    Matrix<float, 1, 3> result2 = subvector.T();
 
     const float expectedValues[1][3] =
     {
