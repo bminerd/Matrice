@@ -1384,31 +1384,25 @@ protected:
     //--------------------------------------------------------------------------
     void transpose(MatrixBase<ValueType>& matrix) const
     {
-        const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
+        const ValuePointerType* thisValuePointer = 0;
 
         std::uint32_t i = 0;
 
-        if (myColumnJump == 0)
+        while (i < myRows)
         {
-            while (i != (myRows * myColumns))
+            std::uint32_t j = 0;
+
+            // Submatrix column jumping is handled by getValueFast()
+            thisValuePointer = &(getValueFast(i, 0));
+
+            while (j < myColumns)
             {
-                matrix.getValueFast((i % myColumns), (i / myColumns)) =
-                                                          (*thisValuePointer++);
+                matrix.getValueFast(j, i) = (*thisValuePointer++);
 
-                i++;
+                j++;
             }
-        }
-        else
-        {
-            while (i != (myRows * myColumns))
-            {
-                matrix.getValueFast((i % myColumns), (i / myColumns)) =
-                                                            (*thisValuePointer);
 
-                incrementValuePointer(thisValuePointer, i);
-
-                i++;
-            }
+            i++;
         }
     }
 
