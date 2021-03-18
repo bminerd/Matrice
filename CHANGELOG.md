@@ -18,6 +18,7 @@ Change Log entries must follow the format:
 
 These issues have been fully implemented and merged into develop.
 
+* `[QUALITY]` Improved toString() output readability. [Resolves #40].
 * `[BUG FIX]` Fixed submatrix traversal bug in transpose() and simplified control flow. [Resolves #47].
 * `[BUG FIX]` Fixed more missing std:: prefix for int/uint types required by some compilers. [Resolves #46].
 * `[BUG FIX]` Fixed missing std:: prefix for int/uint types required by some compilers. [Resolves #45].
