@@ -488,26 +488,12 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    void toString(char* string, const std::uint8_t precision = 6) const
+    void toString(char* string, const std::uint8_t precision = 10) const
     {
-        int max = (int) (maxValue());
-        int min = (int) (minValue());
-
-        std::uint32_t maxWidth = std::sprintf(string, "%i", max);
-        std::uint32_t minWidth = std::sprintf(string, "%i", min);
-
-        std::uint32_t width = precision + 2;
-
-        if (maxWidth > minWidth)
-        {
-            width += maxWidth;
-        }
-        else
-        {
-            width += minWidth;
-        }
+        std::uint32_t width = precision + 5;
 
         std::uint32_t nCharacters = 0;
+        nCharacters += std::sprintf(&(string[nCharacters]), "\n");
 
         for (int i = 0; i < myRows; i++)
         {
@@ -516,9 +502,8 @@ public:
             for (int j = 0; j < myColumns; j++)
             {
                 nCharacters += std::sprintf(&(string[nCharacters]),
-                                            "%*.*g",
+                                            "%*g",
                                             width,
-                                            precision,
                                             getValueFast(i, j));
             }
 
