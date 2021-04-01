@@ -89,7 +89,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Vector(const MatrixInterface<ValueType, N, 1>& matrix) :
+    template <typename ValuePointerType>
+    Vector(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
         Matrix<ValueType, N, 1, StorageOption>(matrix)
     {
     }
@@ -145,8 +146,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Vector<ValueType, N, StorageOption>& operator=(
-                                 const MatrixInterface<ValueType, N, 1>& matrix)
+               const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix)
     {
         Matrix<ValueType, N, 1, StorageOption>::operator=(matrix);
 
@@ -252,7 +254,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Vector(const MatrixInterface<ValueType, N, 1>& matrix) :
+    template <typename ValuePointerType>
+    Vector(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
         Matrix<ValueType, N, 1, STORAGE_EXTERNAL>(matrix)
     {
     }
@@ -297,8 +300,9 @@ public:
     
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Vector<ValueType, N, STORAGE_EXTERNAL>& operator=(
-                                 const MatrixInterface<ValueType, N, 1>& matrix)
+               const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix)
     {
         Matrix<ValueType, N, 1, STORAGE_EXTERNAL>::operator=(matrix);
 
@@ -408,7 +412,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Vector(const MatrixInterface<ValueType, N, 1>& matrix) :
+    template <typename ValuePointerType>
+    Vector(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
         Matrix<ValueType, N, 1, STORAGE_CONSTANT>(matrix)
     {
     }
@@ -453,8 +458,9 @@ public:
     
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Vector<ValueType, N, STORAGE_CONSTANT>& operator=(
-                                 const MatrixInterface<ValueType, N, 1>& matrix)
+               const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix)
     {
         Matrix<ValueType, N, 1, STORAGE_CONSTANT>::operator=(matrix);
 

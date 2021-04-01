@@ -91,7 +91,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixInterface<ValueType, N, M>& matrix) :
+    template <typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, M>(matrix)
     {
     }
@@ -129,8 +130,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, N, M, StorageOption>& operator=(
-                                 const MatrixInterface<ValueType, N, M>& matrix)
+               const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix)
     {
         MatrixInterface<ValueType, N, M>::operator=(matrix);
 
@@ -194,7 +196,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixInterface<ValueType, N, M>& matrix) :
+    template <typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, M>(matrix)
     {
     }
@@ -222,8 +225,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, N, M, STORAGE_EXTERNAL>& operator=(
-                                 const MatrixInterface<ValueType, N, M>& matrix)
+               const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix)
     {
         MatrixInterface<ValueType, N, M>::operator=(matrix);
 
@@ -240,7 +244,6 @@ public:
         return (*this);
     }
 };
-
 
 ///
 /// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
@@ -300,8 +303,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, N, M, STORAGE_CONSTANT>& operator=(
-                                 const MatrixInterface<ValueType, N, M>& matrix)
+               const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix)
     {
         MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
                                                                         matrix);
@@ -346,7 +350,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixInterface<ValueType, N, N>& matrix) :
+    template <typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, N, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, N>(myValues, matrix)
     {
     }
@@ -391,8 +396,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, N, N, StorageOption>& operator=(
-                                 const MatrixInterface<ValueType, N, N>& matrix)
+               const MatrixInterface<ValueType, N, N, ValuePointerType>& matrix)
     {
         MatrixInterface<ValueType, N, N>::operator=(matrix);
 
@@ -457,7 +463,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixInterface<ValueType, N, N>& matrix) :
+    template <typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, N, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, N>(matrix)
     {
     }
@@ -486,8 +493,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, N, N, STORAGE_EXTERNAL>& operator=(
-                                 const MatrixInterface<ValueType, N, N>& matrix)
+               const MatrixInterface<ValueType, N, N, ValuePointerType>& matrix)
     {
         MatrixInterface<ValueType, N, N>::operator=(matrix);
 
@@ -581,8 +589,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, N, N, STORAGE_CONSTANT>& operator=(
-                                 const MatrixInterface<ValueType, N, N>& matrix)
+               const MatrixInterface<ValueType, N, N, ValuePointerType>& matrix)
     {
         MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
                                                                         matrix);
@@ -623,7 +632,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixInterface<ValueType, N, 1>& matrix) :
+    template <typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, 1>(matrix)
     {
     }
@@ -667,8 +677,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, N, 1, StorageOption>& operator=(
-                                 const MatrixInterface<ValueType, N, 1>& matrix)
+               const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix)
     {
         MatrixInterface<ValueType, N, 1>::operator=(matrix);
 
@@ -746,7 +757,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixInterface<ValueType, N, 1>& matrix) :
+    template <typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, 1>(matrix)
     {
     }
@@ -784,8 +796,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, N, 1, STORAGE_EXTERNAL>& operator=(
-                                 const MatrixInterface<ValueType, N, 1>& matrix)
+               const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix)
     {
         MatrixInterface<ValueType, N, 1>::operator=(matrix);
 
@@ -879,8 +892,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, N, 1, STORAGE_CONSTANT>& operator=(
-                                 const MatrixInterface<ValueType, N, 1>& matrix)
+               const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix)
     {
         MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
                                                                         matrix);
@@ -974,8 +988,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, 3, 1, StorageOption>& operator=(
-                                 const MatrixInterface<ValueType, 3, 1>& matrix)
+               const MatrixInterface<ValueType, 3, 1, ValuePointerType>& matrix)
     {
         MatrixInterface<ValueType, 3, 1>::operator=(matrix);
 
@@ -1088,7 +1103,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixInterface<ValueType, 3, 1>& matrix) :
+    template <typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, 3, 1, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, 3, 1>(matrix)
     {
     }
@@ -1126,8 +1142,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, 3, 1, STORAGE_EXTERNAL>& operator=(
-                                 const MatrixInterface<ValueType, 3, 1>& matrix)
+               const MatrixInterface<ValueType, 3, 1, ValuePointerType>& matrix)
     {
         MatrixInterface<ValueType, 3, 1>::operator=(matrix);
 
@@ -1381,7 +1398,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixInterface<ValueType, 1, 1>& matrix) :
+    template <typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, 1, 1, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, 1, 1>(myValues, matrix)
     {
     }
@@ -1415,8 +1433,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, 1, 1, StorageOption>& operator=(
-                                 const MatrixInterface<ValueType, 1, 1>& matrix)
+               const MatrixInterface<ValueType, 1, 1, ValuePointerType>& matrix)
     {
         MatrixInterface<ValueType, 1, 1>::operator=(matrix);
 
@@ -1482,7 +1501,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixInterface<ValueType, 1, 1>& matrix) :
+    template <typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, 1, 1, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, 1, 1>(matrix)
     {
     }
@@ -1499,8 +1519,9 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <typename ValuePointerType>
     Matrix<ValueType, 1, 1, STORAGE_EXTERNAL>& operator=(
-                                 const MatrixInterface<ValueType, 1, 1>& matrix)
+               const MatrixInterface<ValueType, 1, 1, ValuePointerType>& matrix)
     {
         MatrixInterface<ValueType, 1, 1>::operator=(matrix);
 
