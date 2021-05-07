@@ -96,15 +96,7 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
-    Vector(const Matrix<ValueType, N, 1, StorageOption2>& matrix) :
-        Matrix<ValueType, N, 1, StorageOption>(matrix)
-    {
-    }
-
-    //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
-    Vector(const Vector<ValueType, N, StorageOption2>& vector) :
+    Vector(const Vector<ValueType, N, StorageOption>& vector) :
         Matrix<ValueType, N, 1, StorageOption>(vector)
     {
     }

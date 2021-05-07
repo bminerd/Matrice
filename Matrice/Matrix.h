@@ -93,13 +93,12 @@ public:
     //--------------------------------------------------------------------------
     template <typename ValuePointerType>
     Matrix(const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
-        MatrixInterface<ValueType, N, M>(matrix)
+        MatrixInterface<ValueType, N, M>(myValues, matrix)
     {
     }
 
     //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
-    Matrix(const Matrix<ValueType, N, M, StorageOption2>& matrix) :
+    Matrix(const Matrix<ValueType, N, M>& matrix) :
         MatrixInterface<ValueType, N, M>(myValues, matrix)
     {
     }
@@ -358,13 +357,6 @@ public:
 
     //--------------------------------------------------------------------------
     Matrix(const Matrix<ValueType, N, N>& matrix) :
-        MatrixInterface<ValueType, N, N>(myValues, matrix)
-    {
-    }
-
-    //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
-    Matrix(const Matrix<ValueType, N, N, StorageOption2>& matrix) :
         MatrixInterface<ValueType, N, N>(myValues, matrix)
     {
     }
@@ -634,19 +626,12 @@ public:
     //--------------------------------------------------------------------------
     template <typename ValuePointerType>
     Matrix(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
-        MatrixInterface<ValueType, N, 1>(matrix)
-    {
-    }
-
-    //--------------------------------------------------------------------------
-    Matrix(const Matrix<ValueType, N, 1, StorageOption>& matrix) :
         MatrixInterface<ValueType, N, 1>(myValues, matrix)
     {
     }
 
     //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
-    Matrix(const Matrix<ValueType, N, 1, StorageOption2>& matrix) :
+    Matrix(const Matrix<ValueType, N, 1, StorageOption>& matrix) :
         MatrixInterface<ValueType, N, 1>(myValues, matrix)
     {
     }
@@ -934,20 +919,14 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixInterface<ValueType, 3, 1>& matrix) :
-        MatrixInterface<ValueType, 3, 1>(matrix)
-    {
-    }
-
-    //--------------------------------------------------------------------------
-    Matrix(const Matrix<ValueType, 3, 1, StorageOption>& matrix) :
+    template <typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, 3, 1, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, 3, 1>(myValues, matrix)
     {
     }
 
     //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
-    Matrix(const Matrix<ValueType, 3, 1, StorageOption2>& matrix) :
+    Matrix(const Matrix<ValueType, 3, 1, StorageOption>& matrix) :
         MatrixInterface<ValueType, 3, 1>(myValues, matrix)
     {
     }
