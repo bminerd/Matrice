@@ -18,6 +18,7 @@ Change Log entries must follow the format:
 
 These issues have been fully implemented and merged into develop.
 
+* `[QUALITY]` Removed ambiguous constructors from Matrix and Vector. [Resolves #56].
 * `[FEATURE]` Added ValuePointerType template parameter to Matrix and Vector constructors and operator=() methods with MatrixInterface as the single parameter. [Resolves #48].
 * `[QUALITY]` Improved toString() output readability. [Resolves #40].
 * `[BUG FIX]` Fixed submatrix traversal bug in transpose() and simplified control flow. [Resolves #47].
