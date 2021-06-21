@@ -453,7 +453,7 @@ protected:
                                          &(matrix.getValue(row, column)),
                                          matrix.getColumnJump() + (ParentM - M))
     {
-        if (((row + N + 1) > ParentN) || ((column + M + 1) > ParentM))
+        if (((row + N) > ParentN) || ((column + M) > ParentM))
         {
             // Error, submatrix beyond parent matrix bounds
         }
