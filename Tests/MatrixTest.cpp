@@ -3671,26 +3671,26 @@ bool MatrixTest::getRowInternalTest()
 {
     // Setup / Operation
 
-    const float values[3][3] =
+    const float values[3][4] =
     {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
+        { 1.0, 2.0, 3.0, -1.0 },
+        { 4.0, 5.0, 6.0, -1.0 },
+        { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    Matrix<float, 3, 4> matrix(values);
 
     // Test
 
-    Matrix<float, 1, 3> result1 = matrix.getRow(1);
-    Matrix<float, 1, 3> result2 = matrix.row(1);
+    Matrix<float, 1, 4> result1 = matrix.getRow(1);
+    Matrix<float, 1, 4> result2 = matrix.row(1);
 
-    const float expectedValues[1][3] =
+    const float expectedValues[1][4] =
     {
-        { 4.0, 5.0, 6.0 }
+        { 4.0, 5.0, 6.0, -1.0 }
     };
 
-    Matrix<float, 1, 3> expected(expectedValues);
+    Matrix<float, 1, 4> expected(expectedValues);
     const bool compare1 = (result1 == expected);
     const bool compare2 = (result2 == expected);
 
@@ -3703,26 +3703,26 @@ bool MatrixTest::getRowExternalTest()
 {
     // Setup / Operation
 
-    float values[3][3] =
+    float values[3][4] =
     {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
+        { 1.0, 2.0, 3.0, -1.0 },
+        { 4.0, 5.0, 6.0, -1.0 },
+        { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+    Matrix<float, 3, 4, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
-    Matrix<float, 1, 3> result1 = matrix.getRow(1);
-    Matrix<float, 1, 3> result2 = matrix.row(1);
+    Matrix<float, 1, 4> result1 = matrix.getRow(1);
+    Matrix<float, 1, 4> result2 = matrix.row(1);
 
-    const float expectedValues[1][3] =
+    const float expectedValues[1][4] =
     {
-        { 4.0, 5.0, 6.0 }
+        { 4.0, 5.0, 6.0, -1.0 }
     };
 
-    Matrix<float, 1, 3> expected(expectedValues);
+    Matrix<float, 1, 4> expected(expectedValues);
     const bool compare1 = (result1 == expected);
     const bool compare2 = (result2 == expected);
 
@@ -3735,26 +3735,26 @@ bool MatrixTest::getRowConstantTest()
 {
     // Setup / Operation
 
-    const float values[3][3] =
+    const float values[3][4] =
     {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
+        { 1.0, 2.0, 3.0, -1.0 },
+        { 4.0, 5.0, 6.0, -1.0 },
+        { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+    const Matrix<float, 3, 4, STORAGE_CONSTANT> matrix(values);
 
     // Test
 
-    Matrix<float, 1, 3> result1 = matrix.getRow(1);
-    Matrix<float, 1, 3> result2 = matrix.row(1);
+    Matrix<float, 1, 4> result1 = matrix.getRow(1);
+    Matrix<float, 1, 4> result2 = matrix.row(1);
 
-    const float expectedValues[1][3] =
+    const float expectedValues[1][4] =
     {
-        { 4.0, 5.0, 6.0 }
+        { 4.0, 5.0, 6.0, -1.0 }
     };
 
-    Matrix<float, 1, 3> expected(expectedValues);
+    Matrix<float, 1, 4> expected(expectedValues);
     const bool compare1 = (result1 == expected);
     const bool compare2 = (result2 == expected);
 
@@ -3767,14 +3767,14 @@ bool MatrixTest::getColumnInternalTest()
 {
     // Setup / Operation
 
-    const float values[3][3] =
+    const float values[3][4] =
     {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
+        { 1.0, 2.0, 3.0, -1.0 },
+        { 4.0, 5.0, 6.0, -1.0 },
+        { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    Matrix<float, 3, 4> matrix(values);
 
     // Test
 
@@ -3801,14 +3801,14 @@ bool MatrixTest::getColumnExternalTest()
 {
     // Setup / Operation
 
-    const float values[3][3] =
+    const float values[3][4] =
     {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
+        { 1.0, 2.0, 3.0, -1.0 },
+        { 4.0, 5.0, 6.0, -1.0 },
+        { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    Matrix<float, 3, 4> matrix(values);
 
     // Test
 
@@ -3835,14 +3835,14 @@ bool MatrixTest::getColumnConstantTest()
 {
     // Setup / Operation
 
-    const float values[3][3] =
+    const float values[3][4] =
     {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 },
-        { 7.0, 8.0, 9.0 }
+        { 1.0, 2.0, 3.0, -1.0 },
+        { 4.0, 5.0, 6.0, -1.0 },
+        { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+    const Matrix<float, 3, 4, STORAGE_CONSTANT> matrix(values);
 
     // Test
 
