@@ -18,6 +18,7 @@ Change Log entries must follow the format:
 
 These issues have been fully implemented and merged into develop.
 
+* `[BUG FIX]` Fixed size of row vector returned by MatrixInterface::getRow(). Wild pointer for M > N. [Resolves #59].
 * `[BUG FIX]` Fixed bounds check on MatrixInterface submatrix constructor. [Resolves #58].
 * `[QUALITY]` Removed ambiguous constructors from Matrix and Vector. [Resolves #56].
 * `[FEATURE]` Added ValuePointerType template parameter to Matrix and Vector constructors and operator=() methods with MatrixInterface as the single parameter. [Resolves #48].
