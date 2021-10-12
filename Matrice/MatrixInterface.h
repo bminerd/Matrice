@@ -351,10 +351,10 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, 1, N, STORAGE_INTERNAL> getRow(
+    Matrix<ValueType, 1, M, STORAGE_INTERNAL> getRow(
                                                   const std::uint32_t row) const
     {
-        Matrix<ValueType, 1, N, STORAGE_INTERNAL> matrix;
+        Matrix<ValueType, 1, M, STORAGE_INTERNAL> matrix;
 
         MatrixBase<ValueType, ValuePointerType>::getRow(matrix, row);
 
@@ -362,7 +362,7 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, 1, N, STORAGE_INTERNAL> row(const std::uint32_t row) const
+    Matrix<ValueType, 1, M, STORAGE_INTERNAL> row(const std::uint32_t row) const
     {
         return getRow(row);
     }
