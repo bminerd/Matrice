@@ -18,6 +18,7 @@ Change Log entries must follow the format:
 
 These issues have been fully implemented and merged into develop.
 
+* `[FEATURE]` Updated all operator()() methods to go through MatrixBase::operator()() and added procompiler check for enabling calling getValue() for bounds checking. Default accessor for MatrixBase::operator()() is now getValueFast() which has no bounds checking. Added Vector::getValueFast() methods for consistency. [Resolves #60].
 * `[BUG FIX]` Fixed size of row vector returned by MatrixInterface::getRow(). Wild pointer for M > N. [Resolves #59].
 * `[BUG FIX]` Fixed bounds check on MatrixInterface submatrix constructor. [Resolves #58].
 * `[QUALITY]` Removed ambiguous constructors from Matrix and Vector. [Resolves #56].
