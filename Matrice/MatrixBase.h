@@ -103,7 +103,15 @@ public:
     ValueType& operator()(const std::uint32_t rowIndex,
                           const std::uint32_t columnIndex)
     {
+#ifdef MATRICE_CONFIG_OPERATOR_PARENTHESES_GET_VALUE_SAFE_ENABLED
+
         return getValue(rowIndex, columnIndex);
+
+#else
+
+        return getValueFast(rowIndex, columnIndex);
+
+#endif
     }
 
     //
@@ -111,7 +119,15 @@ public:
     const ValueType& operator()(const std::uint32_t rowIndex,
                                 const std::uint32_t columnIndex) const
     {
+#ifdef MATRICE_CONFIG_OPERATOR_PARENTHESES_GET_VALUE_SAFE_ENABLED
+
         return getValue(rowIndex, columnIndex);
+
+#else
+
+        return getValueFast(rowIndex, columnIndex);
+
+#endif
     }
 
     //--------------------------------------------------------------------------

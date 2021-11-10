@@ -148,21 +148,6 @@ public:
         return MatrixBase<ValueType, ValuePointerType>::operatorEquals(matrix);
     }
 
-    //--------------------------------------------------------------------------
-    ValueType& operator()(const std::uint32_t row, const std::uint32_t column)
-    {
-        return MatrixBase<ValueType, ValuePointerType>::getValueFast(row,
-                                                                     column);
-    }
-
-    //--------------------------------------------------------------------------
-    const ValueType& operator()(const std::uint32_t row,
-                                const std::uint32_t column) const
-    {
-        return MatrixBase<ValueType, ValuePointerType>::getValueFast(row,
-                                                                     column);
-    }
-
     // Unary plus operator
     //--------------------------------------------------------------------------
     Matrix<ValueType, N, M, STORAGE_INTERNAL> operator+() const

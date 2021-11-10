@@ -159,13 +159,13 @@ public:
     //--------------------------------------------------------------------------
     ValueType& operator()(const std::uint32_t row)
     {
-        return getValue(row);
+        return MatrixBase<ValueType>::operator()(row, 0);
     }
 
     //--------------------------------------------------------------------------
     const ValueType& operator()(const std::uint32_t row) const
     {
-        return getValue(row);
+        return MatrixBase<ValueType>::operator()(row, 0);
     }
 
     //--------------------------------------------------------------------------
@@ -180,11 +180,22 @@ public:
         return MatrixBase<ValueType>::getValue(row, 0);
     }
 
-    //
     //--------------------------------------------------------------------------
     const ValueType& getValue(const std::uint32_t row) const
     {
         return MatrixBase<ValueType>::getValue(row, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& getValueFast(const std::uint32_t row)
+    {
+        return MatrixBase<ValueType>::getValueFast(row, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    const ValueType& getValueFast(const std::uint32_t row) const
+    {
+        return MatrixBase<ValueType>::getValueFast(row, 0);
     }
 
     //--------------------------------------------------------------------------
@@ -313,13 +324,13 @@ public:
     //--------------------------------------------------------------------------
     ValueType& operator()(const std::uint32_t row)
     {
-        return getValue(row);
+        return MatrixBase<ValueType>::operator()(row, 0);
     }
 
     //--------------------------------------------------------------------------
     const ValueType& operator()(const std::uint32_t row) const
     {
-        return getValue(row);
+        return MatrixBase<ValueType>::operator()(row, 0);
     }
 
     //--------------------------------------------------------------------------
@@ -334,11 +345,22 @@ public:
         return MatrixBase<ValueType>::getValue(row, 0);
     }
 
-    //
     //--------------------------------------------------------------------------
     const ValueType& getValue(const std::uint32_t row) const
     {
         return MatrixBase<ValueType>::getValue(row, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& getValueFast(const std::uint32_t row)
+    {
+        return MatrixBase<ValueType>::getValueFast(row, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    const ValueType& getValueFast(const std::uint32_t row) const
+    {
+        return MatrixBase<ValueType>::getValueFast(row, 0);
     }
 
     //--------------------------------------------------------------------------
@@ -472,13 +494,13 @@ public:
     //--------------------------------------------------------------------------
     ValueType& operator()(const std::uint32_t row)
     {
-        return getValue(row);
+        return MatrixBase<ValueType, const ValueType>::operator()(row, 0);
     }
 
     //--------------------------------------------------------------------------
     const ValueType& operator()(const std::uint32_t row) const
     {
-        return getValue(row);
+        return MatrixBase<ValueType, const ValueType>::operator()(row, 0);
     }
 
     //--------------------------------------------------------------------------
@@ -496,6 +518,19 @@ public:
     const ValueType& getValue(const std::uint32_t row) const
     {
         return MatrixBase<ValueType, const ValueType>::getValue(row, 0);
+    }
+
+    //--------------------------------------------------------------------------
+    ValueType& getValueFast(const std::uint32_t row)
+    {
+        return MatrixBase<ValueType, const ValueType>::getValueFast(row, 0);
+    }
+
+    //
+    //--------------------------------------------------------------------------
+    const ValueType& getValueFast(const std::uint32_t row) const
+    {
+        return MatrixBase<ValueType, const ValueType>::getValueFast(row, 0);
     }
 };
 
