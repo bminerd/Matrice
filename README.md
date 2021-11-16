@@ -22,10 +22,7 @@ This project was designed to be fully interoperable with the Plat4m project, but
   - Transpose
 - N-by-1 Vector
   - Addition and subtraction provided by N-by-M Matrix (scalar and vector)
-  - Multiplication (optimized vector)
-- RotationMatrix
-- Quaternion
-- In progress
-  - TransformationMatrix - Homogeneous transformation matrix
-  - SquareMatrix - Specialized operations for square matrices (ex. determiniant)
-  - Conversions between rotation matrices, quaternions, and Euler angles
+  - Multiplication (optimized for vectors)
+
+  ## Design Documents
+  - [Writing Matrice-Based APIs](Documentation/Writing_Matrice_Based_APIs.md)
