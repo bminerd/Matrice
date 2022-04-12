@@ -243,21 +243,11 @@ public:
 
         std::uint32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
-            {
-                (*thisValuePointer++) = value;
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*thisValuePointer) = value;
+            (*thisValuePointer) = value;
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
     }
 
@@ -269,29 +259,14 @@ public:
 
         std::int32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
+            if ((*thisValuePointer) > maxValue)
             {
-                if ((*thisValuePointer) > maxValue)
-                {
-                    maxValue = (*thisValuePointer);
-                }
-
-                thisValuePointer++;
+                maxValue = (*thisValuePointer);
             }
-        }
-        else
-        {
-            while (i--)
-            {
-                if ((*thisValuePointer) > maxValue)
-                {
-                    maxValue = (*thisValuePointer);
-                }
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
 
         return maxValue;
@@ -305,29 +280,14 @@ public:
 
         std::int32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
+            if ((*thisValuePointer) < minValue)
             {
-                if ((*thisValuePointer) < minValue)
-                {
-                    minValue = (*thisValuePointer);
-                }
-
-                thisValuePointer++;
+                minValue = (*thisValuePointer);
             }
-        }
-        else
-        {
-            while (i--)
-            {
-                if ((*thisValuePointer) < minValue)
-                {
-                    minValue = (*thisValuePointer);
-                }
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
 
         return minValue;
@@ -341,37 +301,18 @@ public:
 
         std::int32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
+            if ((*thisValuePointer) < lowerLimitValue)
             {
-                if ((*thisValuePointer) < lowerLimitValue)
-                {
-                    (*thisValuePointer) = lowerLimitValue;
-                }
-                else if ((*thisValuePointer) > upperLimitValue)
-                {
-                    (*thisValuePointer) = upperLimitValue;
-                }
-
-                thisValuePointer++;
+                (*thisValuePointer) = lowerLimitValue;
             }
-        }
-        else
-        {
-            while (i--)
+            else if ((*thisValuePointer) > upperLimitValue)
             {
-                if ((*thisValuePointer) < lowerLimitValue)
-                {
-                    (*thisValuePointer) = lowerLimitValue;
-                }
-                else if ((*thisValuePointer) > upperLimitValue)
-                {
-                    (*thisValuePointer) = upperLimitValue;
-                }
-
-                incrementValuePointer(thisValuePointer, i);
+                (*thisValuePointer) = upperLimitValue;
             }
+
+            incrementValuePointer(thisValuePointer, i);
         }
     }
 
@@ -382,29 +323,14 @@ public:
 
         std::int32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
+            if ((*thisValuePointer) > limitValue)
             {
-                if ((*thisValuePointer) > limitValue)
-                {
-                    (*thisValuePointer) = limitValue;
-                }
-
-                thisValuePointer++;
+                (*thisValuePointer) = limitValue;
             }
-        }
-        else
-        {
-            while (i--)
-            {
-                if ((*thisValuePointer) > limitValue)
-                {
-                    (*thisValuePointer) = limitValue;
-                }
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
     }
 
@@ -415,29 +341,14 @@ public:
 
         std::int32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
+            if ((*thisValuePointer) < limitValue)
             {
-                if ((*thisValuePointer) < limitValue)
-                {
-                    (*thisValuePointer) = limitValue;
-                }
-
-                thisValuePointer++;
+                (*thisValuePointer) = limitValue;
             }
-        }
-        else
-        {
-            while (i--)
-            {
-                if ((*thisValuePointer) < limitValue)
-                {
-                    (*thisValuePointer) = limitValue;
-                }
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
     }
 
@@ -450,21 +361,11 @@ public:
 
         std::uint32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
-            {
-                squaredSum += square(*thisValuePointer++);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                squaredSum += square(*thisValuePointer);
+            squaredSum += square(*thisValuePointer);
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
 
         return std::sqrt(squaredSum);
@@ -479,7 +380,7 @@ public:
     //--------------------------------------------------------------------------
     void incrementValuePointer(ValuePointerType*& valuePointer, const int i)
     {
-        if ((i % myColumns) == 0)
+        if ((myColumnJump != 0) && (i % myColumns) == 0)
         {
             valuePointer += myColumnJump + 1;
         }
@@ -493,7 +394,7 @@ public:
     void incrementValuePointer(const ValuePointerType*& valuePointer,
                                const int i) const
     {
-        if ((i % myColumns) == 0)
+        if ((myColumnJump != 0) && (i % myColumns) == 0)
         {
             valuePointer += myColumnJump + 1;
         }
@@ -618,40 +519,12 @@ protected:
 
         std::int32_t i = myRows * myColumns;
 
-        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        while (i--)
         {
-            while (i--)
-            {
-                (*valuePointer++) = (ValueType2) (*myValuePointer++);
-            }
-        }
-        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
-        {
-            while (i--)
-            {
-                (*valuePointer++) = (ValueType2) (*myValuePointer);
+            (*valuePointer) = (ValueType2) (*myValuePointer);
 
-                incrementValuePointer(myValuePointer, i);
-            }
-        }
-        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
-        {
-            while (i--)
-            {
-                (*valuePointer) = (ValueType2) (*myValuePointer++);
-
-                matrix.incrementValuePointer(valuePointer, i);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*valuePointer) = (ValueType2) (*myValuePointer);
-
-                incrementValuePointer(myValuePointer, i);
-                matrix.incrementValuePointer(valuePointer, i);
-            }
+            incrementValuePointer(myValuePointer, i);
+            matrix.incrementValuePointer(valuePointer, i);
         }
     }
 
@@ -666,64 +539,18 @@ protected:
 
         std::int32_t i = myRows * myColumns;
 
-        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        while (i--)
         {
-            while (i--)
+            ValueType value1 = (*thisValuePointer);
+            ValueType value2 = (*valuePointer);
+
+            if (std::abs(value1 - value2) > epsilon)
             {
-                ValueType value1 = (*thisValuePointer++);
-                ValueType value2 = (*valuePointer++);
-
-                if (std::abs(value1 - value2) > epsilon)
-                {
-                    return false;
-                }
+                return false;
             }
-        }
-        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
-        {
-            while (i--)
-            {
-                ValueType value1 = (*thisValuePointer);
-                ValueType value2 = (*valuePointer++);
 
-                if (std::abs(value1 - value2) > epsilon)
-                {
-                    return false;
-                }
-
-                incrementValuePointer(thisValuePointer, i);
-            }
-        }
-        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
-        {
-            while (i--)
-            {
-                ValueType value1 = (*thisValuePointer++);
-                ValueType value2 = (*valuePointer);
-
-                if (std::abs(value1 - value2) > epsilon)
-                {
-                    return false;
-                }
-
-                matrix.incrementValuePointer(valuePointer, i);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                ValueType value1 = (*thisValuePointer++);
-                ValueType value2 = (*valuePointer++);
-
-                if (std::abs(value1 - value2) > epsilon)
-                {
-                    return false;
-                }
-
-                incrementValuePointer(thisValuePointer, i);
-                matrix.incrementValuePointer(valuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
+            matrix.incrementValuePointer(valuePointer, i);
         }
 
         return true;
@@ -745,21 +572,11 @@ protected:
 
         std::int32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
-            {
-                (*valuePointer++) = -(*thisValuePointer++);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*valuePointer++) = -(*thisValuePointer);
+            (*valuePointer++) = -(*thisValuePointer);
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
     }
 
@@ -775,43 +592,12 @@ protected:
 
         std::int32_t i = myRows * myColumns;
 
-        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        while (i--)
         {
-            while (i--)
-            {
-                (*resultValuePointer++) =
-                                      (*thisValuePointer++) + (*valuePointer++);
-            }
-        }
-        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
-        {
-            while (i--)
-            {
-                (*resultValuePointer++) =
-                                        (*thisValuePointer) + (*valuePointer++);
+            (*resultValuePointer++) = (*thisValuePointer) + (*valuePointer);
 
-                incrementValuePointer(thisValuePointer, i);
-            }
-        }
-        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
-        {
-            while (i--)
-            {
-                (*resultValuePointer++) =
-                                        (*thisValuePointer++) + (*valuePointer);
-
-                matrix.incrementValuePointer(valuePointer, i);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*resultValuePointer++) = (*thisValuePointer) + (*valuePointer);
-
-                incrementValuePointer(thisValuePointer, i);
-                matrix.incrementValuePointer(valuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
+            matrix.incrementValuePointer(valuePointer, i);
         }
     }
 
@@ -828,43 +614,12 @@ protected:
 
         std::int32_t i = myRows * myColumns;
 
-        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        while (i--)
         {
-            while (i--)
-            {
-                (*resultValuePointer++) =
-                                      (*thisValuePointer++) - (*valuePointer++);
-            }
-        }
-        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
-        {
-            while (i--)
-            {
-                (*resultValuePointer++) =
-                                        (*thisValuePointer) - (*valuePointer++);
+            (*resultValuePointer++) = (*thisValuePointer) - (*valuePointer);
 
-                incrementValuePointer(thisValuePointer, i);
-            }
-        }
-        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
-        {
-            while (i--)
-            {
-                (*resultValuePointer++) =
-                                        (*thisValuePointer++) - (*valuePointer);
-
-                matrix.incrementValuePointer(valuePointer, i);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*resultValuePointer++) = (*thisValuePointer) - (*valuePointer);
-
-                incrementValuePointer(thisValuePointer, i);
-                matrix.incrementValuePointer(valuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
+            matrix.incrementValuePointer(valuePointer, i);
         }
     }
 
@@ -1002,21 +757,11 @@ protected:
 
         std::uint32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
-            {
-                (*valuePointer++) = (*thisValuePointer++) + scalar;
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*valuePointer++) = (*thisValuePointer) + scalar;
+            (*valuePointer++) = (*thisValuePointer) + scalar;
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
     }
 
@@ -1028,21 +773,11 @@ protected:
 
         std::uint32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
-            {
-                (*thisValuePointer++) += scalar;
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*thisValuePointer) += scalar;
+            (*thisValuePointer) += scalar;
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
     }
 
@@ -1057,40 +792,12 @@ protected:
 
         std::uint32_t i = myRows * myColumns;
 
-        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        while (i--)
         {
-            while (i--)
-            {
-                (*thisValuePointer++) += (*valuePointer++);
-            }
-        }
-        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
-        {
-            while (i--)
-            {
-                (*thisValuePointer) += (*valuePointer++);
+            (*thisValuePointer) += (*valuePointer);
             
-                incrementValuePointer(thisValuePointer, i);
-            }
-        }
-        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
-        {
-            while (i--)
-            {
-                (*thisValuePointer++) += (*valuePointer);
-                
-                matrix.incrementValuePointer(valuePointer, i);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*thisValuePointer) += (*valuePointer);
-                
-                incrementValuePointer(thisValuePointer, i);
-                matrix.incrementValuePointer(valuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
+            matrix.incrementValuePointer(valuePointer, i);
         }
     }
 
@@ -1104,21 +811,11 @@ protected:
 
         std::uint32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
-            {
-                (*valuePointer++) = (*thisValuePointer++) - scalar;
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*valuePointer++) = (*thisValuePointer) - scalar;
+            (*valuePointer++) = (*thisValuePointer) - scalar;
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
     }
 
@@ -1130,21 +827,11 @@ protected:
 
         std::uint32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
-            {
-                (*thisValuePointer++) -= scalar;
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*thisValuePointer) -= scalar;
+            (*thisValuePointer) -= scalar;
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
     }
 
@@ -1159,40 +846,12 @@ protected:
 
         std::uint32_t i = myRows * myColumns;
 
-        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        while (i--)
         {
-            while (i--)
-            {
-                (*thisValuePointer++) -= (*valuePointer++);
-            }
-        }
-        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
-        {
-            while (i--)
-            {
-                (*thisValuePointer) -= (*valuePointer++);
+            (*thisValuePointer) -= (*valuePointer);
             
-                incrementValuePointer(thisValuePointer, i);
-            }
-        }
-        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
-        {
-            while (i--)
-            {
-                (*thisValuePointer++) -= (*valuePointer);
-                
-                matrix.incrementValuePointer(valuePointer, i);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*thisValuePointer) -= (*valuePointer);
-                
-                incrementValuePointer(thisValuePointer, i);
-                matrix.incrementValuePointer(valuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
+            matrix.incrementValuePointer(valuePointer, i);
         }
     }
 
@@ -1206,21 +865,11 @@ protected:
 
         std::uint32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
-            {
-                (*valuePointer++) = (*thisValuePointer++) * scalar;
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*valuePointer++) = (*thisValuePointer) * scalar;
+            (*valuePointer++) = (*thisValuePointer) * scalar;
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
     }
 
@@ -1232,21 +881,11 @@ protected:
 
         std::uint32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
-            {
-                (*thisValuePointer++) *= scalar;
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*thisValuePointer) *= scalar;
+            (*thisValuePointer) *= scalar;
 
-                incrementValuePointer(thisValuePointer, i);
-            }
+            incrementValuePointer(thisValuePointer, i);
         }
     }
     
@@ -1272,21 +911,11 @@ protected:
 
         std::int32_t i = myRows * myColumns;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
-            {
-                (*myValuePointer++) = (*valuePointer++);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*myValuePointer) = (*valuePointer);
+            (*myValuePointer) = (*valuePointer++);
 
-                incrementValuePointer(myValuePointer, i);
-            }
+            incrementValuePointer(myValuePointer, i);
         }
     }
 
@@ -1300,40 +929,12 @@ protected:
 
         std::int32_t i = myRows * myColumns;
 
-        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        while (i--)
         {
-            while (i--)
-            {
-                (*myValuePointer++) = (*valuePointer++);
-            }
-        }
-        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
-        {
-            while (i--)
-            {
-                (*myValuePointer) = (*valuePointer++);
+            (*myValuePointer) = (*valuePointer);
 
-                incrementValuePointer(myValuePointer, i);
-            }
-        }
-        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
-        {
-            while (i--)
-            {
-                (*myValuePointer++) = (*valuePointer);
-
-                matrix.incrementValuePointer(valuePointer, i);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*myValuePointer) = (*valuePointer);
-
-                incrementValuePointer(myValuePointer, i);
-                matrix.incrementValuePointer(valuePointer, i);
-            }
+            incrementValuePointer(myValuePointer, i);
+            matrix.incrementValuePointer(valuePointer, i);
         }
     }
 
@@ -1362,23 +963,11 @@ protected:
 
         std::uint32_t i = myRows;
 
-        if (myColumnJump == 0)
+        while (i--)
         {
-            while (i--)
-            {
-                (*valuePointer++) = (*myValuePointer);
+            (*valuePointer++) = (*myValuePointer);
 
-                myValuePointer += myColumns;
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                (*valuePointer++) = (*myValuePointer);
-
-                myValuePointer += myColumns + myColumnJump;
-            }
+            myValuePointer += myColumns + myColumnJump;
         }
     }
 
@@ -1463,40 +1052,12 @@ protected:
 
         std::uint32_t i = myRows * myColumns;
 
-        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        while (i--)
         {
-            while (i--)
-            {
-                result += (*myValuePointer++) * (*valuePointer++);
-            }
-        }
-        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
-        {
-            while (i--)
-            {
-                result += (*myValuePointer) * (*valuePointer++);
+            result += (*myValuePointer) * (*valuePointer);
 
-                incrementValuePointer(myValuePointer, i);
-            }
-        }
-        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
-        {
-            while (i--)
-            {
-                result += (*myValuePointer++) * (*valuePointer);
-
-                matrix.incrementValuePointer(valuePointer, i);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                result += (*myValuePointer) * (*valuePointer);
-
-                incrementValuePointer(myValuePointer, i);
-                matrix.incrementValuePointer(valuePointer, i);
-            }
+            incrementValuePointer(myValuePointer, i);
+            matrix.incrementValuePointer(valuePointer, i);
         }
 
         return result;
@@ -1514,40 +1075,12 @@ protected:
 
         std::uint32_t i = myRows * myColumns;
 
-        if ((myColumnJump == 0) && (matrix.getColumnJump() == 0))
+        while (i--)
         {
-            while (i--)
-            {
-                result += (*myValuePointer++) * (*valuePointer++);
-            }
-        }
-        else if ((myColumnJump != 0) && (matrix.getColumnJump() == 0))
-        {
-            while (i--)
-            {
-                result += (*myValuePointer) * (*valuePointer++);
+            result += (*myValuePointer) * (*valuePointer);
 
-                incrementValuePointer(myValuePointer, i);
-            }
-        }
-        else if ((myColumnJump == 0) && (matrix.getColumnJump() != 0))
-        {
-            while (i--)
-            {
-                result += (*myValuePointer++) * (*valuePointer);
-
-                matrix.incrementValuePointer(valuePointer, i);
-            }
-        }
-        else
-        {
-            while (i--)
-            {
-                result += (*myValuePointer) * (*valuePointer);
-
-                incrementValuePointer(myValuePointer, i);
-                matrix.incrementValuePointer(valuePointer, i);
-            }
+            incrementValuePointer(myValuePointer, i);
+            matrix.incrementValuePointer(valuePointer, i);
         }
 
         return result;
