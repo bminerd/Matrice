@@ -52,10 +52,13 @@ ApplicationMatriceTest::ApplicationMatriceTest() :
                                    "1.0.0"),
     mySystem(),
     myProcessor(),
+    myAllocator(),
     myMatrixTest(),
     myVectorTest()
 {
     Matrice::setPrintCallback(ApplicationMatriceTest::printCallbackFunction);
+
+    Matrice::setErrorCallback(ApplicationMatriceTest::errorCallbackFunction);
 }
 
 //------------------------------------------------------------------------------
@@ -74,7 +77,20 @@ ApplicationMatriceTest::~ApplicationMatriceTest()
 //------------------------------------------------------------------------------
 void ApplicationMatriceTest::printCallbackFunction(const char* string)
 {
-    cout << string;
+    cout << string << "\n";
+}
+
+//------------------------------------------------------------------------------
+void ApplicationMatriceTest::errorCallbackFunction(
+                                                 const Error error,
+                                                 const char* errorName,
+                                                 const char* filename,
+                                                 const char* functionName,
+                                                 const std::uint32_t lineNumber)
+{
+    cerr << "\n\nError: " << errorName
+         << "\nFilenanme: " << filename << ":" <<  lineNumber
+         << "\nFunction name: " << functionName << "()\n\n";
 }
 
 //------------------------------------------------------------------------------

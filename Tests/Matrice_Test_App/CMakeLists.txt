@@ -5,6 +5,7 @@ set(PLAT4M_CORE_DIR ${PROJECT_SOURCE_DIR}/../../Dependencies/Plat4m_Core/Plat4m_
 
 set(PROJECT_FLAGS "-g3 \
                    -pthread \
+                   -fsanitize=address \
                    -fdebug-prefix-map=/home/matrice_sq=. \
                    -fdebug-prefix-map=${PROJECT_BINARY_DIR}=.")
 
@@ -25,6 +26,7 @@ set(source_files main.cpp
                  ${PROJECT_SOURCE_DIR}/../VectorTest.cpp
                  ${PROJECT_SOURCE_DIR}/../MatrixVectorTest.cpp
                  ${PROJECT_SOURCE_DIR}/../../Matrice/Matrice.cpp
+                 ${PROJECT_SOURCE_DIR}/../../Matrice/Allocator.cpp
                  ${PLAT4M_CORE_DIR}/Application.cpp
                  ${PLAT4M_CORE_DIR}/Module.cpp
                  ${PLAT4M_CORE_DIR}/System.cpp

@@ -40,6 +40,8 @@
 #include <Plat4m_Core/Linux/SystemLinux.h>
 #include <Plat4m_Core/Linux/ProcessorLinux.h>
 
+#include <Matrice/AllocatorStatic.h>
+
 #include <Tests/MatrixTest.h>
 #include <Tests/VectorTest.h>
 #include <Tests/MatrixVectorTest.h>
@@ -82,6 +84,8 @@ private:
 
     Plat4m::ProcessorLinux myProcessor;
 
+    AllocatorStatic<1024> myAllocator;
+
     MatrixTest myMatrixTest;
 
     VectorTest myVectorTest;
@@ -93,6 +97,12 @@ private:
     //--------------------------------------------------------------------------
 
     static void printCallbackFunction(const char* string);
+
+    static void errorCallbackFunction(const Error error,
+                                      const char* errorName,
+                                      const char* filename,
+                                      const char* functionName,
+                                      const std::uint32_t lineNumber);
 
     //--------------------------------------------------------------------------
     // Private methods implemented from Application
