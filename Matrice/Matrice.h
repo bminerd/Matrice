@@ -77,11 +77,15 @@ namespace Matrice
 
     typedef void (*PrintCallback)(const char*);
 
-    typedef void(*ErrorCallback)(const Error,
-                                 const char*,
-                                 const char*,
-                                 const char*,
-                                 const std::uint32_t);
+    typedef void (*ErrorCallback)(const Error,
+                                  const char*,
+                                  const char*,
+                                  const char*,
+                                  const std::uint32_t);
+
+    typedef void (*EnterCriticalSectionCallback)();
+
+    typedef void (*ExitCriticalSectionCallback)();
 
     //--------------------------------------------------------------------------
     // Variables
@@ -103,6 +107,14 @@ namespace Matrice
                      const char* filename,
                      const char* functionName,
                      const std::uint32_t lineNumber);
+
+    void setEnterAndExitCriticalSectionCallbacks(
+                                     EnterCriticalSectionCallback enterCallback,
+                                     ExitCriticalSectionCallback exitCallback);
+
+    void enterCriticalSection();
+
+    void exitCriticalSection();
 
     //--------------------------------------------------------------------------
     template <typename TValue>

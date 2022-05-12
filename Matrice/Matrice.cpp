@@ -45,6 +45,10 @@ PrintCallback printCallback = 0;
 
 ErrorCallback errorCallback = 0;
 
+EnterCriticalSectionCallback enterCriticalSectionCallback = 0;
+
+ExitCriticalSectionCallback exitCriticalSectionCallback = 0;
+
 const char* errorNames[4] =
 {
     "ERROR_NONE",
@@ -82,6 +86,37 @@ void Matrice::reportError(const Error error,
 {
     if (errorCallback != 0)
     {
-        (*errorCallback)(error, errorNames[error], filename, functionName, lineNumber);
+        (*errorCallback)(error,
+                         errorNames[error],
+                         filename,
+                         functionName,
+                         lineNumber);
+    }
+}
+
+//------------------------------------------------------------------------------
+void setEnterAndExitCriticalSectionCallbacks(
+                                     EnterCriticalSectionCallback enterCallback,
+                                     ExitCriticalSectionCallback exitCallback)
+{
+    enterCriticalSectionCallback = enterCallback;
+    exitCriticalSectionCallback = exitCallback;
+}
+
+//------------------------------------------------------------------------------
+void Matrice::enterCriticalSection()
+{
+    if (enterCriticalSectionCallback != 0)
+    {
+        (*enterCriticalSectionCallback)();
+    }
+}
+
+//------------------------------------------------------------------------------
+void Matrice::exitCriticalSection()
+{
+    if (exitCriticalSectionCallback != 0)
+    {
+        (*exitCriticalSectionCallback)();
     }
 }
