@@ -494,6 +494,11 @@ protected:
         myValuesPointer(&(matrix.getValue(0, 0))),
         myColumnJump(matrix.getColumnJump())
     {
+        if ((matrix.getRows() != getRows()) ||
+                                          (matrix.getColumns() != getColumns()))
+        {
+            MATRICE_REPORT_ERROR(ERROR_DIMENSIONS_INVALID);
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -898,6 +903,14 @@ protected:
     //--------------------------------------------------------------------------
     template <typename ValuePointerType2>
     void setValuesPointerProtected(
+                               MatrixBase<ValueType, ValuePointerType2>& matrix)
+    {
+        myValuesPointer = &(matrix.getValue(0, 0));
+    }
+
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    void setValuesPointerProtected(
                          const MatrixBase<ValueType, ValuePointerType2>& matrix)
     {
         myValuesPointer = &(matrix.getValue(0, 0));
@@ -917,6 +930,12 @@ protected:
 
             incrementValuePointer(myValuePointer, i);
         }
+    }
+
+    //--------------------------------------------------------------------------
+    void setValuesProtected(const ValueType values[]) const
+    {
+        setValuesPointerProtected(values);
     }
 
     //--------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // The MIT License (MIT)
 //
-// Copyright (c) 2020 Benjamin Minerd
+// Copyright (c) 20202 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@
 
 #include <Matrice/Matrice.h>
 #include <Matrice/MatrixInterface.h>
+#include <Matrice/Allocator.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
@@ -69,10 +70,6 @@ class Matrix : public MatrixInterface<ValueType, N, M>
 {
 public:
 
-    typedef ValueType ValueT;
-    static const std::uint32_t rows = N;
-    static const std::uint32_t columns = M;
-
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -91,8 +88,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType>
-    Matrix(const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
+    template <std::uint32_t N2, std::uint32_t M2, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N2, M2, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, M>(myValues, matrix)
     {
     }
@@ -121,6 +118,20 @@ public:
     template <Storage StorageOption2>
     Matrix<ValueType, N, M, StorageOption>& operator=(
                           const Matrix<ValueType, N, M, StorageOption2>& matrix)
+    {
+        MatrixInterface<ValueType, N, M>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, N, N, StorageOption>& operator=(
+                                           const Matrix<ValueType,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        StorageOption2>& matrix)
     {
         MatrixInterface<ValueType, N, M>::operator=(matrix);
 
@@ -171,10 +182,6 @@ class Matrix<ValueType, N, M, STORAGE_EXTERNAL> :
 {
 public:
 
-    typedef ValueType ValueT;
-    static const std::uint32_t rows = N;
-    static const std::uint32_t columns = M;
-
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -195,8 +202,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType>
-    Matrix(const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
+    template <std::uint32_t N2, std::uint32_t M2, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N2, M2, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, M>(matrix)
     {
     }
@@ -216,6 +223,20 @@ public:
     template <Storage StorageOption2>
     Matrix<ValueType, N, M, STORAGE_EXTERNAL>& operator=(
                           const Matrix<ValueType, N, M, StorageOption2>& matrix)
+    {
+        MatrixInterface<ValueType, N, M>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, N, N, STORAGE_EXTERNAL>& operator=(
+                                           const Matrix<ValueType,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        StorageOption2>& matrix)
     {
         MatrixInterface<ValueType, N, M>::operator=(matrix);
 
@@ -258,10 +279,6 @@ class Matrix<ValueType, N, M, STORAGE_CONSTANT> :
 {
 public:
 
-    typedef ValueType ValueT;
-    static const std::uint32_t rows = N;
-    static const std::uint32_t columns = M;
-
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -285,14 +302,26 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    template <std::uint32_t N2, std::uint32_t M2, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N2, M2, ValuePointerType>& matrix) :
+        MatrixInterface<ValueType, N, M>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType, N, M, STORAGE_CONSTANT>& matrix) :
+        MatrixInterface<ValueType, N, M, const ValueType>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
     // Public overloaded operators
     //--------------------------------------------------------------------------
 
     // Assignment operator
     //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
     Matrix<ValueType, N, M, STORAGE_CONSTANT>& operator=(
-                          const Matrix<ValueType, N, M, StorageOption2>& matrix)
+                        const Matrix<ValueType, N, M, STORAGE_CONSTANT>& matrix)
     {
         MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
                                                                         matrix);
@@ -302,9 +331,21 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType>
     Matrix<ValueType, N, M, STORAGE_CONSTANT>& operator=(
-               const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix)
+                                         const Matrix<ValueType,
+                                                      DIMENSIONS_RUN_TIME,
+                                                      DIMENSIONS_RUN_TIME,
+                                                      STORAGE_CONSTANT>& matrix)
+    {
+        MatrixInterface<ValueType, N, M, const ValueType>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, M, STORAGE_CONSTANT>& operator=(
+                const MatrixInterface<ValueType, N, M, const ValueType>& matrix)
     {
         MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
                                                                         matrix);
@@ -327,10 +368,6 @@ class Matrix<ValueType, N, N, StorageOption> :
 {
 public:
 
-    typedef ValueType ValueT;
-    static const std::uint32_t rows = N;
-    static const std::uint32_t columns = N;
-
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -349,8 +386,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType>
-    Matrix(const MatrixInterface<ValueType, N, N, ValuePointerType>& matrix) :
+    template <std::uint32_t N2, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N2, N2, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, N>(myValues, matrix)
     {
     }
@@ -378,8 +415,12 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
     Matrix<ValueType, N, N, StorageOption>& operator=(
-                        const Matrix<ValueType, N, N, STORAGE_EXTERNAL>& matrix)
+                                           const Matrix<ValueType,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        StorageOption2>& matrix)
     {
         MatrixInterface<ValueType, N, N>::operator=(matrix);
 
@@ -396,7 +437,6 @@ public:
 
         return (*this);
     }
-
 
     // Assignment operator
     //--------------------------------------------------------------------------
@@ -431,10 +471,6 @@ class Matrix<ValueType, N, N, STORAGE_EXTERNAL> :
 {
 public:
 
-    typedef ValueType ValueT;
-    static const std::uint32_t rows = N;
-    static const std::uint32_t columns = N;
-
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -455,8 +491,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType>
-    Matrix(const MatrixInterface<ValueType, N, N, ValuePointerType>& matrix) :
+    template <std::uint32_t N2, std::uint32_t M2, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N2, M2, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, N>(matrix)
     {
     }
@@ -477,6 +513,20 @@ public:
     template <Storage StorageOption2>
     Matrix<ValueType, N, N, STORAGE_EXTERNAL>& operator=(
                           const Matrix<ValueType, N, N, StorageOption2>& matrix)
+    {
+        MatrixInterface<ValueType, N, N>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, N, N, STORAGE_EXTERNAL>& operator=(
+                                           const Matrix<ValueType,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        StorageOption2>& matrix)
     {
         MatrixInterface<ValueType, N, N>::operator=(matrix);
 
@@ -519,10 +569,6 @@ class Matrix<ValueType, N, N, STORAGE_CONSTANT> :
 {
 public:
 
-    typedef ValueType ValueT;
-    static const std::uint32_t rows = N;
-    static const std::uint32_t columns = N;
-
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -537,17 +583,18 @@ public:
     template <std::uint32_t ParentN,
               std::uint32_t ParentM,
               typename ValuePointerType>
-    Matrix(
-         MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
-         const std::uint32_t row,
-         const std::uint32_t column) :
+    Matrix(const MatrixInterface<ValueType,
+                                 ParentN,
+                                 ParentM,
+                                 ValuePointerType>& matrix,
+           const std::uint32_t row,
+           const std::uint32_t column) :
         MatrixInterface<ValueType, N, N, const ValueType>(matrix, row, column)
     {
     }
 
     //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
-    Matrix(const Matrix<ValueType, N, N, StorageOption2>& matrix) :
+    Matrix(const Matrix<ValueType, N, N, STORAGE_CONSTANT>& matrix) :
         MatrixInterface<ValueType, N, N, const ValueType>(matrix)
     {
     }
@@ -569,12 +616,13 @@ public:
 
     // Assignment operator
     //--------------------------------------------------------------------------
-    template <Storage StorageOption2>
     Matrix<ValueType, N, N, STORAGE_CONSTANT>& operator=(
-                          const Matrix<ValueType, N, N, StorageOption2>& matrix)
+                                         const Matrix<ValueType,
+                                                      DIMENSIONS_RUN_TIME,
+                                                      DIMENSIONS_RUN_TIME,
+                                                      STORAGE_CONSTANT>& matrix)
     {
-        MatrixBase<ValueType, const ValueType>::setValuesPointerProtected(
-                                                                        matrix);
+        MatrixInterface<ValueType, N, N>::operator=(matrix);
 
         return (*this);
     }
@@ -624,8 +672,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType>
-    Matrix(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
+    template <std::uint32_t N2, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N2, 1, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, 1>(myValues, matrix)
     {
     }
@@ -742,8 +790,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType>
-    Matrix(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
+    template <std::uint32_t N2, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N2, 1, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, N, 1>(matrix)
     {
     }
@@ -833,10 +881,6 @@ class Matrix<ValueType, N, 1, STORAGE_CONSTANT> :
 {
 public:
 
-    typedef ValueType ValueT;
-    static const std::uint32_t rows = N;
-    static const std::uint32_t columns = 1;
-
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -851,11 +895,19 @@ public:
     template <std::uint32_t ParentN,
               std::uint32_t ParentM,
               typename ValuePointerType>
-    Matrix(
-         MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
-         const std::uint32_t row,
-         const std::uint32_t column) :
+    Matrix(const MatrixInterface<ValueType,
+                                 ParentN,
+                                 ParentM,
+                                 ValuePointerType>& matrix,
+           const std::uint32_t row,
+           const std::uint32_t column) :
         MatrixInterface<ValueType, N, 1, const ValueType>(matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType, N, 1, STORAGE_CONSTANT>& matrix) :
+        MatrixInterface<ValueType, N, 1, const ValueType>(matrix)
     {
     }
 
@@ -919,8 +971,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType>
-    Matrix(const MatrixInterface<ValueType, 3, 1, ValuePointerType>& matrix) :
+    template <std::uint32_t N, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, 3, 1>(myValues, matrix)
     {
     }
@@ -1004,8 +1056,33 @@ public:
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
+    Matrix<ValueType, 3, 1> crossProduct(
+        const Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, StorageOption2>& matrix)
+    {
+        if (matrix.getRows() != 3)
+        {
+            MATRICE_REPORT_ERROR(ERROR_DIMENSIONS_INVALID);
+        }
+
+        Matrix<ValueType, 3, 1> resultMatrix;
+
+        MatrixBase<ValueType>::crossProductVector(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
     Matrix<ValueType, 3, 1> cross(
                           const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        return crossProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, 3, 1> cross(
+        const Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, StorageOption2>& matrix)
     {
         return crossProduct(matrix);
     }
@@ -1019,7 +1096,28 @@ public:
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
+    ValueType dotProduct(
+        const Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, StorageOption2>& matrix)
+    {
+        if (matrix.getRows() != 3)
+        {
+            MATRICE_REPORT_ERROR(ERROR_DIMENSIONS_INVALID);
+        }
+
+        return MatrixBase<ValueType>::dotProductVector(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
     ValueType dot(const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
+    {
+        return dotProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dot(
+        const Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, StorageOption2>& matrix)
     {
         return dotProduct(matrix);
     }
@@ -1082,8 +1180,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType>
-    Matrix(const MatrixInterface<ValueType, 3, 1, ValuePointerType>& matrix) :
+    template <std::uint32_t N, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, 3, 1>(matrix)
     {
     }
@@ -1158,8 +1256,33 @@ public:
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
+    Matrix<ValueType, 3, 1> crossProduct(
+                                     const Matrix<ValueType,
+                                                  DIMENSIONS_RUN_TIME,
+                                                  1,
+                                                  StorageOption2>& matrix) const
+    {
+        Matrix<ValueType, 3, 1> resultMatrix;
+
+        MatrixBase<ValueType>::crossProductVector(matrix, resultMatrix);
+
+        return resultMatrix;
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
     Matrix<ValueType, 3, 1> cross(
                     const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
+    {
+        return crossProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, 3, 1> cross(const Matrix<ValueType,
+                                               DIMENSIONS_RUN_TIME,
+                                               1,
+                                               StorageOption2>& matrix) const
     {
         return crossProduct(matrix);
     }
@@ -1174,7 +1297,27 @@ public:
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
+    ValueType dotProduct(const Matrix<ValueType,
+                                      DIMENSIONS_RUN_TIME,
+                                      1,
+                                      StorageOption2>& matrix) const
+    {
+        return MatrixBase<ValueType>::dotProductVector(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
     ValueType dot(const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
+    {
+        return dotProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dot(const Matrix<ValueType,
+                               DIMENSIONS_RUN_TIME,
+                               1,
+                               StorageOption2>& matrix) const
     {
         return dotProduct(matrix);
     }
@@ -1209,10 +1352,6 @@ class Matrix<ValueType, 3, 1, STORAGE_CONSTANT> :
 {
 public:
 
-    typedef ValueType ValueT;
-    static const std::uint32_t rows = 3;
-    static const std::uint32_t columns = 1;
-
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -1227,11 +1366,19 @@ public:
     template <std::uint32_t ParentN,
               std::uint32_t ParentM,
               typename ValuePointerType>
-    Matrix(
-         MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
-         const std::uint32_t row,
-         const std::uint32_t column) :
+    Matrix(const MatrixInterface<ValueType,
+                                 ParentN, 
+                                 ParentM,
+                                 ValuePointerType>& matrix,
+           const std::uint32_t row,
+           const std::uint32_t column) :
         MatrixInterface<ValueType, 3, 1, const ValueType>(matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType, 3, 1, STORAGE_CONSTANT>& matrix) :
+        MatrixInterface<ValueType, 3, 1, const ValueType>(matrix)
     {
     }
 
@@ -1293,8 +1440,35 @@ public:
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
+    Matrix<ValueType, 3, 1> crossProduct(
+                                     const Matrix<ValueType,
+                                                  DIMENSIONS_RUN_TIME,
+                                                  1,
+                                                  StorageOption2>& matrix) const
+    {
+        Matrix<ValueType, 3, 1> resultMatrix;
+
+        MatrixBase<ValueType, const ValueType>::crossProductVector(
+                                                                  matrix,
+                                                                  resultMatrix);
+
+        return resultMatrix;
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
     Matrix<ValueType, 3, 1> cross(
                     const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
+    {
+        return crossProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    Matrix<ValueType, 3, 1> cross(const Matrix<ValueType,
+                                               DIMENSIONS_RUN_TIME,
+                                               1,
+                                               StorageOption2>& matrix) const
     {
         return crossProduct(matrix);
     }
@@ -1309,7 +1483,27 @@ public:
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
+    ValueType dotProduct(const Matrix<ValueType,
+                                      DIMENSIONS_RUN_TIME,
+                                      1,
+                                      StorageOption2>& matrix) const
+    {
+        return MatrixBase<ValueType, const ValueType>::dotProductVector(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
     ValueType dot(const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
+    {
+        return dotProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <Storage StorageOption2>
+    ValueType dot(const Matrix<ValueType,
+                               DIMENSIONS_RUN_TIME,
+                               1,
+                               StorageOption2>& matrix) const
     {
         return dotProduct(matrix);
     }
@@ -1348,10 +1542,6 @@ class Matrix<ValueType, 1, 1, StorageOption> :
 {
 public:
 
-    typedef ValueType ValueT;
-    static const std::uint32_t rows = 1;
-    static const std::uint32_t columns = 1;
-
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -1377,8 +1567,8 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType>
-    Matrix(const MatrixInterface<ValueType, 1, 1, ValuePointerType>& matrix) :
+    template <std::uint32_t N, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
         MatrixInterface<ValueType, 1, 1>(myValues, matrix)
     {
     }
@@ -1465,10 +1655,6 @@ class Matrix<ValueType, 1, 1, STORAGE_EXTERNAL> :
 {
 public:
 
-    typedef ValueType ValueT;
-    static const std::uint32_t rows = 1;
-    static const std::uint32_t columns = 1;
-
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -1480,8 +1666,14 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType>
-    Matrix(const MatrixInterface<ValueType, 1, 1, ValuePointerType>& matrix) :
+    template <std::uint32_t N, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
+        MatrixInterface<ValueType, 1, 1>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType, 1, 1, STORAGE_EXTERNAL>& matrix) :
         MatrixInterface<ValueType, 1, 1>(matrix)
     {
     }
@@ -1540,10 +1732,6 @@ class Matrix<ValueType, 1, 1, STORAGE_CONSTANT> :
 {
 public:
 
-    typedef ValueType ValueT;
-    static const std::uint32_t rows = 1;
-    static const std::uint32_t columns = 1;
-
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -1551,6 +1739,12 @@ public:
     //--------------------------------------------------------------------------
     Matrix(const ValueType storageValues[1][1]) :
         MatrixInterface<ValueType, 1, 1, const ValueType>(storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType, 1, 1, STORAGE_CONSTANT>& matrix) :
+        MatrixInterface<ValueType, 1, 1, const ValueType>(matrix)
     {
     }
 
@@ -1581,6 +1775,919 @@ public:
                                  const MatrixInterface<ValueType, 1, 1>& matrix)
     {
         MatrixInterface<ValueType, 1, 1, const ValueType>::operator=(matrix);
+
+        return (*this);
+    }
+};
+
+///
+/// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
+/// where N = DIMENSIONS_RUN_TIME (0), M = DIMENSIONS_RUN_TIME (0), and
+/// StorageOption = STORAGE_EXTERNAL.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+///
+template <typename ValueType>
+class Matrix<ValueType,
+             DIMENSIONS_RUN_TIME,
+             DIMENSIONS_RUN_TIME,
+             STORAGE_INTERNAL> : public MatrixInterface<ValueType,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        DIMENSIONS_RUN_TIME>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(const std::uint32_t N, const std::uint32_t M) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(N, M, 0),
+        myValues(Allocator::allocateArray<ValueType>(N * M))
+    {
+        MatrixBase<ValueType>::setValuesPointerProtected(myValues);
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t M2>
+    Matrix(const std::uint32_t N,
+           const std::uint32_t M,
+           const ValueType initializationValues[][M2]) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(N, M, 0),
+        myValues(Allocator::allocateArray<ValueType>(N * M))
+    {
+        MatrixBase<ValueType>::setValuesPointerProtected(myValues);
+
+        MatrixBase<ValueType>::setValuesProtected(
+                                             (ValueType*) initializationValues);
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(matrix.getRows(),
+                                             matrix.getColumns(),
+                                             0),
+        myValues(Allocator::allocateArray<ValueType>(
+                                        matrix.getRows() * matrix.getColumns()))
+    {
+        MatrixBase<ValueType>::setValuesPointerProtected(myValues);
+
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(matrix.getRows(),
+                                             matrix.getColumns(),
+                                             0),
+        myValues(Allocator::allocateArray<ValueType>(
+                                        matrix.getRows() * matrix.getColumns()))
+    {
+        MatrixBase<ValueType>::setValuesPointerProtected(myValues);
+
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M>
+    Matrix(const Matrix<ValueType, N, M, STORAGE_INTERNAL>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(matrix.getRows(),
+                                             matrix.getColumns(),
+                                             0),
+        myValues(Allocator::allocateArray<ValueType>(
+                                        matrix.getRows() * matrix.getColumns()))
+    {
+        MatrixBase<ValueType>::setValuesPointerProtected(myValues);
+
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ~Matrix()
+    {
+        Allocator::deallocateArray(myValues,
+                                   MatrixBase<ValueType>::getRows() *
+                                           MatrixBase<ValueType>::getColumns());
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_INTERNAL>& operator=(
+                          const Matrix<ValueType,
+                                       DIMENSIONS_RUN_TIME,
+                                       DIMENSIONS_RUN_TIME>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M, Storage StorageOption2>
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_INTERNAL>& operator=(
+                          const Matrix<ValueType, N, M, StorageOption2>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M, typename ValuePointerType>
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_INTERNAL>& operator=(
+               const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t M>
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_INTERNAL>& operator=(const ValueType values[][M])
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(values);
+
+        return (*this);
+    }
+
+private:
+
+    //--------------------------------------------------------------------------
+    // Private data members
+    //--------------------------------------------------------------------------
+
+    ValueType* myValues;
+};
+
+///
+/// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
+/// where N = DIMENSIONS_RUN_TIME (0), M = DIMENSIONS_RUN_TIME (0), and
+/// StorageOption = STORAGE_EXTERNAL.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+///
+template <typename ValueType>
+class Matrix<ValueType,
+             DIMENSIONS_RUN_TIME,
+             DIMENSIONS_RUN_TIME,
+             STORAGE_EXTERNAL> : public MatrixInterface<ValueType,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        DIMENSIONS_RUN_TIME>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t M2>
+    Matrix(const std::uint32_t N,
+           const std::uint32_t M,
+           ValueType storageValues[][M2]) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(N, M, (ValueType*) storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t ParentN, std::uint32_t ParentM>
+    Matrix(const std::uint32_t N,
+           const std::uint32_t M,
+           MatrixInterface<ValueType, ParentN, ParentM>& matrix,
+           const std::uint32_t row,
+           const std::uint32_t column) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(N, M, matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        STORAGE_EXTERNAL>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_EXTERNAL>& operator=(const Matrix<ValueType,
+                                                     DIMENSIONS_RUN_TIME,
+                                                     DIMENSIONS_RUN_TIME,
+                                                     STORAGE_EXTERNAL>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M, Storage StorageOption2>
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_EXTERNAL>& operator=(
+                          const Matrix<ValueType, N, M, StorageOption2>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M, typename ValuePointerType>
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_EXTERNAL>& operator=(
+               const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t M>
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_EXTERNAL>& operator=(const ValueType values[][M])
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(values);
+
+        return (*this);
+    }
+};
+
+///
+/// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
+/// where N = DIMENSIONS_RUN_TIME (0), M = DIMENSIONS_RUN_TIME (0), and
+/// StorageOption = STORAGE_EXTERNAL.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+///
+template <typename ValueType>
+class Matrix<ValueType,
+             DIMENSIONS_RUN_TIME,
+             DIMENSIONS_RUN_TIME,
+             STORAGE_CONSTANT> : public MatrixInterface<ValueType,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        DIMENSIONS_RUN_TIME,
+                                                        const ValueType>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t M2>
+    Matrix(const std::uint32_t N,
+           const std::uint32_t M,
+           const ValueType storageValues[][M2]) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>(N, M, (const ValueType*) storageValues)
+    {
+        if (M2 != M)
+        {
+            MATRICE_REPORT_ERROR(ERROR_DIMENSIONS_INVALID);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t ParentN,
+              std::uint32_t ParentM,
+              typename ValuePointerType>
+    Matrix(const std::uint32_t N,
+           const std::uint32_t M,
+           const MatrixInterface<ValueType,
+                                 ParentN,
+                                 ParentM,
+                                 ValuePointerType>& matrix,
+           const std::uint32_t row,
+           const std::uint32_t column) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>(N, M, matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        STORAGE_CONSTANT>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_CONSTANT>& operator=(const Matrix<ValueType,
+                                                     DIMENSIONS_RUN_TIME,
+                                                     DIMENSIONS_RUN_TIME,
+                                                     STORAGE_CONSTANT>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M>
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_CONSTANT>& operator=(
+                        const Matrix<ValueType, N, M, STORAGE_CONSTANT>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M>
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_CONSTANT>& operator=(
+                const MatrixInterface<ValueType, N, M, const ValueType>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t M>
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_CONSTANT>& operator=(const ValueType values[][M])
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>::operator=(values);
+
+        return (*this);
+    }
+};
+
+///
+/// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
+/// where N = DIMENSIONS_RUN_TIME (0), M = DIMENSIONS_RUN_TIME (0), and
+/// StorageOption = STORAGE_EXTERNAL.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+///
+template <typename ValueType>
+class Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_INTERNAL> :
+                                     public MatrixInterface<ValueType,
+                                                            DIMENSIONS_RUN_TIME,
+                                                            DIMENSIONS_RUN_TIME,
+                                                            ValueType>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(const std::uint32_t N) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(N, 1, 0),
+        myValues(Allocator::allocateArray<ValueType>(N))
+    {
+        MatrixBase<ValueType>::setValuesPointerProtected(myValues);
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const std::uint32_t N, const ValueType initializationValues[][1]) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(N, 1, 0),
+        myValues(Allocator::allocateArray<ValueType>(N))
+    {
+        MatrixBase<ValueType>::setValuesPointerProtected(myValues);
+
+        MatrixBase<ValueType>::setValuesProtected(
+                                             (ValueType*) initializationValues);
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType, DIMENSIONS_RUN_TIME, 1>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(matrix.getRows(), 1, 0),
+        myValues(Allocator::allocateArray<ValueType>(matrix.getRows()))
+    {
+        MatrixBase<ValueType>::setValuesPointerProtected(myValues);
+
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, M, ValuePointerType>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(matrix.getRows(), 1, 0),
+        myValues(Allocator::allocateArray<ValueType>(matrix.getRows()))
+    {
+        MatrixBase<ValueType>::setValuesPointerProtected(myValues);
+
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M>
+    Matrix(const Matrix<ValueType, N, M, STORAGE_INTERNAL>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(matrix.getRows(),
+                                                           1,
+                                                           0),
+        myValues(Allocator::allocateArray<ValueType>(matrix.getRows()))
+    {
+        MatrixBase<ValueType>::setValuesPointerProtected(myValues);
+
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ~Matrix()
+    {
+        Allocator::deallocateArray(myValues, MatrixBase<ValueType>::getRows());
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_INTERNAL>& operator=(
+                        const Matrix<ValueType, DIMENSIONS_RUN_TIME, 1>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, Storage StorageOption2>
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_INTERNAL>& operator=(
+                          const Matrix<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, typename ValuePointerType>
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_INTERNAL>& operator=(
+               const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_INTERNAL>& operator=(
+                                                       const ValueType values[])
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(values);
+
+        return (*this);
+    }
+
+private:
+
+    //--------------------------------------------------------------------------
+    // Private data members
+    //--------------------------------------------------------------------------
+
+    ValueType* myValues;
+};
+
+///
+/// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
+/// where N = DIMENSIONS_RUN_TIME (0), M = DIMENSIONS_RUN_TIME (0), and
+/// StorageOption = STORAGE_EXTERNAL.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+///
+template <typename ValueType>
+class Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> :
+                                     public MatrixInterface<ValueType,
+                                                            DIMENSIONS_RUN_TIME,
+                                                            DIMENSIONS_RUN_TIME,
+                                                            ValueType>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(const std::uint32_t N, ValueType storageValues[][1]) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(N, 1, (ValueType*) storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N2>
+    Matrix(const std::uint32_t N,
+           const ValueType initializationValues[][N2],
+           ValueType storageValues[][N2]) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(N,
+                                             1,
+                                             storageValues,
+                                             initializationValues)
+    {
+        if (N2 != N)
+        {
+            MATRICE_REPORT_ERROR(ERROR_DIMENSIONS_INVALID);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t ParentN, std::uint32_t ParentM>
+    Matrix(const std::uint32_t N,
+           MatrixInterface<ValueType, ParentN, ParentM>& matrix,
+           const std::uint32_t row,
+           const std::uint32_t column) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(N, 1, matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        1,
+                        STORAGE_EXTERNAL>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M, Storage StorageOption>
+    Matrix(const Matrix<ValueType, N, M, StorageOption>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, typename ValuePointerType>
+    Matrix(const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ~Matrix()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL>& operator=(
+                        const Matrix<ValueType, DIMENSIONS_RUN_TIME, 1>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, Storage StorageOption2>
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL>& operator=(
+                          const Matrix<ValueType, N, 1, StorageOption2>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, typename ValuePointerType>
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL>& operator=(
+               const MatrixInterface<ValueType, N, 1, ValuePointerType>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL>& operator=(
+                                                       const ValueType values[])
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME>::operator=(values);
+
+        return (*this);
+    }
+};
+
+///
+/// @brief Partial template specialization of Matrix<ValueType, N, M, Storage>
+/// where N = DIMENSIONS_RUN_TIME (0), M = DIMENSIONS_RUN_TIME (0), and
+/// StorageOption = STORAGE_EXTERNAL.
+/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
+/// float, uint32_t, etc.).
+///
+template <typename ValueType>
+class Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> :
+                                     public MatrixInterface<ValueType,
+                                                            DIMENSIONS_RUN_TIME,
+                                                            DIMENSIONS_RUN_TIME,
+                                                            const ValueType>
+{
+public:
+
+    //--------------------------------------------------------------------------
+    // Public constructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    Matrix(const std::uint32_t N, const ValueType storageValues[][1]) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>(N, 1, (ValueType*) storageValues)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t ParentN,
+              std::uint32_t ParentM,
+              typename ValuePointerType>
+    Matrix(const std::uint32_t N,
+           const MatrixInterface<ValueType,
+                                 ParentN,
+                                 ParentM,
+                                 ValuePointerType>& matrix,
+           const std::uint32_t row,
+           const std::uint32_t column) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>(N, 1, matrix, row, column)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix(const Matrix<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        1,
+                        STORAGE_CONSTANT>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N>
+    Matrix(const Matrix<ValueType, N, 1, STORAGE_CONSTANT>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N>
+    Matrix(const MatrixInterface<ValueType, N, 1, const ValueType>& matrix) :
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>(matrix)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ~Matrix()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public overloaded operators
+    //--------------------------------------------------------------------------
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT>& operator=(
+                                         const Matrix<ValueType,
+                                                      DIMENSIONS_RUN_TIME,
+                                                      1,
+                                                      STORAGE_CONSTANT>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>::operator=(matrix);
+
+        return (*this);
+    }
+
+    // Assignment operator
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N>
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL>& operator=(
+                const MatrixInterface<ValueType, N, 1, const ValueType>& matrix)
+    {
+        MatrixInterface<ValueType,
+                        DIMENSIONS_RUN_TIME,
+                        DIMENSIONS_RUN_TIME,
+                        const ValueType>::operator=(matrix);
 
         return (*this);
     }
