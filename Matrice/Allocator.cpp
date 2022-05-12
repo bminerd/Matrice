@@ -50,19 +50,35 @@ Allocator* Allocator::myDriver = 0;
 //------------------------------------------------------------------------------
 void* Allocator::allocate(const std::size_t count)
 {
-    return (myDriver->driverAllocate(count));
+    Matrice::enterCriticalSection();
+
+    void* pointer = myDriver->driverAllocate(count);
+
+    Matrice::exitCriticalSection();
+
+    return pointer;
 }
 
 //------------------------------------------------------------------------------
 void Allocator::deallocate(void* pointer, const std::size_t count)
 {
+    Matrice::enterCriticalSection();
+
     myDriver->driverDeallocate(pointer, count);
+
+    Matrice::exitCriticalSection();
 }
 
 //------------------------------------------------------------------------------
 size_t Allocator::getFreeMemorySize()
 {
-    return (myDriver->driverGetFreeMemorySize());
+    Matrice::enterCriticalSection();
+
+    size_t size = myDriver->driverGetFreeMemorySize();
+
+    Matrice::exitCriticalSection();
+
+    return size;
 }
 
 //------------------------------------------------------------------------------
