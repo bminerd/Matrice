@@ -18,6 +18,7 @@ Change Log entries must follow the format:
 
 These issues have been fully implemented and merged into develop.
 
+* `[FEATURE]` Added template specializations for run-time dimensions to Matrix and Vector classes. [Resolves #63].
 * `[FEATURE]` Updated all MatrixBase operator methods to standardize matrix traversal. [Resolves #61].
 * `[QUALITY]` Added documentation for writing Matrice-based APIs. [Resolves #62].
 * `[FEATURE]` Updated all operator()() methods to go through MatrixBase::operator()() and added procompiler check for enabling calling getValue() for bounds checking. Default accessor for MatrixBase::operator()() is now getValueFast() which has no bounds checking. Added Vector::getValueFast() methods for consistency. [Resolves #60].
