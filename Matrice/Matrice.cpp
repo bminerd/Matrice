@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // The MIT License (MIT)
 //
-// Copyright (c) 2020 Benjamin Minerd
+// Copyright (c) 2022 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,22 @@
 using namespace Matrice;
 
 //------------------------------------------------------------------------------
+// Local variables
+//------------------------------------------------------------------------------
+
+PrintCallback printCallback = 0;
+
+ErrorCallback errorCallback = 0;
+
+const char* errorNames[4] =
+{
+    "ERROR_NONE",
+    "ERROR_DIMENSIONS_INVALID",
+    "ERROR_SUBMATRIX_BOUNDS_INVALID",
+    "ERROR_ALLOCATOR_NOT_ENOUGH_MEMOR"
+};
+
+//------------------------------------------------------------------------------
 void Matrice::setPrintCallback(PrintCallback callback)
 {
     printCallback = callback;
@@ -49,5 +65,23 @@ void Matrice::print(const char* string)
     if (printCallback != 0)
     {
         (*printCallback)(string);
+    }
+}
+
+//------------------------------------------------------------------------------
+void Matrice::setErrorCallback(ErrorCallback callback)
+{
+    errorCallback = callback;
+}
+
+//------------------------------------------------------------------------------
+void Matrice::reportError(const Error error,
+                          const char* filename,
+                          const char* functionName,
+                          const std::uint32_t lineNumber)
+{
+    if (errorCallback != 0)
+    {
+        (*errorCallback)(error, errorNames[error], filename, functionName, lineNumber);
     }
 }

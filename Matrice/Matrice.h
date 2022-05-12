@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // The MIT License (MIT)
 //
-// Copyright (c) 2020 Benjamin Minerd
+// Copyright (c) 2022 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,15 @@
 // Include files
 //------------------------------------------------------------------------------
 
+#include <cstdint>
+
+//------------------------------------------------------------------------------
+// Macros
+//------------------------------------------------------------------------------
+
+#define MATRICE_REPORT_ERROR(error) \
+    Matrice::reportError(error, __FILE__, __func__, __LINE__)
+
 //------------------------------------------------------------------------------
 // Namespaces
 //------------------------------------------------------------------------------
@@ -53,15 +62,32 @@ namespace Matrice
         STORAGE_CONSTANT
     };
 
+    enum Error
+    {
+        ERROR_NONE = 0,
+        ERROR_DIMENSIONS_INVALID,
+        ERROR_SUBMATRIX_BOUNDS_INVALID,
+        ERROR_ALLOCATOR_NOT_ENOUGH_MEMORY
+    };
+
+    enum Dimensions
+    {
+        DIMENSIONS_RUN_TIME = 0
+    };
+
     typedef void (*PrintCallback)(const char*);
+
+    typedef void(*ErrorCallback)(const Error,
+                                 const char*,
+                                 const char*,
+                                 const char*,
+                                 const std::uint32_t);
 
     //--------------------------------------------------------------------------
     // Variables
     //--------------------------------------------------------------------------
 
     static const char* matriceVersion = "1.0.0";
-
-    static PrintCallback printCallback = 0;
 
     //--------------------------------------------------------------------------
     // Functions
@@ -70,6 +96,13 @@ namespace Matrice
     void setPrintCallback(PrintCallback callback);
 
     void print(const char* string);
+
+    void setErrorCallback(ErrorCallback callback);
+
+    void reportError(const Error error,
+                     const char* filename,
+                     const char* functionName,
+                     const std::uint32_t lineNumber);
 
     //--------------------------------------------------------------------------
     template <typename TValue>
