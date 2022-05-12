@@ -70,29 +70,22 @@ public:
     //--------------------------------------------------------------------------
 
     static bool matrixTimesVectorStorageInternalTest();
-
     static bool matrixTimesVectorStorageExternalTest();
 
     static bool matrix4By5TimesVectorStorageInternalTest();
-
     static bool matrix4By5TimesVectorStorageExternalTest();
-
     static bool matrix4By5TimesVectorStorageConstantTest();
     
     static bool matrixAddEqualsVectorStorageInternalTest();
-
     static bool matrixAddEqualsVectorStorageExternalTest();
 
     static bool vectorAddEqualsMatrixStorageInternalTest();
-
     static bool vectorAddEqualsMatrixStorageExternalTest();
 
     static bool matrixSubtractEqualsVectorStorageInternalTest();
-
     static bool matrixSubtractEqualsVectorStorageExternalTest();
 
     static bool vectorSubtractEqualsMatrixStorageInternalTest();
-
     static bool vectorSubtractEqualsMatrixStorageExternalTest();
 
 private:
