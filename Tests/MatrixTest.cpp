@@ -946,7 +946,7 @@ bool MatrixTest::operatorAssignmentTestInternalRunTime()
 
     Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(3,
                                                                     3,
-                                                                    values1);
+                                                                    values4);
 
     float values5[3][3] =
     {
@@ -1057,7 +1057,7 @@ bool MatrixTest::operatorAssignmentTestExternalRunTime()
 
     Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(3,
                                                                     3,
-                                                                    values1);
+                                                                    values4);
 
     float values5[3][3] =
     {

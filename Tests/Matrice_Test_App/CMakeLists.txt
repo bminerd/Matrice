@@ -3,8 +3,10 @@ project (Matrice_Test_App C CXX ASM)
 
 set(PLAT4M_CORE_DIR ${PROJECT_SOURCE_DIR}/../../Dependencies/Plat4m_Core/Plat4m_Core)
 
-set(PROJECT_FLAGS "-g3 \
+set(PROJECT_FLAGS "-g \
                    -pthread \
+                   -Wall \
+                   -Wno-comment \
                    -fsanitize=address \
                    -fdebug-prefix-map=/home/matrice_sq=. \
                    -fdebug-prefix-map=${PROJECT_BINARY_DIR}=.")

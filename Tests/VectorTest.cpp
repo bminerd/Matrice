@@ -8763,7 +8763,7 @@ bool VectorTest::submatrixOperatorAddTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix4(values8);
+    Matrix<float, 3, 3> matrix4(values10);
 
     const Vector<float,
                  DIMENSIONS_RUN_TIME,
@@ -8925,7 +8925,7 @@ bool VectorTest::submatrixOperatorAddTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix4(values8);
+    Matrix<float, 3, 3> matrix4(values10);
 
     const Vector<float,
                  DIMENSIONS_RUN_TIME,
@@ -9090,7 +9090,7 @@ bool VectorTest::submatrixOperatorAddTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix4(values8);
+    Matrix<float, 3, 3> matrix4(values10);
 
     const Vector<float,
                  DIMENSIONS_RUN_TIME,
@@ -9254,7 +9254,7 @@ bool VectorTest::submatrixOperatorAddTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix4(values8);
+    Matrix<float, 3, 3> matrix4(values10);
 
     const Vector<float,
                  DIMENSIONS_RUN_TIME,

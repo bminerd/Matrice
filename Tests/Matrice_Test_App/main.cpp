@@ -31,12 +31,10 @@
 
 #include <ApplicationMatriceTest.h>
 
-using namespace Matrice;
-
 //------------------------------------------------------------------------------
 int main()
 {
-    static ApplicationMatriceTest applicationMatriceTest;
+    static Matrice::ApplicationMatriceTest applicationMatriceTest;
 
     applicationMatriceTest.run();
 
