@@ -257,7 +257,7 @@ public:
         const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
         ValueType maxValue = (*thisValuePointer);
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -278,7 +278,7 @@ public:
         const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
         ValueType minValue = (*thisValuePointer);
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -299,7 +299,7 @@ public:
     {
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -321,7 +321,7 @@ public:
     {
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -339,7 +339,7 @@ public:
     {
         ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -412,11 +412,11 @@ public:
         std::uint32_t nCharacters = 0;
         nCharacters += std::sprintf(&(string[nCharacters]), "\n");
 
-        for (int i = 0; i < myRows; i++)
+        for (std::uint32_t i = 0; i < myRows; i++)
         {
             nCharacters += std::sprintf(&(string[nCharacters]), "[");
 
-            for (int j = 0; j < myColumns; j++)
+            for (std::uint32_t j = 0; j < myColumns; j++)
             {
                 nCharacters += std::sprintf(&(string[nCharacters]),
                                             "%*g",
@@ -522,7 +522,7 @@ protected:
         const ValuePointerType* myValuePointer = &(getValueFast(0, 0));
         ValuePointerType2* valuePointer = &(matrix.getValueFast(0, 0));
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -542,7 +542,7 @@ protected:
         const ValuePointerType2* valuePointer = &(matrix.getValueFast(0, 0));
         const ValueType epsilon = std::numeric_limits<ValueType>::epsilon();
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -575,7 +575,7 @@ protected:
         const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
         ValueType* valuePointer = &(matrix.getValueFast(0, 0));
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -595,7 +595,7 @@ protected:
         const ValuePointerType2* valuePointer = &(matrix.getValueFast(0, 0));
         ValueType* resultValuePointer = &(resultMatrix.getValueFast(0, 0));
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -617,7 +617,7 @@ protected:
         const ValuePointerType2* valuePointer = &(matrix.getValueFast(0, 0));
         ValueType* resultValuePointer = &(resultMatrix.getValueFast(0, 0));
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -922,7 +922,7 @@ protected:
         ValuePointerType* myValuePointer = &(getValueFast(0, 0));
         const ValuePointerType* valuePointer = values;
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
@@ -946,7 +946,7 @@ protected:
         ValuePointerType* myValuePointer = &(getValueFast(0, 0));
         const ValuePointerType2* valuePointer = &(matrix.getValueFast(0, 0));
 
-        std::int32_t i = myRows * myColumns;
+        std::uint32_t i = myRows * myColumns;
 
         while (i--)
         {
