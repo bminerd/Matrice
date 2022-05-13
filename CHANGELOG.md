@@ -18,6 +18,8 @@ Change Log entries must follow the format:
 
 These issues have been fully implemented and merged into develop.
 
+* `[QUALITY]` Fixed all warnings after enabling -Wall for Matrice_Test_App.
+Disabled multi-line comment warning due to Plat4m header file header [Resolves #67].
 * `[FEATURE]` Added template specializations for run-time dimensions to Matrix and Vector classes. [Resolves #63].
 * `[FEATURE]` Updated all MatrixBase operator methods to standardize matrix traversal. [Resolves #61].
 * `[QUALITY]` Added documentation for writing Matrice-based APIs. [Resolves #62].
