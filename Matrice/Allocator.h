@@ -85,20 +85,20 @@ public:
         return array;
     }
 
-    static void deallocate(void* pointer, const std::size_t count);
+    static void deallocate(void*& pointer, const std::size_t count);
 
     //--------------------------------------------------------------------------
     template <typename T>
-    static void deallocate(T* pointer)
+    static void deallocate(T*& pointer)
     {
         deallocate(pointer, sizeof(T));
     }
 
     //--------------------------------------------------------------------------
     template <typename T>
-    static void deallocateArray(T* pointer, const std::size_t count)
+    static void deallocateArray(T*& pointer, const std::size_t count)
     {
-        deallocate(pointer, sizeof(T) * count);
+        deallocate((void*&)pointer, sizeof(T) * count);
     }
 
     static std::size_t getFreeMemorySize();
@@ -131,7 +131,7 @@ private:
 
     virtual void* driverAllocate(const std::size_t count) = 0;
 
-    virtual void driverDeallocate(void* pointer, const std::size_t count) = 0;
+    virtual void driverDeallocate(void*& pointer, const std::size_t count) = 0;
 
     virtual std::size_t driverGetFreeMemorySize() = 0;
 };

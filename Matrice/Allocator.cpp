@@ -60,7 +60,7 @@ void* Allocator::allocate(const std::size_t count)
 }
 
 //------------------------------------------------------------------------------
-void Allocator::deallocate(void* pointer, const std::size_t count)
+void Allocator::deallocate(void*& pointer, const std::size_t count)
 {
     Matrice::enterCriticalSection();
 
