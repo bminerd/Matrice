@@ -294,7 +294,7 @@ public:
               std::uint32_t ParentM,
               typename ValuePointerType>
     Matrix(
-         MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
+         const MatrixInterface<ValueType, ParentN, ParentM, ValuePointerType>& matrix,
          const std::uint32_t row,
          const std::uint32_t column) :
         MatrixInterface<ValueType, N, M, const ValueType>(matrix, row, column)

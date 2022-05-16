@@ -486,35 +486,63 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, 1, M, STORAGE_INTERNAL> getRow(
-                                                  const std::uint32_t row) const
+    Matrix<ValueType, 1, M, STORAGE_EXTERNAL> getRow(const std::uint32_t row)
     {
-        Matrix<ValueType, 1, M, STORAGE_INTERNAL> matrix;
-
-        MatrixBase<ValueType, ValuePointerType>::getRow(matrix, row);
+        Matrix<ValueType, 1, M, STORAGE_EXTERNAL> matrix(*this, row, 0);
 
         return matrix;
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, 1, M, STORAGE_INTERNAL> row(const std::uint32_t row) const
+    Matrix<ValueType, 1, M, STORAGE_CONSTANT> getRow(
+                                                  const std::uint32_t row) const
+    {
+        const Matrix<ValueType, 1, M, STORAGE_CONSTANT> matrix(*this, row, 0);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, 1, M, STORAGE_EXTERNAL> row(const std::uint32_t row)
     {
         return getRow(row);
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, N, 1, STORAGE_INTERNAL> getColumn(
-                                               const std::uint32_t column) const
+    Matrix<ValueType, 1, M, STORAGE_CONSTANT> row(
+                                                  const std::uint32_t row) const
     {
-        Matrix<ValueType, N, 1, STORAGE_INTERNAL> matrix;
+        return getRow(row);
+    }
 
-        MatrixBase<ValueType, ValuePointerType>::getColumn(matrix, column);
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, 1, STORAGE_EXTERNAL> getColumn(
+                                                     const std::uint32_t column)
+    {
+        Matrix<ValueType, N, 1, STORAGE_EXTERNAL> matrix(*this, 0, column);
 
         return matrix;
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, N, 1, STORAGE_INTERNAL> col(
+    Matrix<ValueType, N, 1, STORAGE_CONSTANT> getColumn(
+                                               const std::uint32_t column) const
+    {
+        const Matrix<ValueType, N, 1, STORAGE_CONSTANT> matrix(*this,
+                                                               0,
+                                                               column);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, 1, STORAGE_EXTERNAL> col(const std::uint32_t column)
+    {
+        return getColumn(column);
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, N, 1, STORAGE_CONSTANT> col(
                                                const std::uint32_t column) const
     {
         return getColumn(column);
@@ -622,9 +650,9 @@ protected:
     }
 
     //--------------------------------------------------------------------------
-    template <typename ValuePointerType2>
+    template <std::uint32_t N2, std::uint32_t M2, typename ValuePointerType2>
     MatrixInterface(
-            const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) :
+          const MatrixInterface<ValueType, N2, M2, ValuePointerType2>& matrix) :
         MatrixBase<ValueType, ValuePointerType>(matrix)
     {
     }
@@ -961,35 +989,34 @@ public:
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, 1, M, STORAGE_INTERNAL> getRow(
+    Matrix<ValueType, 1, M, STORAGE_CONSTANT> getRow(
                                                   const std::uint32_t row) const
     {
-        Matrix<ValueType, 1, M, STORAGE_INTERNAL> matrix;
-
-        MatrixBase<ValueType, const ValueType>::getRow(matrix, row);
+        const Matrix<ValueType, 1, M, STORAGE_CONSTANT> matrix(*this, row, 0);
 
         return matrix;
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, 1, M, STORAGE_INTERNAL> row(const std::uint32_t row) const
+    Matrix<ValueType, 1, M, STORAGE_CONSTANT> row(
+                                                  const std::uint32_t row) const
     {
         return getRow(row);
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, N, 1, STORAGE_INTERNAL> getColumn(
+    Matrix<ValueType, N, 1, STORAGE_CONSTANT> getColumn(
                                                const std::uint32_t column) const
     {
-        Matrix<ValueType, N, 1, STORAGE_INTERNAL> matrix;
-
-        MatrixBase<ValueType, const ValueType>::getColumn(matrix, column);
+        const Matrix<ValueType, N, 1, STORAGE_CONSTANT> matrix(*this,
+                                                               0,
+                                                               column);
 
         return matrix;
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, N, 1, STORAGE_INTERNAL> col(
+    Matrix<ValueType, N, 1, STORAGE_CONSTANT> col(
                                                const std::uint32_t column) const
     {
         return getColumn(column);
@@ -1384,7 +1411,7 @@ public:
         MatrixBase<ValueType, ValuePointerType>::operatorMultiplyScalar(matrix,
                                                                         scalar);
 
-        return (matrix);
+        return matrix;
     }
 
     // Multiplication operator (this * M by M2)
@@ -1417,7 +1444,7 @@ public:
                                                                   matrix,
                                                                   resultMatrix);
         
-        return (resultMatrix);
+        return resultMatrix;
     }
 
     // Multiplication operator (this * M by 1)
@@ -1445,7 +1472,7 @@ public:
                                                                   matrix,
                                                                   resultMatrix);
 
-        return (resultMatrix);
+        return resultMatrix;
     }
 
     // Multiplication-equals operator (scalar)
@@ -1477,16 +1504,17 @@ public:
     Matrix<ValueType,
            DIMENSIONS_RUN_TIME,
            DIMENSIONS_RUN_TIME,
-           STORAGE_INTERNAL> getRow(const std::uint32_t row) const
+           STORAGE_EXTERNAL> getRow(const std::uint32_t row)
     {
         Matrix<ValueType,
                DIMENSIONS_RUN_TIME,
                DIMENSIONS_RUN_TIME,
-               STORAGE_INTERNAL> matrix(
-                         1,
-                         MatrixBase<ValueType, ValuePointerType>::getColumns());
-
-        MatrixBase<ValueType, ValuePointerType>::getRow(matrix, row);
+               STORAGE_EXTERNAL> matrix(
+                          1,
+                          MatrixBase<ValueType, ValuePointerType>::getColumns(),
+                          *this,
+                          row,
+                          0);
 
         return matrix;
     }
@@ -1495,25 +1523,75 @@ public:
     Matrix<ValueType,
            DIMENSIONS_RUN_TIME,
            DIMENSIONS_RUN_TIME,
-           STORAGE_INTERNAL> row(const std::uint32_t row) const
+           STORAGE_CONSTANT> getRow(const std::uint32_t row) const
     {
-        return getRow(row);
-    }
-
-    //--------------------------------------------------------------------------
-    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_INTERNAL> getColumn(
-                                               const std::uint32_t column) const
-    {
-        Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_INTERNAL> matrix(
-                            MatrixBase<ValueType, ValuePointerType>::getRows());
-
-        MatrixBase<ValueType, ValuePointerType>::getColumn(matrix, column);
+        Matrix<ValueType,
+               DIMENSIONS_RUN_TIME,
+               DIMENSIONS_RUN_TIME,
+               STORAGE_CONSTANT> matrix(
+                          1,
+                          MatrixBase<ValueType, ValuePointerType>::getColumns(),
+                          *this,
+                          row,
+                          0);
 
         return matrix;
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_INTERNAL> col(
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_EXTERNAL> row(const std::uint32_t row)
+    {
+        return getRow(row);
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix<ValueType,
+           DIMENSIONS_RUN_TIME,
+           DIMENSIONS_RUN_TIME,
+           STORAGE_CONSTANT> row(const std::uint32_t row) const
+    {
+        return getRow(row);
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> getColumn(
+                                               const std::uint32_t column)
+    {
+        Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix(
+                             MatrixBase<ValueType, ValuePointerType>::getRows(),
+                             *this,
+                             0,
+                             column);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> getColumn(
+                                               const std::uint32_t column) const
+    {
+        Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix(
+                             MatrixBase<ValueType, ValuePointerType>::getRows(),
+                             *this,
+                             0,
+                             column);
+
+        return matrix;
+    }
+
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> col(
+                                               const std::uint32_t column)
+    {
+        return getColumn(column);
+    }
+
+
+    //--------------------------------------------------------------------------
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> col(
                                                const std::uint32_t column) const
     {
         return getColumn(column);
@@ -1910,7 +1988,7 @@ public:
         MatrixBase<ValueType, const ValueType>::operatorMultiplyScalar(matrix,
                                                                        scalar);
 
-        return (matrix);
+        return matrix;
     }
 
     // Multiplication operator (this * M by M2)
@@ -1943,7 +2021,7 @@ public:
                                                                   matrix,
                                                                   resultMatrix);
         
-        return (resultMatrix);
+        return resultMatrix;
     }
 
     // Multiplication operator (this * M by 1)
@@ -1971,7 +2049,7 @@ public:
                                                                   matrix,
                                                                   resultMatrix);
 
-        return (resultMatrix);
+        return resultMatrix;
     }
 
     //--------------------------------------------------------------------------
@@ -1982,16 +2060,17 @@ public:
     Matrix<ValueType,
            DIMENSIONS_RUN_TIME,
            DIMENSIONS_RUN_TIME,
-           STORAGE_INTERNAL> getRow(const std::uint32_t row) const
+           STORAGE_CONSTANT> getRow(const std::uint32_t row) const
     {
-        Matrix<ValueType,
-               DIMENSIONS_RUN_TIME,
-               DIMENSIONS_RUN_TIME,
-               STORAGE_INTERNAL> matrix(
-                          1,
-                          MatrixBase<ValueType, const ValueType>::getColumns());
-
-        MatrixBase<ValueType, const ValueType>::getRow(matrix, row);
+        const Matrix<ValueType,
+                     DIMENSIONS_RUN_TIME,
+                     DIMENSIONS_RUN_TIME,
+                     STORAGE_CONSTANT> matrix(
+                           1,
+                           MatrixBase<ValueType, const ValueType>::getColumns(),
+                           *this,
+                           row,
+                           0);
 
         return matrix;
     }
@@ -2000,29 +2079,33 @@ public:
     Matrix<ValueType,
            DIMENSIONS_RUN_TIME,
            DIMENSIONS_RUN_TIME,
-           STORAGE_INTERNAL> row(const std::uint32_t row) const
+           STORAGE_CONSTANT> row(const std::uint32_t row) const
     {
         return getRow(row);
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_INTERNAL> getColumn(
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> getColumn(
                                                const std::uint32_t column) const
     {
-        Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_INTERNAL> matrix;
-
-        MatrixBase<ValueType, const ValueType>::getColumn(matrix, column);
+        const Matrix<ValueType,
+                     DIMENSIONS_RUN_TIME,
+                     1,
+                     STORAGE_CONSTANT> matrix(
+                              MatrixBase<ValueType, const ValueType>::getRows(),
+                              *this,
+                              0,
+                              column);
 
         return matrix;
     }
 
     //--------------------------------------------------------------------------
-    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_INTERNAL> col(
+    Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> col(
                                                const std::uint32_t column) const
     {
         return getColumn(column);
     }
-
     //--------------------------------------------------------------------------
     Matrix<ValueType,
            DIMENSIONS_RUN_TIME,
