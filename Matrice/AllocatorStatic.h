@@ -109,8 +109,13 @@ private:
     }
 
     //--------------------------------------------------------------------------
-    virtual void driverDeallocate(void* pointer, const std::size_t count)
+    virtual void driverDeallocate(void*& pointer, const std::size_t count)
     {
+        if ((&(myMemory[myMemoryIndex]) - count) != pointer)
+        {
+            MATRICE_REPORT_ERROR(ERROR_ALLOCATOR_FRAGMENTED_DEALLOCATION);
+        }
+
         myMemoryIndex -= count;
 
         pointer = 0;
