@@ -9076,8 +9076,8 @@ bool MatrixTest::getRowTestInternal()
 
     // Test
 
-    const Matrix<float, 1, 4> result1 = matrix.getRow(1);
-    const Matrix<float, 1, 4> result2 = matrix.row(1);
+    const Matrix<float, 1, 4, STORAGE_EXTERNAL> result1 = matrix.getRow(1);
+    const Matrix<float, 1, 4, STORAGE_EXTERNAL> result2 = matrix.row(1);
 
     const float expectedValues[1][4] =
     {
@@ -9109,8 +9109,8 @@ bool MatrixTest::getRowTestExternal()
 
     // Test
 
-    const Matrix<float, 1, 4> result1 = matrix.getRow(1);
-    const Matrix<float, 1, 4> result2 = matrix.row(1);
+    const Matrix<float, 1, 4, STORAGE_EXTERNAL> result1 = matrix.getRow(1);
+    const Matrix<float, 1, 4, STORAGE_EXTERNAL> result2 = matrix.row(1);
 
     const float expectedValues[1][4] =
     {
@@ -9142,8 +9142,8 @@ bool MatrixTest::getRowTestConstant()
 
     // Test
 
-    const Matrix<float, 1, 4> result1 = matrix.getRow(1);
-    const Matrix<float, 1, 4> result2 = matrix.row(1);
+    const Matrix<float, 1, 4, STORAGE_CONSTANT> result1 = matrix.getRow(1);
+    const Matrix<float, 1, 4, STORAGE_CONSTANT> result2 = matrix.row(1);
 
     const float expectedValues[1][4] =
     {
@@ -9177,8 +9177,14 @@ bool MatrixTest::getRowTestInternalRunTime()
 
     // Test
 
-    const Matrix<float, 1, 4> result1 = matrix.getRow(1);
-    const Matrix<float, 1, 4> result2 = matrix.row(1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> result1 = matrix.getRow(1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> result2 = matrix.row(1);
 
     const float expectedValues[1][4] =
     {
@@ -9213,8 +9219,14 @@ bool MatrixTest::getRowTestExternalRunTime()
 
     // Test
 
-    const Matrix<float, 1, 4> result1 = matrix.getRow(1);
-    const Matrix<float, 1, 4> result2 = matrix.row(1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> result1 = matrix.getRow(1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> result2 = matrix.row(1);
 
     const float expectedValues[1][4] =
     {
@@ -9249,8 +9261,14 @@ bool MatrixTest::getRowTestConstantRunTime()
 
     // Test
 
-    const Matrix<float, 1, 4> result1 = matrix.getRow(1);
-    const Matrix<float, 1, 4> result2 = matrix.row(1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> result1 = matrix.getRow(1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> result2 = matrix.row(1);
 
     const float expectedValues[1][4] =
     {
@@ -9282,8 +9300,8 @@ bool MatrixTest::getColumnTestInternal()
 
     // Test
 
-    const Matrix<float, 3, 1> result1 = matrix.getColumn(1);
-    const Matrix<float, 3, 1> result2 = matrix.col(1);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> result1 = matrix.getColumn(1);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> result2 = matrix.col(1);
 
     const float expectedValues[3][1] =
     {
@@ -9317,8 +9335,8 @@ bool MatrixTest::getColumnTestExternal()
 
     // Test
 
-    const Matrix<float, 3, 1> result1 = matrix.getColumn(1);
-    const Matrix<float, 3, 1> result2 = matrix.col(1);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> result1 = matrix.getColumn(1);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> result2 = matrix.col(1);
 
     const float expectedValues[3][1] =
     {
@@ -9352,8 +9370,8 @@ bool MatrixTest::getColumnTestConstant()
 
     // Test
 
-    const Matrix<float, 3, 1> result1 = matrix.getColumn(1);
-    const Matrix<float, 3, 1> result2 = matrix.col(1);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> result1 = matrix.getColumn(1);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> result2 = matrix.col(1);
 
     const float expectedValues[3][1] =
     {
@@ -9389,8 +9407,10 @@ bool MatrixTest::getColumnTestInternalRunTime()
 
     // Test
 
-    const Matrix<float, 3, 1> result1 = matrix.getColumn(1);
-    const Matrix<float, 3, 1> result2 = matrix.col(1);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> result1 =
+                                                            matrix.getColumn(1);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> result2 =
+                                                                  matrix.col(1);
 
     const float expectedValues[3][1] =
     {
@@ -9427,8 +9447,10 @@ bool MatrixTest::getColumnTestExternalRunTime()
 
     // Test
 
-    const Matrix<float, 3, 1> result1 = matrix.getColumn(1);
-    const Matrix<float, 3, 1> result2 = matrix.col(1);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> result1 =
+                                                            matrix.getColumn(1);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> result2 =
+                                                                  matrix.col(1);
 
     const float expectedValues[3][1] =
     {
@@ -9458,12 +9480,17 @@ bool MatrixTest::getColumnTestConstantRunTime()
         { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    const Matrix<float, 3, 4, STORAGE_CONSTANT> matrix(values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> matrix(3, 4, values);
 
     // Test
 
-    const Matrix<float, 3, 1> result1 = matrix.getColumn(1);
-    const Matrix<float, 3, 1> result2 = matrix.col(1);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> result1 =
+                                                            matrix.getColumn(1);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> result2 =
+                                                                  matrix.col(1);
 
     const float expectedValues[3][1] =
     {
