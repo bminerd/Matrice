@@ -18,6 +18,7 @@ Change Log entries must follow the format:
 
 These issues have been fully implemented and merged into develop.
 
+* `[FEATURE]` Change getRow() and getColumn() in MatrixInterface to return a submatrix instead of a deep copy of the row/colum. [Resolves #42].
 * `[QUALITY]` Fixed all warnings after enabling -Wall for Matrice_Test_App.
 Disabled multi-line comment warning due to Plat4m header file header [Resolves #67].
 * `[FEATURE]` Added template specializations for run-time dimensions to Matrix and Vector classes. [Resolves #63].
