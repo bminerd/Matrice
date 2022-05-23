@@ -18,6 +18,7 @@ Change Log entries must follow the format:
 
 These issues have been fully implemented and merged into develop.
 
+* `[QUALITY]` Added newline to end of Matrice.cpp. [Resolves #70].
 * `[FEATURE]` Changed deallocate() definitions to pass pointer as a reference for clearing to zero. [Resolves #68].
 * `[FEATURE]` Change getRow() and getColumn() in MatrixInterface to return a submatrix instead of a deep copy of the row/colum. [Resolves #42].
 * `[QUALITY]` Fixed all warnings after enabling -Wall for Matrice_Test_App.
