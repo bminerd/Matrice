@@ -7,9 +7,7 @@ set(PROJECT_FLAGS "-g \
                    -pthread \
                    -Wall \
                    -Wno-comment \
-                   -fsanitize=address \
-                   -fdebug-prefix-map=/home/matrice_sq=. \
-                   -fdebug-prefix-map=${PROJECT_BINARY_DIR}=.")
+                   -fsanitize=address")
 
 set(CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS} ${PROJECT_FLAGS}")
 set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} ${PROJECT_FLAGS}")
