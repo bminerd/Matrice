@@ -1,17 +1,7 @@
 //------------------------------------------------------------------------------
-//       _______    __                           ___
-//      ||  ___ \  || |             __          //  |
-//      || |  || | || |   _______  || |__      //   |    _____  ___
-//      || |__|| | || |  // ___  | ||  __|    // _  |   ||  _ \/ _ \
-//      ||  ____/  || | || |  || | || |      // /|| |   || |\\  /\\ \
-//      || |       || | || |__|| | || |     // /_|| |_  || | || | || |
-//      || |       || |  \\____  | || |__  //_____   _| || | || | || |
-//      ||_|       ||_|       ||_|  \\___|       ||_|   ||_| ||_| ||_|
-//
-//
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Benjamin Minerd
+// Copyright (c) 2020 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,56 +23,51 @@
 //------------------------------------------------------------------------------
 
 ///
-/// @file Vector.h
+/// @file Map.h
 /// @author Ben Minerd
-/// @date 2/18/2016
-/// @brief Vector class header file.
+/// @date 9/8/2020
+/// @brief Map class header file.
 ///
 
-#ifndef PLAT4M_VECTOR_H
-#define PLAT4M_VECTOR_H
+#ifndef MATRICE_MAP_H
+#define MATRICE_MAP_H
 
 //------------------------------------------------------------------------------
 // Include files
 //------------------------------------------------------------------------------
 
-#include <Plat4m_Core/Plat4m.h>
-#include <Plat4m_Math/Matrix.h>
+#include <cstdint>
+
+#include <Matrice/Matrice.h>
+#include <Matrice/MatrixStorage.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
 //------------------------------------------------------------------------------
 
-namespace Plat4m
-{
-
-namespace Math
+namespace Matrice
 {
 
 //------------------------------------------------------------------------------
 // Classes
 //------------------------------------------------------------------------------
 
-template <typename ValueType, uint32_t N>
-class Vector : public MatrixBase<ValueType, N, 1>
+template <class MatriceType>
+class Map : public MatrixStorage<typename MatriceType::ValueT,
+                                 MatriceType::rows,
+                                 MatriceType::columns,
+                                 STORAGE_EXTERNAL>
 {
 public:
 
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
-    
-    //--------------------------------------------------------------------------
-    Vector() :
-        MatrixBase<ValueType, N, 1>()
-    {
-    }
 
     //--------------------------------------------------------------------------
-    Vector(const ValueType values[N]) :
-        MatrixBase<ValueType, N, 1>()
+    Map(typename MatriceType::ValueT storageValues[MatriceType::rows][MatriceType::columns]) :
+        MatrixStorage<typename MatriceType::ValueT, MatriceType::rows, MatriceType::columns, STORAGE_EXTERNAL>(storageValues)
     {
-        MatrixBase<ValueType, N, 1>::setValuesProtected(values);
     }
 
     //--------------------------------------------------------------------------
@@ -90,38 +75,26 @@ public:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    ~Vector()
+    ~Map()
     {
     }
-
+    
     //--------------------------------------------------------------------------
     // Public methods
     //--------------------------------------------------------------------------
 
     // Assignment operator
     //--------------------------------------------------------------------------
-    Vector<ValueType, N>& operator=(const MatrixBase<ValueType, N, 1>& matrix)
+    Map<MatriceType>& operator=(
+        const MatrixStorage<typename MatriceType::ValueT, MatriceType::rows, MatriceType::columns, STORAGE_INTERNAL>& matrix)
     {
-        MatrixBase<ValueType, N, 1>::operator=(matrix);
+        MatrixStorage<typename MatriceType::ValueT, MatriceType::rows, MatriceType::columns, STORAGE_EXTERNAL>::operator=(matrix);
 
         return (*this);
     }
 
-    //--------------------------------------------------------------------------
-    ValueType& operator()(const uint32_t row)
-    {
-        return (MatrixBase<ValueType, N, 1>::getValue(row, 0));
-    }
-
-    //--------------------------------------------------------------------------
-    const ValueType& operator()(const uint32_t row) const
-    {
-        return (MatrixBase<ValueType, N, 1>::getValue(row, 0));
-    }
 };
 
-}; // namespace Math
+}; // namespace Matrice
 
-}; // namespace Plat4m
-
-#endif // PLAT4M_VECTOR_H
+#endif // MATRICE_MAP_H

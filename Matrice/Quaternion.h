@@ -1,14 +1,4 @@
 //------------------------------------------------------------------------------
-//       _______    __                           ___
-//      ||  ___ \  || |             __          //  |
-//      || |  || | || |   _______  || |__      //   |    _____  ___
-//      || |__|| | || |  // ___  | ||  __|    // _  |   ||  _ \/ _ \
-//      ||  ____/  || | || |  || | || |      // /|| |   || |\\  /\\ \
-//      || |       || | || |__|| | || |     // /_|| |_  || | || | || |
-//      || |       || |  \\____  | || |__  //_____   _| || | || | || |
-//      ||_|       ||_|       ||_|  \\___|       ||_|   ||_| ||_| ||_|
-//
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2017 Benjamin Minerd
@@ -39,23 +29,20 @@
 /// @brief Quaternion class header file.
 ///
 
-#ifndef PLAT4M_MATH_QUATERNION_H
-#define PLAT4M_MATH_QUATERNION_H
+#ifndef MATRICE_QUATERNION_H
+#define MATRICE_QUATERNION_H
 
 //------------------------------------------------------------------------------
 // Include files
 //------------------------------------------------------------------------------
 
-#include <Plat4m_Math/MatrixBase.h>
+#include <Matrice/MatrixBase.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
 //------------------------------------------------------------------------------
 
-namespace Plat4m
-{
-
-namespace Math
+namespace Matrice
 {
 
 //------------------------------------------------------------------------------
@@ -137,8 +124,6 @@ public:
     }
 };
 
-}; // namespace Math
+}; // namespace Matrice
 
-}; // namespace Plat4m
-
-#endif // PLAT4M_MATH_QUATERNION_H
+#endif // MATRICE_QUATERNION_H

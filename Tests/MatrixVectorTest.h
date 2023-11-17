@@ -1,17 +1,7 @@
 //------------------------------------------------------------------------------
-//       _______    __                           ___
-//      ||  ___ \  || |             __          //  |
-//      || |  || | || |   _______  || |__      //   |    _____  ___
-//      || |__|| | || |  // ___  | ||  __|    // _  |   ||  _ \/ _ \
-//      ||  ____/  || | || |  || | || |      // /|| |   || |\\  /\\ \
-//      || |       || | || |__|| | || |     // /_|| |_  || | || | || |
-//      || |       || |  \\____  | || |__  //_____   _| || | || | || |
-//      ||_|       ||_|       ||_|  \\___|       ||_|   ||_| ||_| ||_|
-//
-//
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Benjamin Minerd
+// Copyright (c) 2020 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,81 +23,81 @@
 //------------------------------------------------------------------------------
 
 ///
-/// @file TransformationMatrix.h
-/// @author Ben Minerd
-/// @date 5/10/2017
-/// @brief TransformationMatrix class header file.
+/// @file MatrixVectorTest.h
+/// @author Andrew Harmon
+/// @date 9/24/2020
+/// @brief MatrixVectorTest class header file.
 ///
 
-#ifndef PLAT4M_MATH_TRANSFORMATION_MATRIX_H
-#define PLAT4M_MATH_TRANSFORMATION_MATRIX_H
+#ifndef MATRICE_MATRIX_VECTOR_TEST_H
+#define MATRICE_MATRIX_VECTOR_TEST_H
 
 //------------------------------------------------------------------------------
 // Include files
 //------------------------------------------------------------------------------
 
-#include <MatrixBase.h>
+#include <Plat4m_Core/UnitTest/UnitTest.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
 //------------------------------------------------------------------------------
 
-namespace Plat4m
-{
-
-namespace Math
+namespace Matrice
 {
 
 //------------------------------------------------------------------------------
 // Classes
 //------------------------------------------------------------------------------
 
-///
-/// @brief Class that inherits from TransformationMatrixBase to provide a general N x M matrix
-/// implementation.
-/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
-/// float, uint32_t, etc.).
-/// @tparam N Number of matrix rows.
-/// @tparam M Number of matrix columns.
-///
-template <typename ValueType>
-class TransformationMatrix : public MatrixBase<ValueType, 4, 4>
+class MatrixVectorTest : public Plat4m::UnitTest
 {
 public:
-
+    
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
 
-    //--------------------------------------------------------------------------
-    TransformationMatrix() :
-        TransformationMatrixBase<ValueType, 4, 4>()
-    {
-    }
+    MatrixVectorTest();
 
     //--------------------------------------------------------------------------
-    TransformationMatrix(const ValueType values[4][4]) :
-        TransformationMatrixBase<ValueType, 4, 4>(values)
-    {
-    }
-
-    //--------------------------------------------------------------------------
-    // Public overloaded operators
+    // Public virtual destructors
     //--------------------------------------------------------------------------
 
-    // Assignment operator
-    //--------------------------------------------------------------------------
-    TransformationMatrix<ValueType>& operator=(
-                    const TransformationMatrix<ValueType>& transformationMatrix)
-    {
-        MatrixBase<ValueType, 4, 4>::operator=(transformationMatrix);
+    virtual ~MatrixVectorTest();
 
-        return (*this);
-    }
+    //--------------------------------------------------------------------------
+    // Public static methods
+    //--------------------------------------------------------------------------
+
+    static bool matrixTimesVectorStorageInternalTest();
+    static bool matrixTimesVectorStorageExternalTest();
+
+    static bool matrix4By5TimesVectorStorageInternalTest();
+    static bool matrix4By5TimesVectorStorageExternalTest();
+    static bool matrix4By5TimesVectorStorageConstantTest();
+    
+    static bool matrixAddEqualsVectorStorageInternalTest();
+    static bool matrixAddEqualsVectorStorageExternalTest();
+
+    static bool vectorAddEqualsMatrixStorageInternalTest();
+    static bool vectorAddEqualsMatrixStorageExternalTest();
+
+    static bool matrixSubtractEqualsVectorStorageInternalTest();
+    static bool matrixSubtractEqualsVectorStorageExternalTest();
+
+    static bool vectorSubtractEqualsMatrixStorageInternalTest();
+    static bool vectorSubtractEqualsMatrixStorageExternalTest();
+
+private:
+
+    //--------------------------------------------------------------------------
+    // Private static data members
+    //--------------------------------------------------------------------------
+
+    static const Plat4m::UnitTest::TestCallbackFunction
+                                                      myTestCallbackFunctions[];
 };
 
-}; // namespace Math
+}; // namespace Matrice
 
-}; // namespace Plat4m
-
-#endif // PLAT4M_MATH_ROTATION_MATRIX_H
+#endif // MATRICE_MATRIX_VECTOR_TEST_H
