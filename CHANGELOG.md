@@ -18,6 +18,10 @@ Change Log entries must follow the format:
 
 These issues have been fully implemented and merged into develop.
 
+### v1.1.0
+
+Released: 2023-11-17
+
 * `[QUALITY]` Added newline to end of Matrice.cpp.
 * `[FEATURE]` Changed deallocate() definitions to pass pointer as a reference for clearing to zero.
 * `[FEATURE]` Change getRow() and getColumn() in MatrixInterface to return a submatrix instead of a deep copy of the row/colum.
