@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Benjamin Minerd
+// Copyright (c) 2022 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,33 @@
 //------------------------------------------------------------------------------
 
 ///
-/// @file Vector.h
+/// @file Matrice.h
 /// @author Ben Minerd
-/// @date 2/18/2016
-/// @brief Vector class header file.
+/// @date 8/29/2016
+/// @brief Matrice namespace functions.
 ///
 
-#ifndef MATRICE_VECTOR_H
-#define MATRICE_VECTOR_H
+#ifndef MATRICE_H
+#define MATRICE_H
 
 //------------------------------------------------------------------------------
 // Include files
 //------------------------------------------------------------------------------
 
-#include <Matrice/Matrix.h>
+#include <cstdint>
+
+//------------------------------------------------------------------------------
+// Definitions
+//------------------------------------------------------------------------------
+
+#define MATRICE_VERSION "1.0.0"
+
+//------------------------------------------------------------------------------
+// Macros
+//------------------------------------------------------------------------------
+
+#define MATRICE_REPORT_ERROR(error) \
+    Matrice::reportError(error, __FILE__, __func__, __LINE__)
 
 //------------------------------------------------------------------------------
 // Namespaces
@@ -44,68 +57,72 @@
 
 namespace Matrice
 {
-
-//------------------------------------------------------------------------------
-// Classes
-//------------------------------------------------------------------------------
-
-template <typename ValueType, uint32_t N>
-class Vector : public MatrixBase<ValueType, N, 1>
-{
-public:
-
     //--------------------------------------------------------------------------
-    // Public constructors
+    // Types
     //--------------------------------------------------------------------------
-    
-    //--------------------------------------------------------------------------
-    Vector() :
-        MatrixBase<ValueType, N, 1>()
+
+    enum Storage
     {
-    }
+        STORAGE_INTERNAL = 0,
+        STORAGE_EXTERNAL,
+        STORAGE_CONSTANT
+    };
 
-    //--------------------------------------------------------------------------
-    Vector(const ValueType values[N]) :
-        MatrixBase<ValueType, N, 1>()
+    enum Error
     {
-        MatrixBase<ValueType, N, 1>::setValuesProtected(values);
-    }
+        ERROR_NONE = 0,
+        ERROR_DIMENSIONS_INVALID,
+        ERROR_SUBMATRIX_BOUNDS_INVALID,
+        ERROR_ALLOCATOR_NOT_ENOUGH_MEMORY,
+        ERROR_ALLOCATOR_FRAGMENTED_DEALLOCATION
+    };
 
-    //--------------------------------------------------------------------------
-    // Public destructors
-    //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
-    ~Vector()
+    enum Dimensions
     {
-    }
+        DIMENSIONS_RUN_TIME = 0
+    };
+
+    typedef void (*PrintCallback)(const char*);
+
+    typedef void (*ErrorCallback)(const Error,
+                                  const char*,
+                                  const char*,
+                                  const char*,
+                                  const std::uint32_t);
+
+    typedef void (*EnterCriticalSectionCallback)();
+
+    typedef void (*ExitCriticalSectionCallback)();
 
     //--------------------------------------------------------------------------
-    // Public methods
+    // Functions
     //--------------------------------------------------------------------------
 
-    // Assignment operator
+    void setPrintCallback(PrintCallback callback);
+
+    void print(const char* string);
+
+    void setErrorCallback(ErrorCallback callback);
+
+    void reportError(const Error error,
+                     const char* filename,
+                     const char* functionName,
+                     const std::uint32_t lineNumber);
+
+    void setEnterAndExitCriticalSectionCallbacks(
+                                     EnterCriticalSectionCallback enterCallback,
+                                     ExitCriticalSectionCallback exitCallback);
+
+    void enterCriticalSection();
+
+    void exitCriticalSection();
+
     //--------------------------------------------------------------------------
-    Vector<ValueType, N>& operator=(const MatrixBase<ValueType, N, 1>& matrix)
+    template <typename TValue>
+    inline TValue square(const TValue value)
     {
-        MatrixBase<ValueType, N, 1>::operator=(matrix);
-
-        return (*this);
+        return (value * value);
     }
-
-    //--------------------------------------------------------------------------
-    ValueType& operator()(const uint32_t row)
-    {
-        return (MatrixBase<ValueType, N, 1>::getValue(row, 0));
-    }
-
-    //--------------------------------------------------------------------------
-    const ValueType& operator()(const uint32_t row) const
-    {
-        return (MatrixBase<ValueType, N, 1>::getValue(row, 0));
-    }
-};
-
 }; // namespace Matrice
 
-#endif // MATRICE_VECTOR_H
+#endif // MATRICE_H

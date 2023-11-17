@@ -1,0 +1,33 @@
+# /.gitlab-ci.yml
+
+image: docker:19.03.1
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  GIT_SUBMODULE_STRATEGY: recursive
+
+services:
+  - name: docker:19.03.1-dind
+
+stages:
+  - build
+  - test
+
+build:Matrice_Test_App:
+  stage: build
+  tags:
+    - docker
+  script:
+  - sh docker_bash.sh "./git_clone_dependencies.sh && Tests/Matrice_Test_App/build.sh"
+  artifacts:
+    paths:
+      - Tests/Matrice_Test_App/Build/
+
+test:Matrice_Test_App:
+  stage: test
+  tags:
+    - docker
+  script:
+  - sh docker_bash.sh Tests/Matrice_Test_App/test.sh
+  dependencies:
+    - build:Matrice_Test_App

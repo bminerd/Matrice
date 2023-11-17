@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Benjamin Minerd
+// Copyright (c) 2022 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,23 @@
 //------------------------------------------------------------------------------
 
 ///
-/// @file Matrix.h
+/// @file AllocatorStatic.h
 /// @author Ben Minerd
-/// @date 2/17/2016
-/// @brief Matrix class header file.
+/// @date 4/5/2022
+/// @brief AllocatorStatic class header file.
 ///
 
-#ifndef MATRICE_MATRIX_H
-#define MATRICE_MATRIX_H
+#ifndef MATRICE_ALLOCATOR_STATIC_H
+#define MATRICE_ALLOCATOR_STATIC_H
 
 //------------------------------------------------------------------------------
 // Include files
 //------------------------------------------------------------------------------
 
-#include <Matrice/MatrixBase.h>
+#include <cstdint>
+
+#include <Matrice/Matrice.h>
+#include <Matrice/Allocator.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
@@ -49,16 +52,8 @@ namespace Matrice
 // Classes
 //------------------------------------------------------------------------------
 
-///
-/// @brief Class that inherits from MatrixBase to provide a general N x M matrix
-/// implementation.
-/// @tparam ValueType Type of value to be stored in this matrix (ex. double,
-/// float, uint32_t, etc.).
-/// @tparam N Number of matrix rows.
-/// @tparam M Number of matrix columns.
-///
-template <typename ValueType, uint32_t N, uint32_t M>
-class Matrix : public MatrixBase<ValueType, N, M>
+template <std::uint32_t AllocationByteCount>
+class AllocatorStatic : public Allocator
 {
 public:
 
@@ -67,97 +62,72 @@ public:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    Matrix() :
-        MatrixBase<ValueType, N, M>()
+    AllocatorStatic() :
+        Allocator(),
+        myMemory(),
+        myMemoryIndex(0)
     {
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const ValueType values[N][M]) :
-        MatrixBase<ValueType, N, M>(values)
+    // Public destructors
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    ~AllocatorStatic()
     {
     }
 
+private:
+
     //--------------------------------------------------------------------------
-    // Public overloaded operators
+    // Private data members
     //--------------------------------------------------------------------------
 
-    // Assignment operator
+    std::uint8_t myMemory[AllocationByteCount];
+
+    std::uint32_t myMemoryIndex;
+
     //--------------------------------------------------------------------------
-    Matrix<ValueType, N, M>& operator=(
-                                      const MatrixBase<ValueType, N, M>& matrix)
+    // Private virtual methods overridden for Allocator
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    virtual void* driverAllocate(const std::size_t count)
     {
-        MatrixBase<ValueType, N, M>::operator=(matrix);
-
-        return (*this);
-    }
-};
-
-// Add other Matrix definitions for 2x2, 3x3, etc.
-
-template <typename ValueType, uint32_t N>
-class Matrix<ValueType, N, N> : public MatrixBase<ValueType, N, N>
-{
-public:
-
-    //--------------------------------------------------------------------------
-    // Public constructors
-    //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
-    Matrix() :
-        MatrixBase<ValueType, N, N>()
-    {
+        void* memory = 0;
+    
+        if ((myMemoryIndex + count) > AllocationByteCount)
+        {
+            MATRICE_REPORT_ERROR(ERROR_ALLOCATOR_NOT_ENOUGH_MEMORY);
+        }
+        
+        memory = &(myMemory[myMemoryIndex]);
+        myMemoryIndex += count;
+        
+        return memory;
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const ValueType values[N][N]) :
-        MatrixBase<ValueType, N, N>(values)
+    virtual void driverDeallocate(void*& pointer, const std::size_t count)
     {
+        if ((&(myMemory[myMemoryIndex]) - count) != pointer)
+        {
+            MATRICE_REPORT_ERROR(ERROR_ALLOCATOR_FRAGMENTED_DEALLOCATION);
+        }
+
+        myMemoryIndex -= count;
+
+        pointer = 0;
     }
 
     //--------------------------------------------------------------------------
-    Matrix(const MatrixBase<ValueType, N, N>& matrix) :
-        MatrixBase<ValueType, N, N>(matrix)
+    virtual std::size_t driverGetFreeMemorySize()
     {
-    }
-
-    //--------------------------------------------------------------------------
-    // Public methods
-    //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
-    ValueType determinant()
-    {
-        ValueType result;
-
-        return result;
-    }
-
-    //--------------------------------------------------------------------------
-    // Public overloaded operators
-    //--------------------------------------------------------------------------
-
-    // Assignment operator
-    //--------------------------------------------------------------------------
-    Matrix<ValueType, N, N>& operator=(
-                                      const MatrixBase<ValueType, N, N>& matrix)
-    {
-        MatrixBase<ValueType, N, N>::operator=(matrix);
-
-        return (*this);
-    }
-
-    // Assignment operator
-    //--------------------------------------------------------------------------
-    Matrix<ValueType, N, N>& operator=(MatrixBase<ValueType, N, N>& matrix)
-    {
-        MatrixBase<ValueType, N, N>::operator=(matrix);
-
-        return (*this);
+        return (sizeof(myMemory) - myMemoryIndex);
     }
 };
 
 }; // namespace Matrice
 
-#endif // MATRICE_MATRIX_H
+#endif // MATRICE_ALLOCATOR_STATIC_H
