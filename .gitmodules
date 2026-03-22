@@ -1,0 +1,6 @@
+[submodule "Tests/Dependencies/Plat4m_Core"]
+	path = Tests/Dependencies/Plat4m_Core
+	url = git@github.com:bminerd/Plat4m_Core.git
+[submodule "Tests/Dependencies/Eigen"]
+	path = Tests/Dependencies/Eigen
+	url = https://gitlab.com/libeigen/eigen.git

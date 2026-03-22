@@ -378,6 +378,117 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    // Count the number on non-zero elements in the matrix.
+    std::uint32_t count() const
+    {
+        const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
+
+        std::uint32_t i = myRows * myColumns;
+        std::uint32_t nonzero_count = 0;
+
+        while (i--)
+        {
+            if (*thisValuePointer != 0)
+            {
+                nonzero_count++;
+            }
+
+            incrementValuePointer(thisValuePointer, i);
+        }
+
+        return nonzero_count;
+    }
+
+    //--------------------------------------------------------------------------
+    // Does the matrix contain any non-zero values?
+    bool any() const
+    {
+        const ValuePointerType* thisValuePointer = &(getValueFast(0, 0));
+
+        std::uint32_t i = myRows * myColumns;
+
+        while (i--)
+        {
+            if (*thisValuePointer != 0)
+            {
+                // We found a non-zero value.
+                return true;
+            }
+
+            incrementValuePointer(thisValuePointer, i);
+        }
+
+        // The matrix contains all zeros.
+        return false;
+    }
+
+    //--------------------------------------------------------------------------
+    void swapElements(const std::uint32_t rowIndexA,
+                      const std::uint32_t columnIndexA,
+                      const std::uint32_t rowIndexB,
+                      const std::uint32_t columnIndexB)
+    {
+        if (rowIndexA >= myRows || columnIndexA >= myColumns ||
+            rowIndexB >= myRows || columnIndexB >= myColumns)
+        {
+            MATRICE_REPORT_ERROR(ERROR_DIMENSIONS_INVALID);
+        }
+
+        if (rowIndexA == rowIndexB && columnIndexA == columnIndexB)
+        {
+            return;
+        }
+
+        ValuePointerType &valueA = getValueFast(rowIndexA, columnIndexA);
+        ValuePointerType &valueB = getValueFast(rowIndexB, columnIndexB);
+        std::swap(valueA, valueB);
+    }
+
+    //--------------------------------------------------------------------------
+    void swapRows(const std::uint32_t rowIndexA,
+                  const std::uint32_t rowIndexB)
+    {
+        if (rowIndexA >= myRows || rowIndexB >= myRows)
+        {
+            MATRICE_REPORT_ERROR(ERROR_DIMENSIONS_INVALID);
+        }
+
+        if (rowIndexA == rowIndexB)
+        {
+            return;
+        }
+
+        for (std::uint32_t colIndex = 0; colIndex < myColumns; colIndex++)
+        {
+            ValuePointerType &valueA = getValueFast(rowIndexA, colIndex);
+            ValuePointerType &valueB = getValueFast(rowIndexB, colIndex);
+            std::swap(valueA, valueB);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    void swapColumns(const std::uint32_t columnIndexA,
+                     const std::uint32_t columnIndexB)
+    {
+        if (columnIndexA >= myColumns || columnIndexB >= myColumns)
+        {
+            MATRICE_REPORT_ERROR(ERROR_DIMENSIONS_INVALID);
+        }
+
+        if (columnIndexA == columnIndexB)
+        {
+            return;
+        }
+
+        for (std::uint32_t rowIndex = 0; rowIndex < myRows; rowIndex++)
+        {
+            ValuePointerType &valueA = getValueFast(rowIndex, columnIndexA);
+            ValuePointerType &valueB = getValueFast(rowIndex, columnIndexB);
+            std::swap(valueA, valueB);
+        }
+    }
+
+    //--------------------------------------------------------------------------
     void incrementValuePointer(ValuePointerType*& valuePointer, const int i)
     {
         if ((myColumnJump != 0) && (i % myColumns) == 0)

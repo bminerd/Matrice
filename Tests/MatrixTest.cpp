@@ -318,10 +318,10 @@ bool MatrixTest::operatorValueTypeCastTestInternal()
         { 1.0 }
     };
 
-    Matrix<float, 1, 1> matrix(values);
+    const Matrix<float, 1, 1> matrix(values);
 
     // Test
-    
+
     const float result = matrix;
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 1.0f));
@@ -337,10 +337,10 @@ bool MatrixTest::operatorValueTypeCastTestExternal()
         { 1.0 }
     };
 
-    Matrix<float, 1, 1, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 1, 1, STORAGE_EXTERNAL> matrix(values);
 
     // Test
-    
+
     const float result = matrix;
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 1.0f));
@@ -359,7 +359,7 @@ bool MatrixTest::operatorValueTypeCastTestConstant()
     const Matrix<float, 1, 1, STORAGE_CONSTANT> matrix(values);
 
     // Test
-    
+
     const float result = matrix;
 
     return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 1.0f));
@@ -377,18 +377,16 @@ bool MatrixTest::operatorValueTypeCastTest2Internal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     // Test
-    
-    Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(matrix);
 
-    Matrix<double,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME> result2 =
-                               static_cast<Matrix<double,
-                                                  DIMENSIONS_RUN_TIME,
-                                                  DIMENSIONS_RUN_TIME>>(matrix);
+    const Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(
+                                                                        matrix);
+
+    const Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> result2 =
+        static_cast<Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME>>(
+                                                                        matrix);
 
     const double expectedValues[3][3] =
     {
@@ -398,12 +396,9 @@ bool MatrixTest::operatorValueTypeCastTest2Internal()
     };
 
     const Matrix<double, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -418,18 +413,16 @@ bool MatrixTest::operatorValueTypeCastTest2External()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Test
-    
-    Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(matrix);
 
-    Matrix<double,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME> result2 =
-                               static_cast<Matrix<double,
-                                                  DIMENSIONS_RUN_TIME,
-                                                  DIMENSIONS_RUN_TIME>>(matrix);
+    const Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(
+                                                                        matrix);
+
+    const Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> result2 =
+        static_cast<Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME>>(
+                                                                        matrix);
 
 
     const double expectedValues[3][3] =
@@ -440,12 +433,9 @@ bool MatrixTest::operatorValueTypeCastTest2External()
     };
 
     const Matrix<double, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -463,15 +453,13 @@ bool MatrixTest::operatorValueTypeCastTest2Constant()
     const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
 
     // Test
-    
-    Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(matrix);
 
-    Matrix<double,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME> result2 =
-                               static_cast<Matrix<double,
-                                                  DIMENSIONS_RUN_TIME,
-                                                  DIMENSIONS_RUN_TIME>>(matrix);
+    const Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(
+                                                                        matrix);
+
+    const Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> result2 =
+        static_cast<Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME>>(
+                                                                        matrix);
 
 
     const double expectedValues[3][3] =
@@ -482,12 +470,9 @@ bool MatrixTest::operatorValueTypeCastTest2Constant()
     };
 
     const Matrix<double, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -502,15 +487,17 @@ bool MatrixTest::operatorValueTypeCastTest2InternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   3,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        3,
+                                                                        values);
 
     // Test
-                                                                        
-    Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(matrix);
 
-    Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> result2 =
+    const Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(
+                                                                        matrix);
+
+    const Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> result2 =
         static_cast<Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME>>(
                                                                         matrix);
 
@@ -522,12 +509,9 @@ bool MatrixTest::operatorValueTypeCastTest2InternalRunTime()
     };
 
     const Matrix<double, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -542,16 +526,17 @@ bool MatrixTest::operatorValueTypeCastTest2ExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 3, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 3, values);
 
     // Test
-    
-    Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(matrix);
 
-    Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> result2 =
+    const Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(
+                                                                        matrix);
+
+    const Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> result2 =
         static_cast<Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME>>(
                                                                         matrix);
 
@@ -563,12 +548,9 @@ bool MatrixTest::operatorValueTypeCastTest2ExternalRunTime()
     };
 
     const Matrix<double, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -589,10 +571,11 @@ bool MatrixTest::operatorValueTypeCastTest2ConstantRunTime()
                  STORAGE_CONSTANT> matrix(3, 3, values);
 
     // Test
-    
-    Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(matrix);
 
-    Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> result2 =
+    const Matrix<double, 3, 3> result1 = static_cast<Matrix<double, 3, 3>>(
+                                                                        matrix);
+
+    const Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> result2 =
         static_cast<Matrix<double, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME>>(
                                                                         matrix);
 
@@ -604,12 +587,9 @@ bool MatrixTest::operatorValueTypeCastTest2ConstantRunTime()
     };
 
     const Matrix<double, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -624,7 +604,7 @@ bool MatrixTest::operatorAssignmentTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     float values2[3][3] =
     {
@@ -633,7 +613,7 @@ bool MatrixTest::operatorAssignmentTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
 
     const float values3[3][3] =
     {
@@ -651,9 +631,10 @@ bool MatrixTest::operatorAssignmentTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(3,
-                                                                    3,
-                                                                    values4);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(
+                                                                       3,
+                                                                       3,
+                                                                       values4);
 
     float values5[3][3] =
     {
@@ -662,10 +643,10 @@ bool MatrixTest::operatorAssignmentTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix5(3, 3, values5);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix5(3, 3, values5);
 
     const float values6[3][3] =
     {
@@ -707,20 +688,13 @@ bool MatrixTest::operatorAssignmentTestInternal()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -735,7 +709,7 @@ bool MatrixTest::operatorAssignmentTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     float values2[3][3] =
     {
@@ -744,7 +718,7 @@ bool MatrixTest::operatorAssignmentTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
 
     const float values3[3][3] =
     {
@@ -762,9 +736,10 @@ bool MatrixTest::operatorAssignmentTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(3,
-                                                                    3,
-                                                                    values4);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(
+                                                                       3,
+                                                                       3,
+                                                                       values4);
 
     float values5[3][3] =
     {
@@ -773,10 +748,10 @@ bool MatrixTest::operatorAssignmentTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix5(3, 3, values5);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix5(3, 3, values5);
 
     const float values6[3][3] =
     {
@@ -824,20 +799,13 @@ bool MatrixTest::operatorAssignmentTestExternal()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -852,7 +820,7 @@ bool MatrixTest::operatorAssignmentTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
 
     const float values2[3][3] =
     {
@@ -861,10 +829,10 @@ bool MatrixTest::operatorAssignmentTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_CONSTANT> matrix2(3, 3, values2);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> matrix2(3, 3, values2);
 
     // Test
 
@@ -897,11 +865,8 @@ bool MatrixTest::operatorAssignmentTestConstant()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 
@@ -917,7 +882,7 @@ bool MatrixTest::operatorAssignmentTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     float values2[3][3] =
     {
@@ -926,7 +891,7 @@ bool MatrixTest::operatorAssignmentTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
 
     const float values3[3][3] =
     {
@@ -944,9 +909,10 @@ bool MatrixTest::operatorAssignmentTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(3,
-                                                                    3,
-                                                                    values4);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(
+                                                                       3,
+                                                                       3,
+                                                                       values4);
 
     float values5[3][3] =
     {
@@ -955,10 +921,10 @@ bool MatrixTest::operatorAssignmentTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix5(3, 3, values5);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix5(3, 3, values5);
 
     const float values6[3][3] =
     {
@@ -970,7 +936,7 @@ bool MatrixTest::operatorAssignmentTestInternalRunTime()
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
                  DIMENSIONS_RUN_TIME,
-                 STORAGE_CONSTANT> matrix6(3, 3, values6);    
+                 STORAGE_CONSTANT> matrix6(3, 3, values6);
 
     // Test
 
@@ -1000,20 +966,13 @@ bool MatrixTest::operatorAssignmentTestInternalRunTime()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -1028,7 +987,7 @@ bool MatrixTest::operatorAssignmentTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     float values2[3][3] =
     {
@@ -1037,7 +996,7 @@ bool MatrixTest::operatorAssignmentTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
 
     const float values3[3][3] =
     {
@@ -1055,9 +1014,10 @@ bool MatrixTest::operatorAssignmentTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(3,
-                                                                    3,
-                                                                    values4);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(
+                                                                       3,
+                                                                       3,
+                                                                       values4);
 
     float values5[3][3] =
     {
@@ -1066,10 +1026,10 @@ bool MatrixTest::operatorAssignmentTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix5(3, 3, values5);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix5(3, 3, values5);
 
     const float values6[3][3] =
     {
@@ -1135,20 +1095,13 @@ bool MatrixTest::operatorAssignmentTestExternalRunTime()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -1163,7 +1116,7 @@ bool MatrixTest::operatorAssignmentTestConstantRunTime()
         { 7.0, 8.0, 9.0 }   
     };
 
-    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
 
     const float values2[3][3] =
     {
@@ -1172,10 +1125,10 @@ bool MatrixTest::operatorAssignmentTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_CONSTANT> matrix2(3, 3, values2);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> matrix2(3, 3, values2);
 
     // Test
 
@@ -1205,13 +1158,6 @@ bool MatrixTest::operatorAssignmentTestConstantRunTime()
            STORAGE_CONSTANT> result2(3, 3, resultValues2);
     result2 = matrix2;
 
-    // REMOVE ME
-
-    Matrix<float, 3, 3> result;
-    testFunction(matrix1, matrix2, result);
-
-    // END REMOVE ME
-
     const float expectedValues[3][3] =
     {
         { 1.0, 2.0, 3.0 },
@@ -1221,11 +1167,8 @@ bool MatrixTest::operatorAssignmentTestConstantRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -1249,10 +1192,8 @@ bool MatrixTest::operatorAssignmentTest2Internal()
     const Matrix<float, 3, 3> result = matrix;
 
     const Matrix<float, 3, 3> expected(values);
-    
-    const bool compare = (result == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -1284,9 +1225,7 @@ bool MatrixTest::operatorAssignmentTest2External()
 
     const Matrix<float, 3, 3> expected(values2);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -1318,9 +1257,7 @@ bool MatrixTest::operatorAssignmentTest2Constant()
 
     const Matrix<float, 3, 3> expected(values2);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -1340,14 +1277,12 @@ bool MatrixTest::operatorAssignmentTest2InternalRunTime()
     // Test
 
     matrix = values;
-    
+
     const Matrix<float, 3, 3> result = matrix;
 
     const Matrix<float, 3, 3> expected(values);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -1382,9 +1317,7 @@ bool MatrixTest::operatorAssignmentTest2ExternalRunTime()
 
     const Matrix<float, 3, 3> expected(values2);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -1419,9 +1352,7 @@ bool MatrixTest::operatorAssignmentTest2ConstantRunTime()
 
     const Matrix<float, 3, 3> expected(values2);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -1438,7 +1369,7 @@ bool MatrixTest::operatorEqualsTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     // Items to test against
 
@@ -1449,7 +1380,7 @@ bool MatrixTest::operatorEqualsTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -1458,7 +1389,7 @@ bool MatrixTest::operatorEqualsTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -1476,9 +1407,10 @@ bool MatrixTest::operatorEqualsTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -1487,10 +1419,10 @@ bool MatrixTest::operatorEqualsTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -1506,19 +1438,12 @@ bool MatrixTest::operatorEqualsTestInternal()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true) &
-                            UNIT_TEST_CASE_EQUAL(result2, true) &
-                            UNIT_TEST_CASE_EQUAL(result3, true) &
-                            UNIT_TEST_CASE_EQUAL(result4, true) &
-                            UNIT_TEST_CASE_EQUAL(result5, true) &
-                            UNIT_TEST_CASE_EQUAL(result6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -1535,7 +1460,7 @@ bool MatrixTest::operatorEqualsTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
 
     // Items to test against
 
@@ -1546,7 +1471,7 @@ bool MatrixTest::operatorEqualsTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -1555,7 +1480,7 @@ bool MatrixTest::operatorEqualsTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -1573,9 +1498,10 @@ bool MatrixTest::operatorEqualsTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -1584,10 +1510,10 @@ bool MatrixTest::operatorEqualsTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -1603,19 +1529,12 @@ bool MatrixTest::operatorEqualsTestExternal()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true) &
-                            UNIT_TEST_CASE_EQUAL(result2, true) &
-                            UNIT_TEST_CASE_EQUAL(result3, true) &
-                            UNIT_TEST_CASE_EQUAL(result4, true) &
-                            UNIT_TEST_CASE_EQUAL(result5, true) &
-                            UNIT_TEST_CASE_EQUAL(result6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -1643,7 +1562,7 @@ bool MatrixTest::operatorEqualsTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -1652,7 +1571,7 @@ bool MatrixTest::operatorEqualsTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -1670,9 +1589,10 @@ bool MatrixTest::operatorEqualsTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -1681,10 +1601,10 @@ bool MatrixTest::operatorEqualsTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -1700,19 +1620,12 @@ bool MatrixTest::operatorEqualsTestConstant()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true) &
-                            UNIT_TEST_CASE_EQUAL(result2, true) &
-                            UNIT_TEST_CASE_EQUAL(result3, true) &
-                            UNIT_TEST_CASE_EQUAL(result4, true) &
-                            UNIT_TEST_CASE_EQUAL(result5, true) &
-                            UNIT_TEST_CASE_EQUAL(result6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -1729,9 +1642,10 @@ bool MatrixTest::operatorEqualsTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix1(3,
-                                                                    3,
-                                                                    values1);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix1(
+                                                                       3,
+                                                                       3,
+                                                                       values1);
 
     // Items to test against
 
@@ -1742,7 +1656,7 @@ bool MatrixTest::operatorEqualsTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -1751,7 +1665,7 @@ bool MatrixTest::operatorEqualsTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -1769,9 +1683,10 @@ bool MatrixTest::operatorEqualsTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -1780,10 +1695,10 @@ bool MatrixTest::operatorEqualsTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -1799,19 +1714,12 @@ bool MatrixTest::operatorEqualsTestInternalRunTime()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true) &
-                            UNIT_TEST_CASE_EQUAL(result2, true) &
-                            UNIT_TEST_CASE_EQUAL(result3, true) &
-                            UNIT_TEST_CASE_EQUAL(result4, true) &
-                            UNIT_TEST_CASE_EQUAL(result5, true) &
-                            UNIT_TEST_CASE_EQUAL(result6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -1828,10 +1736,10 @@ bool MatrixTest::operatorEqualsTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix1(3, 3, values1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix1(3, 3, values1);
 
     // Items to test against
 
@@ -1842,7 +1750,7 @@ bool MatrixTest::operatorEqualsTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -1851,7 +1759,7 @@ bool MatrixTest::operatorEqualsTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -1869,9 +1777,10 @@ bool MatrixTest::operatorEqualsTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -1880,10 +1789,10 @@ bool MatrixTest::operatorEqualsTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -1899,19 +1808,12 @@ bool MatrixTest::operatorEqualsTestExternalRunTime()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true) &
-                            UNIT_TEST_CASE_EQUAL(result2, true) &
-                            UNIT_TEST_CASE_EQUAL(result3, true) &
-                            UNIT_TEST_CASE_EQUAL(result4, true) &
-                            UNIT_TEST_CASE_EQUAL(result5, true) &
-                            UNIT_TEST_CASE_EQUAL(result6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -1942,7 +1844,7 @@ bool MatrixTest::operatorEqualsTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -1951,7 +1853,7 @@ bool MatrixTest::operatorEqualsTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -1969,9 +1871,10 @@ bool MatrixTest::operatorEqualsTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -1980,10 +1883,10 @@ bool MatrixTest::operatorEqualsTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -1999,19 +1902,12 @@ bool MatrixTest::operatorEqualsTestConstantRunTime()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, true) &
-                            UNIT_TEST_CASE_EQUAL(result2, true) &
-                            UNIT_TEST_CASE_EQUAL(result3, true) &
-                            UNIT_TEST_CASE_EQUAL(result4, true) &
-                            UNIT_TEST_CASE_EQUAL(result5, true) &
-                            UNIT_TEST_CASE_EQUAL(result6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -2028,7 +1924,7 @@ bool MatrixTest::operatorEqualsTest2Internal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     // Items to test against
 
@@ -2039,7 +1935,7 @@ bool MatrixTest::operatorEqualsTest2Internal()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -2048,7 +1944,7 @@ bool MatrixTest::operatorEqualsTest2Internal()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -2066,9 +1962,10 @@ bool MatrixTest::operatorEqualsTest2Internal()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -2077,10 +1974,10 @@ bool MatrixTest::operatorEqualsTest2Internal()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -2096,19 +1993,12 @@ bool MatrixTest::operatorEqualsTest2Internal()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, false) &
-                            UNIT_TEST_CASE_EQUAL(result2, false) &
-                            UNIT_TEST_CASE_EQUAL(result3, false) &
-                            UNIT_TEST_CASE_EQUAL(result4, false) &
-                            UNIT_TEST_CASE_EQUAL(result5, false) &
-                            UNIT_TEST_CASE_EQUAL(result6, false));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -2125,7 +2015,7 @@ bool MatrixTest::operatorEqualsTest2External()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
 
     // Items to test against
 
@@ -2136,7 +2026,7 @@ bool MatrixTest::operatorEqualsTest2External()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -2145,7 +2035,7 @@ bool MatrixTest::operatorEqualsTest2External()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -2163,9 +2053,10 @@ bool MatrixTest::operatorEqualsTest2External()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -2174,10 +2065,10 @@ bool MatrixTest::operatorEqualsTest2External()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -2193,19 +2084,12 @@ bool MatrixTest::operatorEqualsTest2External()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, false) &
-                            UNIT_TEST_CASE_EQUAL(result2, false) &
-                            UNIT_TEST_CASE_EQUAL(result3, false) &
-                            UNIT_TEST_CASE_EQUAL(result4, false) &
-                            UNIT_TEST_CASE_EQUAL(result5, false) &
-                            UNIT_TEST_CASE_EQUAL(result6, false));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -2233,7 +2117,7 @@ bool MatrixTest::operatorEqualsTest2Constant()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -2242,7 +2126,7 @@ bool MatrixTest::operatorEqualsTest2Constant()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -2260,9 +2144,10 @@ bool MatrixTest::operatorEqualsTest2Constant()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -2271,10 +2156,10 @@ bool MatrixTest::operatorEqualsTest2Constant()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -2290,19 +2175,12 @@ bool MatrixTest::operatorEqualsTest2Constant()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, false) &
-                            UNIT_TEST_CASE_EQUAL(result2, false) &
-                            UNIT_TEST_CASE_EQUAL(result3, false) &
-                            UNIT_TEST_CASE_EQUAL(result4, false) &
-                            UNIT_TEST_CASE_EQUAL(result5, false) &
-                            UNIT_TEST_CASE_EQUAL(result6, false));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -2319,9 +2197,10 @@ bool MatrixTest::operatorEqualsTest2InternalRunTime()
 
     // Items to test
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix1(3,
-                                                                    3,
-                                                                    values1);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix1(
+                                                                       3,
+                                                                       3,
+                                                                       values1);
 
     // Items to test against
 
@@ -2332,7 +2211,7 @@ bool MatrixTest::operatorEqualsTest2InternalRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -2341,7 +2220,7 @@ bool MatrixTest::operatorEqualsTest2InternalRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -2359,9 +2238,10 @@ bool MatrixTest::operatorEqualsTest2InternalRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -2370,10 +2250,10 @@ bool MatrixTest::operatorEqualsTest2InternalRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -2389,19 +2269,12 @@ bool MatrixTest::operatorEqualsTest2InternalRunTime()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, false) &
-                            UNIT_TEST_CASE_EQUAL(result2, false) &
-                            UNIT_TEST_CASE_EQUAL(result3, false) &
-                            UNIT_TEST_CASE_EQUAL(result4, false) &
-                            UNIT_TEST_CASE_EQUAL(result5, false) &
-                            UNIT_TEST_CASE_EQUAL(result6, false));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -2418,10 +2291,10 @@ bool MatrixTest::operatorEqualsTest2ExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix1(3, 3, values1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix1(3, 3, values1);
 
     // Items to test against
 
@@ -2432,7 +2305,7 @@ bool MatrixTest::operatorEqualsTest2ExternalRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -2441,7 +2314,7 @@ bool MatrixTest::operatorEqualsTest2ExternalRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -2459,9 +2332,10 @@ bool MatrixTest::operatorEqualsTest2ExternalRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -2470,10 +2344,10 @@ bool MatrixTest::operatorEqualsTest2ExternalRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -2489,19 +2363,12 @@ bool MatrixTest::operatorEqualsTest2ExternalRunTime()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, false) &
-                            UNIT_TEST_CASE_EQUAL(result2, false) &
-                            UNIT_TEST_CASE_EQUAL(result3, false) &
-                            UNIT_TEST_CASE_EQUAL(result4, false) &
-                            UNIT_TEST_CASE_EQUAL(result5, false) &
-                            UNIT_TEST_CASE_EQUAL(result6, false));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -2532,7 +2399,7 @@ bool MatrixTest::operatorEqualsTest2ConstantRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -2541,7 +2408,7 @@ bool MatrixTest::operatorEqualsTest2ConstantRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -2559,9 +2426,10 @@ bool MatrixTest::operatorEqualsTest2ConstantRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -2570,10 +2438,10 @@ bool MatrixTest::operatorEqualsTest2ConstantRunTime()
         { 7.0, 8.0, 10.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -2589,19 +2457,12 @@ bool MatrixTest::operatorEqualsTest2ConstantRunTime()
 
     // Test
 
-    const bool result1 = matrix1 == matrix2;
-    const bool result2 = matrix1 == matrix3;
-    const bool result3 = matrix1 == matrix4;
-    const bool result4 = matrix1 == matrix5;
-    const bool result5 = matrix1 == matrix6;
-    const bool result6 = matrix1 == matrix7;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, false) &
-                            UNIT_TEST_CASE_EQUAL(result2, false) &
-                            UNIT_TEST_CASE_EQUAL(result3, false) &
-                            UNIT_TEST_CASE_EQUAL(result4, false) &
-                            UNIT_TEST_CASE_EQUAL(result5, false) &
-                            UNIT_TEST_CASE_EQUAL(result6, false));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix2) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix3) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix4) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix5) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix6) &
+                            UNIT_TEST_CASE_NOT_EQUAL(matrix1, matrix7));
 }
 
 //------------------------------------------------------------------------------
@@ -2616,13 +2477,11 @@ bool MatrixTest::operatorParenthesesTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     // Test
 
-    const float result = matrix(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -2637,13 +2496,11 @@ bool MatrixTest::operatorParenthesesTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
-    const float result = matrix(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -2662,9 +2519,7 @@ bool MatrixTest::operatorParenthesesTestConstant()
 
     // Test
 
-    const float result = matrix(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -2679,15 +2534,14 @@ bool MatrixTest::operatorParenthesesTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   3,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        3,
+                                                                        values);
 
     // Test
 
-    const float result = matrix(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -2702,16 +2556,14 @@ bool MatrixTest::operatorParenthesesTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 3, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 3, values);
 
     // Test
 
-    const float result = matrix(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -2733,9 +2585,7 @@ bool MatrixTest::operatorParenthesesTestConstantRunTime()
 
     // Test
 
-    const float result = matrix(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -2756,9 +2606,7 @@ bool MatrixTest::operatorParenthesesTest2Internal()
 
     matrix(1, 2) = 10.0;
 
-    const float result = matrix(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -2778,10 +2626,8 @@ bool MatrixTest::operatorParenthesesTest2External()
     // Test
 
     matrix(1, 2) = 10.0;
-    
-    const float result = matrix(1, 2);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -2804,9 +2650,7 @@ bool MatrixTest::operatorParenthesesTest2InternalRunTime()
 
     matrix(1, 2) = 10.0;
 
-    const float result = matrix(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -2830,9 +2674,7 @@ bool MatrixTest::operatorParenthesesTest2ExternalRunTime()
 
     matrix(1, 2) = 10.0;
 
-    const float result = matrix(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -2847,7 +2689,7 @@ bool MatrixTest::operatorAddScalarTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     // Test
 
@@ -2862,9 +2704,7 @@ bool MatrixTest::operatorAddScalarTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -2879,7 +2719,7 @@ bool MatrixTest::operatorAddScalarTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
@@ -2894,9 +2734,7 @@ bool MatrixTest::operatorAddScalarTestExternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 
@@ -2927,9 +2765,7 @@ bool MatrixTest::operatorAddScalarTestConstant()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -2944,9 +2780,10 @@ bool MatrixTest::operatorAddScalarTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   3,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        3,
+                                                                        values);
 
     // Test
 
@@ -2961,9 +2798,7 @@ bool MatrixTest::operatorAddScalarTestInternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -2978,10 +2813,10 @@ bool MatrixTest::operatorAddScalarTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 3, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 3, values);
 
     // Test
 
@@ -2995,10 +2830,8 @@ bool MatrixTest::operatorAddScalarTestExternalRunTime()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare = (result == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 
@@ -3018,7 +2851,8 @@ bool MatrixTest::operatorAddScalarTestConstantRunTime()
 
     // Test
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> result = matrix + 1;
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> result =
+                                                                     matrix + 1;
 
     const float expectedValues[3][3] =
     {
@@ -3028,10 +2862,8 @@ bool MatrixTest::operatorAddScalarTestConstantRunTime()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare = (result == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -3048,7 +2880,7 @@ bool MatrixTest::operatorAddTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     // Items to test against
 
@@ -3059,7 +2891,7 @@ bool MatrixTest::operatorAddTestInternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -3068,8 +2900,8 @@ bool MatrixTest::operatorAddTestInternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -3086,9 +2918,10 @@ bool MatrixTest::operatorAddTestInternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -3101,7 +2934,7 @@ bool MatrixTest::operatorAddTestInternal()
            DIMENSIONS_RUN_TIME,
            DIMENSIONS_RUN_TIME,
            STORAGE_EXTERNAL> matrix6(3, 3, values6);
-    
+
     const float values7[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -3132,19 +2965,12 @@ bool MatrixTest::operatorAddTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -3161,7 +2987,7 @@ bool MatrixTest::operatorAddTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
 
     // Items to test against
 
@@ -3172,7 +2998,7 @@ bool MatrixTest::operatorAddTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -3181,8 +3007,8 @@ bool MatrixTest::operatorAddTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -3199,9 +3025,10 @@ bool MatrixTest::operatorAddTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -3210,11 +3037,11 @@ bool MatrixTest::operatorAddTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
-    
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
+
     const float values7[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -3229,12 +3056,12 @@ bool MatrixTest::operatorAddTestExternal()
 
     // Test
 
-    Matrix<float, 3, 3> result1 = matrix1 + matrix2;
-    Matrix<float, 3, 3> result2 = matrix1 + matrix3;
-    Matrix<float, 3, 3> result3 = matrix1 + matrix4;
-    Matrix<float, 3, 3> result4 = matrix1 + matrix5;
-    Matrix<float, 3, 3> result5 = matrix1 + matrix6;
-    Matrix<float, 3, 3> result6 = matrix1 + matrix7;
+    const Matrix<float, 3, 3> result1 = matrix1 + matrix2;
+    const Matrix<float, 3, 3> result2 = matrix1 + matrix3;
+    const Matrix<float, 3, 3> result3 = matrix1 + matrix4;
+    const Matrix<float, 3, 3> result4 = matrix1 + matrix5;
+    const Matrix<float, 3, 3> result5 = matrix1 + matrix6;
+    const Matrix<float, 3, 3> result6 = matrix1 + matrix7;
 
     const float expectedValues[3][3] =
     {
@@ -3243,21 +3070,14 @@ bool MatrixTest::operatorAddTestExternal()
         { 10.0, 10.0, 10.0 }
     };
 
-    Matrix<float, 3, 3> expected(expectedValues);
+    const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -3274,7 +3094,7 @@ bool MatrixTest::operatorAddTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
 
     // Items to test against
 
@@ -3285,7 +3105,7 @@ bool MatrixTest::operatorAddTestConstant()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -3294,8 +3114,8 @@ bool MatrixTest::operatorAddTestConstant()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -3312,9 +3132,10 @@ bool MatrixTest::operatorAddTestConstant()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -3323,10 +3144,10 @@ bool MatrixTest::operatorAddTestConstant()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
     
     const float values7[3][3] =
     {
@@ -3358,19 +3179,12 @@ bool MatrixTest::operatorAddTestConstant()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -3387,9 +3201,10 @@ bool MatrixTest::operatorAddTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix1(3,
-                                                                    3,
-                                                                    values1);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix1(
+                                                                       3,
+                                                                       3,
+                                                                       values1);
 
     // Items to test against
 
@@ -3427,9 +3242,10 @@ bool MatrixTest::operatorAddTestInternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -3438,11 +3254,11 @@ bool MatrixTest::operatorAddTestInternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
-    
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
+
     const float values7[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -3473,19 +3289,12 @@ bool MatrixTest::operatorAddTestInternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -3502,10 +3311,10 @@ bool MatrixTest::operatorAddTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix1(3, 3, values1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix1(3, 3, values1);
 
     // Items to test against
 
@@ -3516,7 +3325,7 @@ bool MatrixTest::operatorAddTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -3525,8 +3334,8 @@ bool MatrixTest::operatorAddTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -3543,9 +3352,10 @@ bool MatrixTest::operatorAddTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -3554,11 +3364,11 @@ bool MatrixTest::operatorAddTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
-    
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
+
     const float values7[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -3589,19 +3399,12 @@ bool MatrixTest::operatorAddTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -3618,10 +3421,10 @@ bool MatrixTest::operatorAddTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_CONSTANT> matrix1(3, 3, values1);
+    const Matrix<float,
+                DIMENSIONS_RUN_TIME,
+                DIMENSIONS_RUN_TIME,
+                STORAGE_CONSTANT> matrix1(3, 3, values1);
 
     // Items to test against
 
@@ -3632,7 +3435,7 @@ bool MatrixTest::operatorAddTestConstantRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -3641,8 +3444,8 @@ bool MatrixTest::operatorAddTestConstantRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -3659,9 +3462,10 @@ bool MatrixTest::operatorAddTestConstantRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -3670,11 +3474,11 @@ bool MatrixTest::operatorAddTestConstantRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
-    
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
+
     const float values7[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -3705,19 +3509,12 @@ bool MatrixTest::operatorAddTestConstantRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -3748,9 +3545,7 @@ bool MatrixTest::operatorAddEqualsScalarTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -3780,9 +3575,8 @@ bool MatrixTest::operatorAddEqualsScalarTestExternal()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    const bool compare = (result == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -3815,9 +3609,7 @@ bool MatrixTest::operatorAddEqualsScalarTestInternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -3851,9 +3643,7 @@ bool MatrixTest::operatorAddEqualsScalarTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -3975,19 +3765,12 @@ bool MatrixTest::operatorAddEqualsTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4032,7 +3815,7 @@ bool MatrixTest::operatorAddEqualsTestExternal()
     };
 
     Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -4116,19 +3899,12 @@ bool MatrixTest::operatorAddEqualsTestExternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4166,7 +3942,7 @@ bool MatrixTest::operatorAddEqualsTestInternalRunTime()
     };
 
     Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -4198,7 +3974,7 @@ bool MatrixTest::operatorAddEqualsTestInternalRunTime()
            DIMENSIONS_RUN_TIME,
            DIMENSIONS_RUN_TIME,
            STORAGE_EXTERNAL> matrix6(3, 3, values6);
-    
+
     const float values7[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -4250,19 +4026,12 @@ bool MatrixTest::operatorAddEqualsTestInternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4307,7 +4076,7 @@ bool MatrixTest::operatorAddEqualsTestExternalRunTime()
     };
 
     Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -4391,19 +4160,12 @@ bool MatrixTest::operatorAddEqualsTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4418,11 +4180,11 @@ bool MatrixTest::operatorUnaryMinusTestInternal()
         { -7.0, -8.0, -9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     // Test
 
-    const Matrix<float, 3, 3> result = - matrix;
+    const Matrix<float, 3, 3> result = -matrix;
 
     const float expectedValues[3][3] =
     {
@@ -4433,9 +4195,7 @@ bool MatrixTest::operatorUnaryMinusTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4450,11 +4210,11 @@ bool MatrixTest::operatorUnaryMinusTestExternal()
         { -7.0, -8.0, -9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
-    const Matrix<float, 3, 3> result = - matrix;
+    const Matrix<float, 3, 3> result = -matrix;
 
     const float expectedValues[3][3] =
     {
@@ -4465,9 +4225,7 @@ bool MatrixTest::operatorUnaryMinusTestExternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4486,7 +4244,7 @@ bool MatrixTest::operatorUnaryMinusTestConstant()
 
     // Test
 
-    const Matrix<float, 3, 3> result = - matrix;
+    const Matrix<float, 3, 3> result = -matrix;
 
     const float expectedValues[3][3] =
     {
@@ -4497,9 +4255,7 @@ bool MatrixTest::operatorUnaryMinusTestConstant()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4514,13 +4270,14 @@ bool MatrixTest::operatorUnaryMinusTestInternalRunTime()
         { -7.0, -8.0, -9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   3,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        3,
+                                                                        values);
 
     // Test
 
-    const Matrix<float, 3, 3> result = - matrix;
+    const Matrix<float, 3, 3> result = -matrix;
 
     const float expectedValues[3][3] =
     {
@@ -4531,9 +4288,7 @@ bool MatrixTest::operatorUnaryMinusTestInternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4548,14 +4303,14 @@ bool MatrixTest::operatorUnaryMinusTestExternalRunTime()
         { -7.0, -8.0, -9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 3, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 3, values);
 
     // Test
 
-    const Matrix<float, 3, 3> result = - matrix;
+    const Matrix<float, 3, 3> result = -matrix;
 
     const float expectedValues[3][3] =
     {
@@ -4566,9 +4321,7 @@ bool MatrixTest::operatorUnaryMinusTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4590,7 +4343,7 @@ bool MatrixTest::operatorUnaryMinusTestConstantRunTime()
 
     // Test
 
-    const Matrix<float, 3, 3> result = - matrix;
+    const Matrix<float, 3, 3> result = -matrix;
 
     const float expectedValues[3][3] =
     {
@@ -4601,9 +4354,7 @@ bool MatrixTest::operatorUnaryMinusTestConstantRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4618,7 +4369,7 @@ bool MatrixTest::operatorSubtractScalarTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     // Test
 
@@ -4633,9 +4384,7 @@ bool MatrixTest::operatorSubtractScalarTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4650,7 +4399,7 @@ bool MatrixTest::operatorSubtractScalarTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
@@ -4665,9 +4414,7 @@ bool MatrixTest::operatorSubtractScalarTestExternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4697,9 +4444,7 @@ bool MatrixTest::operatorSubtractScalarTestConstant()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4714,9 +4459,10 @@ bool MatrixTest::operatorSubtractScalarTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   3,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        3,
+                                                                        values);
 
     // Test
 
@@ -4730,10 +4476,8 @@ bool MatrixTest::operatorSubtractScalarTestInternalRunTime()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare = (result == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4748,10 +4492,10 @@ bool MatrixTest::operatorSubtractScalarTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 3, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 3, values);
 
     // Test
 
@@ -4766,9 +4510,7 @@ bool MatrixTest::operatorSubtractScalarTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4801,9 +4543,7 @@ bool MatrixTest::operatorSubtractScalarTestConstantRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4820,7 +4560,7 @@ bool MatrixTest::operatorSubtractTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     // Items to test against
 
@@ -4831,7 +4571,7 @@ bool MatrixTest::operatorSubtractTestInternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -4840,7 +4580,7 @@ bool MatrixTest::operatorSubtractTestInternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -4858,9 +4598,10 @@ bool MatrixTest::operatorSubtractTestInternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3, 
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -4869,7 +4610,7 @@ bool MatrixTest::operatorSubtractTestInternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[3][3] =
     {
@@ -4898,19 +4639,12 @@ bool MatrixTest::operatorSubtractTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -4927,7 +4661,7 @@ bool MatrixTest::operatorSubtractTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
 
     // Items to test against
 
@@ -4938,7 +4672,7 @@ bool MatrixTest::operatorSubtractTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -4947,7 +4681,7 @@ bool MatrixTest::operatorSubtractTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -4965,9 +4699,10 @@ bool MatrixTest::operatorSubtractTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3, 
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -4976,7 +4711,7 @@ bool MatrixTest::operatorSubtractTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[3][3] =
     {
@@ -5005,19 +4740,12 @@ bool MatrixTest::operatorSubtractTestExternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -5045,7 +4773,7 @@ bool MatrixTest::operatorSubtractTestConstant()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -5054,7 +4782,7 @@ bool MatrixTest::operatorSubtractTestConstant()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -5072,9 +4800,10 @@ bool MatrixTest::operatorSubtractTestConstant()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3, 
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -5083,7 +4812,7 @@ bool MatrixTest::operatorSubtractTestConstant()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[3][3] =
     {
@@ -5112,19 +4841,12 @@ bool MatrixTest::operatorSubtractTestConstant()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -5141,9 +4863,10 @@ bool MatrixTest::operatorSubtractTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix1(3,
-                                                                    3,
-                                                                    values1);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix1(
+                                                                       3,
+                                                                       3,
+                                                                       values1);
 
     // Items to test against
 
@@ -5154,7 +4877,7 @@ bool MatrixTest::operatorSubtractTestInternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -5163,7 +4886,7 @@ bool MatrixTest::operatorSubtractTestInternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -5181,9 +4904,10 @@ bool MatrixTest::operatorSubtractTestInternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3, 
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -5192,7 +4916,7 @@ bool MatrixTest::operatorSubtractTestInternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[3][3] =
     {
@@ -5221,19 +4945,12 @@ bool MatrixTest::operatorSubtractTestInternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -5250,10 +4967,10 @@ bool MatrixTest::operatorSubtractTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix1(3, 3, values1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix1(3, 3, values1);
 
     // Items to test against
 
@@ -5264,7 +4981,7 @@ bool MatrixTest::operatorSubtractTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -5273,7 +4990,7 @@ bool MatrixTest::operatorSubtractTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -5291,9 +5008,10 @@ bool MatrixTest::operatorSubtractTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3, 
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -5302,7 +5020,7 @@ bool MatrixTest::operatorSubtractTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[3][3] =
     {
@@ -5331,19 +5049,12 @@ bool MatrixTest::operatorSubtractTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -5374,7 +5085,7 @@ bool MatrixTest::operatorSubtractTestConstantRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -5383,7 +5094,7 @@ bool MatrixTest::operatorSubtractTestConstantRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -5401,9 +5112,10 @@ bool MatrixTest::operatorSubtractTestConstantRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3, 
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -5412,7 +5124,7 @@ bool MatrixTest::operatorSubtractTestConstantRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[3][3] =
     {
@@ -5441,19 +5153,12 @@ bool MatrixTest::operatorSubtractTestConstantRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -5484,9 +5189,7 @@ bool MatrixTest::operatorSubtractEqualsScalarTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -5517,9 +5220,7 @@ bool MatrixTest::operatorSubtractEqualsScalarTestExternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -5551,10 +5252,8 @@ bool MatrixTest::operatorSubtractEqualsScalarTestInternalRunTime()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare = (result == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -5588,9 +5287,7 @@ bool MatrixTest::operatorSubtractEqualsScalarTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -5618,7 +5315,7 @@ bool MatrixTest::operatorSubtractEqualsTestInternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -5627,8 +5324,8 @@ bool MatrixTest::operatorSubtractEqualsTestInternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -5645,9 +5342,10 @@ bool MatrixTest::operatorSubtractEqualsTestInternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -5656,11 +5354,11 @@ bool MatrixTest::operatorSubtractEqualsTestInternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
-    
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
+
     const float values7[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -5712,19 +5410,12 @@ bool MatrixTest::operatorSubtractEqualsTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -5759,7 +5450,7 @@ bool MatrixTest::operatorSubtractEqualsTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -5768,8 +5459,8 @@ bool MatrixTest::operatorSubtractEqualsTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -5786,9 +5477,10 @@ bool MatrixTest::operatorSubtractEqualsTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -5797,11 +5489,11 @@ bool MatrixTest::operatorSubtractEqualsTestExternal()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
-    
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
+
     const float values7[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -5853,19 +5545,12 @@ bool MatrixTest::operatorSubtractEqualsTestExternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -5895,7 +5580,7 @@ bool MatrixTest::operatorSubtractEqualsTestInternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -5904,8 +5589,8 @@ bool MatrixTest::operatorSubtractEqualsTestInternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -5922,9 +5607,10 @@ bool MatrixTest::operatorSubtractEqualsTestInternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -5933,11 +5619,11 @@ bool MatrixTest::operatorSubtractEqualsTestInternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
-    
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
+
     const float values7[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -5989,19 +5675,12 @@ bool MatrixTest::operatorSubtractEqualsTestInternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6039,7 +5718,7 @@ bool MatrixTest::operatorSubtractEqualsTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -6048,8 +5727,8 @@ bool MatrixTest::operatorSubtractEqualsTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
-    
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+
     const float values4[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -6066,9 +5745,10 @@ bool MatrixTest::operatorSubtractEqualsTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -6077,11 +5757,11 @@ bool MatrixTest::operatorSubtractEqualsTestExternalRunTime()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
-    
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
+
     const float values7[3][3] =
     {
         { 9.0, 8.0, 7.0 },
@@ -6133,19 +5813,12 @@ bool MatrixTest::operatorSubtractEqualsTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6160,7 +5833,7 @@ bool MatrixTest::operatorMultiplyScalarTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     // Test
 
@@ -6175,9 +5848,7 @@ bool MatrixTest::operatorMultiplyScalarTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6192,7 +5863,7 @@ bool MatrixTest::operatorMultiplyScalarTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
@@ -6207,9 +5878,7 @@ bool MatrixTest::operatorMultiplyScalarTestExternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6228,7 +5897,7 @@ bool MatrixTest::operatorMultiplyScalarTestConstant()
 
     // Test
 
-    Matrix<float, 3, 3> result = matrix * 2;
+    const Matrix<float, 3, 3> result = matrix * 2;
 
     const float expectedValues[3][3] =
     {
@@ -6237,11 +5906,9 @@ bool MatrixTest::operatorMultiplyScalarTestConstant()
         { 14.0, 16.0, 18.0 }
     };
 
-    Matrix<float, 3, 3> expected(expectedValues);
+    const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6256,9 +5923,10 @@ bool MatrixTest::operatorMultiplyScalarTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   3,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        3,
+                                                                        values);
 
     // Test
 
@@ -6273,9 +5941,7 @@ bool MatrixTest::operatorMultiplyScalarTestInternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6290,10 +5956,10 @@ bool MatrixTest::operatorMultiplyScalarTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 3, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 3, values);
 
     // Test
 
@@ -6308,9 +5974,7 @@ bool MatrixTest::operatorMultiplyScalarTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6342,10 +6006,8 @@ bool MatrixTest::operatorMultiplyScalarTestConstantRunTime()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare = (result == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6363,7 +6025,7 @@ bool MatrixTest::operatorMultiplyTest4By5InternalTimes5By4()
         { 16.0, 17.0, 18.0, 19.0, 20.0 }
     };
 
-    Matrix<float, 4, 5> matrix1(values1);
+    const Matrix<float, 4, 5> matrix1(values1);
 
     // Items to test against
 
@@ -6376,7 +6038,7 @@ bool MatrixTest::operatorMultiplyTest4By5InternalTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4> matrix2(values2);
+    const Matrix<float, 5, 4> matrix2(values2);
 
     float values3[5][4] =
     {
@@ -6387,7 +6049,7 @@ bool MatrixTest::operatorMultiplyTest4By5InternalTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[5][4] =
     {
@@ -6409,9 +6071,10 @@ bool MatrixTest::operatorMultiplyTest4By5InternalTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(5,
-                                                                    4,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       5,
+                                                                       4,
+                                                                       values5);
 
     float values6[5][4] =
     {
@@ -6422,10 +6085,10 @@ bool MatrixTest::operatorMultiplyTest4By5InternalTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(5, 4, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(5, 4, values6);
 
     const float values7[5][4] =
     {
@@ -6460,13 +6123,12 @@ bool MatrixTest::operatorMultiplyTest4By5InternalTimes5By4()
 
     const Matrix<float, 4, 4> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6484,7 +6146,7 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalTimes5By4()
         { 16.0, 17.0, 18.0, 19.0, 20.0 }
     };
 
-    Matrix<float, 4, 5, STORAGE_EXTERNAL> matrix1(values1);
+    const Matrix<float, 4, 5, STORAGE_EXTERNAL> matrix1(values1);
 
     // Items to test against
 
@@ -6497,7 +6159,7 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4> matrix2(values2);
+    const Matrix<float, 5, 4> matrix2(values2);
 
     float values3[5][4] =
     {
@@ -6508,7 +6170,7 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[5][4] =
     {
@@ -6530,9 +6192,10 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(5,
-                                                                    4,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       5,
+                                                                       4,
+                                                                       values5);
 
     float values6[5][4] =
     {
@@ -6543,10 +6206,10 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(5, 4, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(5, 4, values6);
 
     const float values7[5][4] =
     {
@@ -6581,19 +6244,12 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalTimes5By4()
 
     const Matrix<float, 4, 4> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6624,7 +6280,7 @@ bool MatrixTest::operatorMultiplyTest4By5ConstantTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4> matrix2(values2);
+    const Matrix<float, 5, 4> matrix2(values2);
 
     float values3[5][4] =
     {
@@ -6635,7 +6291,7 @@ bool MatrixTest::operatorMultiplyTest4By5ConstantTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[5][4] =
     {
@@ -6657,9 +6313,10 @@ bool MatrixTest::operatorMultiplyTest4By5ConstantTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(5,
-                                                                    4,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       5,
+                                                                       4,
+                                                                       values5);
 
     float values6[5][4] =
     {
@@ -6670,10 +6327,10 @@ bool MatrixTest::operatorMultiplyTest4By5ConstantTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(5, 4, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(5, 4, values6);
 
     const float values7[5][4] =
     {
@@ -6708,19 +6365,12 @@ bool MatrixTest::operatorMultiplyTest4By5ConstantTimes5By4()
 
     const Matrix<float, 4, 4> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6738,9 +6388,9 @@ bool MatrixTest::operatorMultiplyTest4By5InternalRunTimeTimes5By4()
         { 16.0, 17.0, 18.0, 19.0, 20.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME> matrix1(4, 5, values1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME> matrix1(4, 5, values1);
 
     // Items to test against
 
@@ -6753,7 +6403,7 @@ bool MatrixTest::operatorMultiplyTest4By5InternalRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4> matrix2(values2);
+    const Matrix<float, 5, 4> matrix2(values2);
 
     float values3[5][4] =
     {
@@ -6764,7 +6414,7 @@ bool MatrixTest::operatorMultiplyTest4By5InternalRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[5][4] =
     {
@@ -6786,9 +6436,9 @@ bool MatrixTest::operatorMultiplyTest4By5InternalRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME> matrix5(5, 4, values5);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME> matrix5(5, 4, values5);
 
     float values6[5][4] =
     {
@@ -6799,10 +6449,10 @@ bool MatrixTest::operatorMultiplyTest4By5InternalRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(5, 4, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(5, 4, values6);
 
     const float values7[5][4] =
     {
@@ -6837,19 +6487,12 @@ bool MatrixTest::operatorMultiplyTest4By5InternalRunTimeTimes5By4()
 
     const Matrix<float, 4, 4> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -6867,10 +6510,10 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalRunTimeTimes5By4()
         { 16.0, 17.0, 18.0, 19.0, 20.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix1(4, 5, values1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix1(4, 5, values1);
 
     // Items to test against
 
@@ -6883,7 +6526,7 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4> matrix2(values2);
+    const Matrix<float, 5, 4> matrix2(values2);
 
     float values3[5][4] =
     {
@@ -6894,7 +6537,7 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[5][4] =
     {
@@ -6916,9 +6559,10 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(5,
-                                                                    4,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       5,
+                                                                       4,
+                                                                       values5);
 
     float values6[5][4] =
     {
@@ -6929,10 +6573,10 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(5, 4, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(5, 4, values6);
 
     const float values7[5][4] =
     {
@@ -6967,19 +6611,12 @@ bool MatrixTest::operatorMultiplyTest4By5ExternalRunTimeTimes5By4()
 
     const Matrix<float, 4, 4> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -7013,7 +6650,7 @@ bool MatrixTest::operatorMultiplyTest4By5ConstantRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4> matrix2(values2);
+    const Matrix<float, 5, 4> matrix2(values2);
 
     float values3[5][4] =
     {
@@ -7024,7 +6661,7 @@ bool MatrixTest::operatorMultiplyTest4By5ConstantRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 5, 4, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[5][4] =
     {
@@ -7046,9 +6683,10 @@ bool MatrixTest::operatorMultiplyTest4By5ConstantRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(5,
-                                                                    4,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       5,
+                                                                       4,
+                                                                       values5);
 
     float values6[5][4] =
     {
@@ -7059,10 +6697,10 @@ bool MatrixTest::operatorMultiplyTest4By5ConstantRunTimeTimes5By4()
         {  4.0,  3.0,  2.0,  1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(5, 4, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(5, 4, values6);
 
     const float values7[5][4] =
     {
@@ -7097,19 +6735,12 @@ bool MatrixTest::operatorMultiplyTest4By5ConstantRunTimeTimes5By4()
 
     const Matrix<float, 4, 4> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -7126,7 +6757,7 @@ bool MatrixTest::operatorMultiplyTest3By3InternalTimes3By3()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     // Items to test against
 
@@ -7137,7 +6768,7 @@ bool MatrixTest::operatorMultiplyTest3By3InternalTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -7146,7 +6777,7 @@ bool MatrixTest::operatorMultiplyTest3By3InternalTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -7164,9 +6795,10 @@ bool MatrixTest::operatorMultiplyTest3By3InternalTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -7175,10 +6807,10 @@ bool MatrixTest::operatorMultiplyTest3By3InternalTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -7210,19 +6842,12 @@ bool MatrixTest::operatorMultiplyTest3By3InternalTimes3By3()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -7239,7 +6864,7 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalTimes3By3()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix1(values1);
 
     // Items to test against
 
@@ -7250,7 +6875,7 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -7259,7 +6884,7 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -7277,9 +6902,10 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -7288,10 +6914,10 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -7323,19 +6949,12 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalTimes3By3()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -7352,7 +6971,7 @@ bool MatrixTest::operatorMultiplyTest3By3ConstantTimes3By3()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix1(values1);
 
     // Items to test against
 
@@ -7363,7 +6982,7 @@ bool MatrixTest::operatorMultiplyTest3By3ConstantTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -7372,7 +6991,7 @@ bool MatrixTest::operatorMultiplyTest3By3ConstantTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -7390,9 +7009,10 @@ bool MatrixTest::operatorMultiplyTest3By3ConstantTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -7401,10 +7021,10 @@ bool MatrixTest::operatorMultiplyTest3By3ConstantTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -7436,19 +7056,12 @@ bool MatrixTest::operatorMultiplyTest3By3ConstantTimes3By3()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -7465,9 +7078,10 @@ bool MatrixTest::operatorMultiplyTest3By3InternalRunTimeTimes3By3()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix1(3,
-                                                                    3,
-                                                                    values1);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix1(
+                                                                       3,
+                                                                       3,
+                                                                       values1);
 
     // Items to test against
 
@@ -7478,7 +7092,7 @@ bool MatrixTest::operatorMultiplyTest3By3InternalRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -7487,7 +7101,7 @@ bool MatrixTest::operatorMultiplyTest3By3InternalRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -7505,9 +7119,10 @@ bool MatrixTest::operatorMultiplyTest3By3InternalRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -7516,10 +7131,10 @@ bool MatrixTest::operatorMultiplyTest3By3InternalRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -7551,19 +7166,12 @@ bool MatrixTest::operatorMultiplyTest3By3InternalRunTimeTimes3By3()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -7580,10 +7188,10 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalRunTimeTimes3By3()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix1(3, 3, values1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix1(3, 3, values1);
 
     // Items to test against
 
@@ -7594,7 +7202,7 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -7603,7 +7211,7 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -7621,9 +7229,10 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -7632,10 +7241,10 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -7667,19 +7276,12 @@ bool MatrixTest::operatorMultiplyTest3By3ExternalRunTimeTimes3By3()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -7710,7 +7312,7 @@ bool MatrixTest::operatorMultiplyTest3By3ConstantRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3> matrix2(values2);
+    const Matrix<float, 3, 3> matrix2(values2);
 
     float values3[3][3] =
     {
@@ -7719,7 +7321,7 @@ bool MatrixTest::operatorMultiplyTest3By3ConstantRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][3] =
     {
@@ -7737,9 +7339,10 @@ bool MatrixTest::operatorMultiplyTest3By3ConstantRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(3,
-                                                                    3,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       3,
+                                                                       3,
+                                                                       values5);
 
     float values6[3][3] =
     {
@@ -7748,10 +7351,10 @@ bool MatrixTest::operatorMultiplyTest3By3ConstantRunTimeTimes3By3()
         { 3.0, 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(3, 3, values6);
 
     const float values7[3][3] =
     {
@@ -7783,19 +7386,12 @@ bool MatrixTest::operatorMultiplyTest3By3ConstantRunTimeTimes3By3()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -7812,7 +7408,7 @@ bool MatrixTest::operatorMultiplyTestInternalTimesVector()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     // Items to test against
 
@@ -7823,7 +7419,7 @@ bool MatrixTest::operatorMultiplyTestInternalTimesVector()
         1.0
     };
 
-    Vector<float, 3> vector1(values1);
+    const Vector<float, 3> vector1(values1);
 
     float values2[3] =
     {
@@ -7832,7 +7428,7 @@ bool MatrixTest::operatorMultiplyTestInternalTimesVector()
         1.0
     };
 
-    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
+    const Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
 
     const float values3[3] =
     {
@@ -7850,7 +7446,7 @@ bool MatrixTest::operatorMultiplyTestInternalTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
+    const Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
 
     float values5[3] =
     {
@@ -7859,7 +7455,8 @@ bool MatrixTest::operatorMultiplyTestInternalTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3, values5);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3,
+                                                                       values5);
 
     const float values6[3] =
     {
@@ -7889,19 +7486,12 @@ bool MatrixTest::operatorMultiplyTestInternalTimesVector()
 
     const Vector<float, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -7918,7 +7508,7 @@ bool MatrixTest::operatorMultiplyTestExternalTimesVector()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Items to test against
 
@@ -7929,7 +7519,7 @@ bool MatrixTest::operatorMultiplyTestExternalTimesVector()
         1.0
     };
 
-    Vector<float, 3> vector1(values1);
+    const Vector<float, 3> vector1(values1);
 
     float values2[3] =
     {
@@ -7938,7 +7528,7 @@ bool MatrixTest::operatorMultiplyTestExternalTimesVector()
         1.0
     };
 
-    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
+    const Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
 
     const float values3[3] =
     {
@@ -7956,7 +7546,7 @@ bool MatrixTest::operatorMultiplyTestExternalTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
+    const Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
 
     float values5[3] =
     {
@@ -7965,7 +7555,8 @@ bool MatrixTest::operatorMultiplyTestExternalTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3, values5);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3,
+                                                                       values5);
 
     const float values6[3] =
     {
@@ -7995,19 +7586,12 @@ bool MatrixTest::operatorMultiplyTestExternalTimesVector()
 
     const Vector<float, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -8035,7 +7619,7 @@ bool MatrixTest::operatorMultiplyTestConstantTimesVector()
         1.0
     };
 
-    Vector<float, 3> vector1(values1);
+    const Vector<float, 3> vector1(values1);
 
     float values2[3] =
     {
@@ -8044,7 +7628,7 @@ bool MatrixTest::operatorMultiplyTestConstantTimesVector()
         1.0
     };
 
-    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
+    const Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
 
     const float values3[3] =
     {
@@ -8062,7 +7646,7 @@ bool MatrixTest::operatorMultiplyTestConstantTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
+    const Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
 
     float values5[3] =
     {
@@ -8071,7 +7655,8 @@ bool MatrixTest::operatorMultiplyTestConstantTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3, values5);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3,
+                                                                       values5);
 
     const float values6[3] =
     {
@@ -8101,19 +7686,12 @@ bool MatrixTest::operatorMultiplyTestConstantTimesVector()
 
     const Vector<float, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -8130,9 +7708,10 @@ bool MatrixTest::operatorMultiplyTestInternalRunTimeTimesVector()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   3,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        3,
+                                                                        values);
 
     // Items to test against
 
@@ -8143,7 +7722,7 @@ bool MatrixTest::operatorMultiplyTestInternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, 3> vector1(values1);
+    const Vector<float, 3> vector1(values1);
 
     float values2[3] =
     {
@@ -8152,7 +7731,7 @@ bool MatrixTest::operatorMultiplyTestInternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
+    const Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
 
     const float values3[3] =
     {
@@ -8170,7 +7749,7 @@ bool MatrixTest::operatorMultiplyTestInternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
+    const Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
 
     float values5[3] =
     {
@@ -8179,7 +7758,8 @@ bool MatrixTest::operatorMultiplyTestInternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3, values5);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3,
+                                                                       values5);
 
     const float values6[3] =
     {
@@ -8209,19 +7789,12 @@ bool MatrixTest::operatorMultiplyTestInternalRunTimeTimesVector()
 
     const Vector<float, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -8238,10 +7811,10 @@ bool MatrixTest::operatorMultiplyTestExternalRunTimeTimesVector()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 3, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 3, values);
 
     // Items to test against
 
@@ -8252,7 +7825,7 @@ bool MatrixTest::operatorMultiplyTestExternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, 3> vector1(values1);
+    const Vector<float, 3> vector1(values1);
 
     float values2[3] =
     {
@@ -8261,7 +7834,7 @@ bool MatrixTest::operatorMultiplyTestExternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
+    const Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
 
     const float values3[3] =
     {
@@ -8279,7 +7852,7 @@ bool MatrixTest::operatorMultiplyTestExternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
+    const Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
 
     float values5[3] =
     {
@@ -8288,7 +7861,8 @@ bool MatrixTest::operatorMultiplyTestExternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3, values5);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3,
+                                                                       values5);
 
     const float values6[3] =
     {
@@ -8318,19 +7892,12 @@ bool MatrixTest::operatorMultiplyTestExternalRunTimeTimesVector()
 
     const Vector<float, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -8361,7 +7928,7 @@ bool MatrixTest::operatorMultiplyTestConstantRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, 3> vector1(values1);
+    const Vector<float, 3> vector1(values1);
 
     float values2[3] =
     {
@@ -8370,7 +7937,7 @@ bool MatrixTest::operatorMultiplyTestConstantRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
+    const Vector<float, 3, STORAGE_EXTERNAL> vector2(values2);
 
     const float values3[3] =
     {
@@ -8388,7 +7955,7 @@ bool MatrixTest::operatorMultiplyTestConstantRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
+    const Vector<float, DIMENSIONS_RUN_TIME> vector4(3, values4);
 
     float values5[3] =
     {
@@ -8397,7 +7964,8 @@ bool MatrixTest::operatorMultiplyTestConstantRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3, values5);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(3,
+                                                                       values5);
 
     const float values6[3] =
     {
@@ -8427,19 +7995,12 @@ bool MatrixTest::operatorMultiplyTestConstantRunTimeTimesVector()
 
     const Vector<float, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -8460,8 +8021,6 @@ bool MatrixTest::operatorMultiplyEqualsScalarTestInternal()
 
     matrix *= 2;
 
-    const Matrix<float, 3, 3> result = matrix;
-
     const float expectedValues[3][3] =
     {
         {  2.0,  4.0,  6.0 },
@@ -8471,9 +8030,7 @@ bool MatrixTest::operatorMultiplyEqualsScalarTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -8494,8 +8051,6 @@ bool MatrixTest::operatorMultiplyEqualsScalarTestExternal()
 
     matrix *= 2;
 
-    const Matrix<float, 3, 3> result = matrix;
-
     const float expectedValues[3][3] =
     {
         {  2.0,  4.0,  6.0 },
@@ -8505,9 +8060,7 @@ bool MatrixTest::operatorMultiplyEqualsScalarTestExternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -8529,8 +8082,6 @@ bool MatrixTest::operatorMultiplyEqualsScalarTestInternalRunTime()
     // Test
 
     matrix *= 2;
-    
-    const Matrix<float, 3, 3> result = matrix;
 
     const float expectedValues[3][3] =
     {
@@ -8541,9 +8092,7 @@ bool MatrixTest::operatorMultiplyEqualsScalarTestInternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -8567,8 +8116,6 @@ bool MatrixTest::operatorMultiplyEqualsScalarTestExternalRunTime()
 
     matrix *= 2;
 
-    const Matrix<float, 3, 3> result = matrix;
-
     const float expectedValues[3][3] =
     {
         {  2.0,  4.0,  6.0 },
@@ -8578,9 +8125,7 @@ bool MatrixTest::operatorMultiplyEqualsScalarTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -8595,13 +8140,11 @@ bool MatrixTest::getValueTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     // Test
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8616,13 +8159,11 @@ bool MatrixTest::getValueTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8641,9 +8182,7 @@ bool MatrixTest::getValueTestConstant()
 
     // Test
 
-    float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8658,15 +8197,14 @@ bool MatrixTest::getValueTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   3,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        3,
+                                                                        values);
 
     // Test
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8681,16 +8219,14 @@ bool MatrixTest::getValueTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 3, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 3, values);
 
     // Test
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8712,9 +8248,7 @@ bool MatrixTest::getValueTestConstantRunTime()
 
     // Test
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 6.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 6.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8735,9 +8269,7 @@ bool MatrixTest::getValueTest2Internal()
 
     matrix.getValue(1, 2) = 10.0f;
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8758,9 +8290,7 @@ bool MatrixTest::getValueTest2External()
 
     matrix.getValue(1, 2) = 10.0f;
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8783,9 +8313,7 @@ bool MatrixTest::getValueTest2InternalRunTime()
 
     matrix.getValue(1, 2) = 10.0f;
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8809,9 +8337,7 @@ bool MatrixTest::getValueTest2ExternalRunTime()
 
     matrix.getValue(1, 2) = 10.0f;
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8832,9 +8358,7 @@ bool MatrixTest::setValueTestInternal()
 
     matrix.setValue(1, 2, 10.0f);
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8855,9 +8379,7 @@ bool MatrixTest::setValueTestExternal()
 
     matrix.setValue(1, 2, 10.0f);
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8880,9 +8402,7 @@ bool MatrixTest::setValueTestInternalRunTime()
 
     matrix.setValue(1, 2, 10.0f);
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8906,9 +8426,7 @@ bool MatrixTest::setValueTestExternalRunTime()
 
     matrix.setValue(1, 2, 10.0f);
 
-    const float result = matrix.getValue(1, 2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.getValue(1, 2), 10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -8928,7 +8446,6 @@ bool MatrixTest::setValuesTestInternal()
     // Test
 
     matrix.setValues(values);
-    const Matrix<float, 3, 3> result = matrix;
 
     const float expectedValues[3][3] =
     {
@@ -8939,9 +8456,7 @@ bool MatrixTest::setValuesTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -8968,7 +8483,6 @@ bool MatrixTest::setValuesTestExternal()
     // Test
 
     matrix.setValues(values2);
-    const Matrix<float, 3, 3> result = matrix;
 
     const float expectedValues[3][3] =
     {
@@ -8979,9 +8493,7 @@ bool MatrixTest::setValuesTestExternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9001,7 +8513,6 @@ bool MatrixTest::setValuesTestInternalRunTime()
     // Test
 
     matrix.setValues(values);
-    const Matrix<float, 3, 3> result = matrix;
 
     const float expectedValues[3][3] =
     {
@@ -9011,10 +8522,8 @@ bool MatrixTest::setValuesTestInternalRunTime()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare = (result == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9044,7 +8553,6 @@ bool MatrixTest::setValuesTestExternalRunTime()
     // Test
 
     matrix.setValues(values2);
-    const Matrix<float, 3, 3> result = matrix;
 
     const float expectedValues[3][3] =
     {
@@ -9055,9 +8563,7 @@ bool MatrixTest::setValuesTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9072,12 +8578,12 @@ bool MatrixTest::getRowTestInternal()
         { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float, 3, 4> matrix(values);
+    const Matrix<float, 3, 4> matrix(values);
 
     // Test
 
-    const Matrix<float, 1, 4, STORAGE_EXTERNAL> result1 = matrix.getRow(1);
-    const Matrix<float, 1, 4, STORAGE_EXTERNAL> result2 = matrix.row(1);
+    const Matrix<float, 1, 4, STORAGE_CONSTANT> result1 = matrix.getRow(1);
+    const Matrix<float, 1, 4, STORAGE_CONSTANT> result2 = matrix.row(1);
 
     const float expectedValues[1][4] =
     {
@@ -9086,11 +8592,8 @@ bool MatrixTest::getRowTestInternal()
 
     const Matrix<float, 1, 4> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9105,12 +8608,12 @@ bool MatrixTest::getRowTestExternal()
         { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float, 3, 4, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 4, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
-    const Matrix<float, 1, 4, STORAGE_EXTERNAL> result1 = matrix.getRow(1);
-    const Matrix<float, 1, 4, STORAGE_EXTERNAL> result2 = matrix.row(1);
+    const Matrix<float, 1, 4, STORAGE_CONSTANT> result1 = matrix.getRow(1);
+    const Matrix<float, 1, 4, STORAGE_CONSTANT> result2 = matrix.row(1);
 
     const float expectedValues[1][4] =
     {
@@ -9119,11 +8622,8 @@ bool MatrixTest::getRowTestExternal()
 
     const Matrix<float, 1, 4> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9152,11 +8652,8 @@ bool MatrixTest::getRowTestConstant()
 
     const Matrix<float, 1, 4> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9171,20 +8668,21 @@ bool MatrixTest::getRowTestInternalRunTime()
         { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   4,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        4,
+                                                                        values);
 
     // Test
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
                  DIMENSIONS_RUN_TIME,
-                 STORAGE_EXTERNAL> result1 = matrix.getRow(1);
+                 STORAGE_CONSTANT> result1 = matrix.getRow(1);
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
                  DIMENSIONS_RUN_TIME,
-                 STORAGE_EXTERNAL> result2 = matrix.row(1);
+                 STORAGE_CONSTANT> result2 = matrix.row(1);
 
     const float expectedValues[1][4] =
     {
@@ -9193,11 +8691,8 @@ bool MatrixTest::getRowTestInternalRunTime()
 
     const Matrix<float, 1, 4> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9212,21 +8707,21 @@ bool MatrixTest::getRowTestExternalRunTime()
         { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 4, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 4, values);
 
     // Test
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
                  DIMENSIONS_RUN_TIME,
-                 STORAGE_EXTERNAL> result1 = matrix.getRow(1);
+                 STORAGE_CONSTANT> result1 = matrix.getRow(1);
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
                  DIMENSIONS_RUN_TIME,
-                 STORAGE_EXTERNAL> result2 = matrix.row(1);
+                 STORAGE_CONSTANT> result2 = matrix.row(1);
 
     const float expectedValues[1][4] =
     {
@@ -9235,11 +8730,8 @@ bool MatrixTest::getRowTestExternalRunTime()
 
     const Matrix<float, 1, 4> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9276,12 +8768,9 @@ bool MatrixTest::getRowTestConstantRunTime()
     };
 
     const Matrix<float, 1, 4> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9296,12 +8785,12 @@ bool MatrixTest::getColumnTestInternal()
         { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float, 3, 4> matrix(values);
+    const Matrix<float, 3, 4> matrix(values);
 
     // Test
 
-    const Matrix<float, 3, 1, STORAGE_EXTERNAL> result1 = matrix.getColumn(1);
-    const Matrix<float, 3, 1, STORAGE_EXTERNAL> result2 = matrix.col(1);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> result1 = matrix.getColumn(1);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> result2 = matrix.col(1);
 
     const float expectedValues[3][1] =
     {
@@ -9312,11 +8801,8 @@ bool MatrixTest::getColumnTestInternal()
 
     const Matrix<float, 3, 1> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9331,12 +8817,12 @@ bool MatrixTest::getColumnTestExternal()
         { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float, 3, 4, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 4, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
-    const Matrix<float, 3, 1, STORAGE_EXTERNAL> result1 = matrix.getColumn(1);
-    const Matrix<float, 3, 1, STORAGE_EXTERNAL> result2 = matrix.col(1);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> result1 = matrix.getColumn(1);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> result2 = matrix.col(1);
 
     const float expectedValues[3][1] =
     {
@@ -9347,11 +8833,8 @@ bool MatrixTest::getColumnTestExternal()
 
     const Matrix<float, 3, 1> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9382,11 +8865,8 @@ bool MatrixTest::getColumnTestConstant()
 
     const Matrix<float, 3, 1> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9401,15 +8881,16 @@ bool MatrixTest::getColumnTestInternalRunTime()
         { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   4,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        4,
+                                                                        values);
 
     // Test
 
-    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> result1 =
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> result1 =
                                                             matrix.getColumn(1);
-    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> result2 =
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> result2 =
                                                                   matrix.col(1);
 
     const float expectedValues[3][1] =
@@ -9421,11 +8902,8 @@ bool MatrixTest::getColumnTestInternalRunTime()
 
     const Matrix<float, 3, 1> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9440,16 +8918,16 @@ bool MatrixTest::getColumnTestExternalRunTime()
         { 7.0, 8.0, 9.0, -1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 4, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 4, values);
 
     // Test
 
-    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> result1 =
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> result1 =
                                                             matrix.getColumn(1);
-    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> result2 =
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> result2 =
                                                                   matrix.col(1);
 
     const float expectedValues[3][1] =
@@ -9461,11 +8939,8 @@ bool MatrixTest::getColumnTestExternalRunTime()
 
     const Matrix<float, 3, 1> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9500,12 +8975,9 @@ bool MatrixTest::getColumnTestConstantRunTime()
     };
 
     const Matrix<float, 3, 1> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9519,7 +8991,7 @@ bool MatrixTest::transposeTestInternal()
         { 4.0, 5.0, 6.0 }
     };
 
-    Matrix<float, 2, 3> matrix(values);
+    const Matrix<float, 2, 3> matrix(values);
 
     // Test
 
@@ -9535,11 +9007,8 @@ bool MatrixTest::transposeTestInternal()
 
     const Matrix<float, 3, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9553,7 +9022,7 @@ bool MatrixTest::transposeTestExternal()
         { 4.0, 5.0, 6.0 }
     };
 
-    Matrix<float, 2, 3, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 2, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Test
 
@@ -9569,11 +9038,8 @@ bool MatrixTest::transposeTestExternal()
 
     const Matrix<float, 3, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 
@@ -9604,11 +9070,8 @@ bool MatrixTest::transposeTestConstant()
 
     const Matrix<float, 3, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9622,46 +9085,10 @@ bool MatrixTest::transposeTestInternalRunTime()
         { 4.0, 5.0, 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(2,
-                                                                   3,
-                                                                   values);
-
-    // Test
-
-    const Matrix<float, 3, 2> result1 = matrix.transpose();
-    const Matrix<float, 3, 2> result2 = matrix.T();
-
-    const float expectedValues[3][2] =
-    {
-        { 1.0, 4.0 },
-        { 2.0, 5.0 },
-        { 3.0, 6.0 }
-    };
-
-    Matrix<float, 3, 2> expected(expectedValues);
-
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
-}
-
-//------------------------------------------------------------------------------
-bool MatrixTest::transposeTestExternalRunTime()
-{
-    // Setup / Operation
-
-    float values[2][3] =
-    {
-        { 1.0, 2.0, 3.0 },
-        { 4.0, 5.0, 6.0 }
-    };
-
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(2, 3, values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        2,
+                                                                        3,
+                                                                        values);
 
     // Test
 
@@ -9677,11 +9104,42 @@ bool MatrixTest::transposeTestExternalRunTime()
 
     const Matrix<float, 3, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
+}
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+//------------------------------------------------------------------------------
+bool MatrixTest::transposeTestExternalRunTime()
+{
+    // Setup / Operation
+
+    float values[2][3] =
+    {
+        { 1.0, 2.0, 3.0 },
+        { 4.0, 5.0, 6.0 }
+    };
+
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(2, 3, values);
+
+    // Test
+
+    const Matrix<float, 3, 2> result1 = matrix.transpose();
+    const Matrix<float, 3, 2> result2 = matrix.T();
+
+    const float expectedValues[3][2] =
+    {
+        { 1.0, 4.0 },
+        { 2.0, 5.0 },
+        { 3.0, 6.0 }
+    };
+
+    const Matrix<float, 3, 2> expected(expectedValues);
+
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 
@@ -9714,12 +9172,9 @@ bool MatrixTest::transposeTestConstantRunTime()
     };
 
     const Matrix<float, 3, 2> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9734,18 +9189,15 @@ bool MatrixTest::magnitudeTestInternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     // Test
-
-    const float result1 = matrix.magnitude();
-    const float result2 = matrix.norm();
 
     const float expected =
                       sqrt(1*1 + 2*2 + 3*3 + 4*4 + 5*5 + 6*6 + 7*7 + 8*8 + 9*9);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
-                            UNIT_TEST_CASE_EQUAL(result2, expected));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.magnitude(), expected) &
+                            UNIT_TEST_CASE_EQUAL(matrix.norm(),      expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9760,18 +9212,15 @@ bool MatrixTest::magnitudeTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
 
     // Test
-
-    const float result1 = matrix.magnitude();
-    const float result2 = matrix.norm();
 
     const float expected =
                       sqrt(1*1 + 2*2 + 3*3 + 4*4 + 5*5 + 6*6 + 7*7 + 8*8 + 9*9);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
-                            UNIT_TEST_CASE_EQUAL(result2, expected));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.magnitude(), expected) &
+                            UNIT_TEST_CASE_EQUAL(matrix.norm(),      expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9790,14 +9239,11 @@ bool MatrixTest::magnitudeTestConstant()
 
     // Test
 
-    const float result1 = matrix.magnitude();
-    const float result2 = matrix.norm();
-
     const float expected =
                       sqrt(1*1 + 2*2 + 3*3 + 4*4 + 5*5 + 6*6 + 7*7 + 8*8 + 9*9);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
-                            UNIT_TEST_CASE_EQUAL(result2, expected));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.magnitude(), expected) &
+                            UNIT_TEST_CASE_EQUAL(matrix.norm(),      expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9812,20 +9258,18 @@ bool MatrixTest::magnitudeTestInternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   3,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        3,
+                                                                        values);
 
     // Test
-
-    const float result1 = matrix.magnitude();
-    const float result2 = matrix.norm();
 
     const float expected =
                       sqrt(1*1 + 2*2 + 3*3 + 4*4 + 5*5 + 6*6 + 7*7 + 8*8 + 9*9);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
-                            UNIT_TEST_CASE_EQUAL(result2, expected));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.magnitude(), expected) &
+                            UNIT_TEST_CASE_EQUAL(matrix.norm(),      expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9840,21 +9284,18 @@ bool MatrixTest::magnitudeTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 3, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 3, values);
 
     // Test
-
-    const float result1 = matrix.magnitude();
-    const float result2 = matrix.norm();
 
     const float expected =
                       sqrt(1*1 + 2*2 + 3*3 + 4*4 + 5*5 + 6*6 + 7*7 + 8*8 + 9*9);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
-                            UNIT_TEST_CASE_EQUAL(result2, expected));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.magnitude(), expected) &
+                            UNIT_TEST_CASE_EQUAL( matrix.norm(),     expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9876,14 +9317,11 @@ bool MatrixTest::magnitudeTestConstantRunTime()
 
     // Test
 
-    const float result1 = matrix.magnitude();
-    const float result2 = matrix.norm();
-
     const float expected =
                       sqrt(1*1 + 2*2 + 3*3 + 4*4 + 5*5 + 6*6 + 7*7 + 8*8 + 9*9);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
-                            UNIT_TEST_CASE_EQUAL(result2, expected));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix.magnitude(), expected) &
+                            UNIT_TEST_CASE_EQUAL(matrix.norm(),      expected));
 }
 
 //------------------------------------------------------------------------------
@@ -9900,7 +9338,7 @@ bool MatrixTest::crossProductTest3by1Internal()
         { 3.0 }
     };
 
-    Matrix<float, 3, 1> matrix1(values1);
+    const Matrix<float, 3, 1> matrix1(values1);
 
     // Items to test against
 
@@ -9911,7 +9349,7 @@ bool MatrixTest::crossProductTest3by1Internal()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1> matrix2(values2);
+    const Matrix<float, 3, 1> matrix2(values2);
 
     float values3[3][1] =
     {
@@ -9920,7 +9358,7 @@ bool MatrixTest::crossProductTest3by1Internal()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][1] =
     {
@@ -9929,7 +9367,7 @@ bool MatrixTest::crossProductTest3by1Internal()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
 
     const float values5[3][1] =
     {
@@ -9938,7 +9376,7 @@ bool MatrixTest::crossProductTest3by1Internal()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
 
     float values6[3][1] =
     {
@@ -9947,7 +9385,9 @@ bool MatrixTest::crossProductTest3by1Internal()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(3, values6);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(
+                                                                       3,
+                                                                       values6);
 
     const float values7[3][1] =
     {
@@ -9956,7 +9396,9 @@ bool MatrixTest::crossProductTest3by1Internal()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(3, values7);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(
+                                                                       3,
+                                                                       values7);
 
     // Test
 
@@ -9976,19 +9418,12 @@ bool MatrixTest::crossProductTest3by1Internal()
 
     const Matrix<float, 3, 1> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -10005,7 +9440,7 @@ bool MatrixTest::crossProductTest3by1External()
         { 3.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix1(values1);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix1(values1);
 
     // Items to test against
 
@@ -10016,7 +9451,7 @@ bool MatrixTest::crossProductTest3by1External()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1> matrix2(values2);
+    const Matrix<float, 3, 1> matrix2(values2);
 
     float values3[3][1] =
     {
@@ -10025,7 +9460,7 @@ bool MatrixTest::crossProductTest3by1External()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][1] =
     {
@@ -10034,7 +9469,7 @@ bool MatrixTest::crossProductTest3by1External()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
 
     const float values5[3][1] =
     {
@@ -10043,7 +9478,7 @@ bool MatrixTest::crossProductTest3by1External()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
 
     float values6[3][1] =
     {
@@ -10052,7 +9487,9 @@ bool MatrixTest::crossProductTest3by1External()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(3, values6);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(
+                                                                       3,
+                                                                       values6);
 
     const float values7[3][1] =
     {
@@ -10061,7 +9498,9 @@ bool MatrixTest::crossProductTest3by1External()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(3, values7);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(
+                                                                       3,
+                                                                       values7);
 
     // Test
 
@@ -10081,19 +9520,12 @@ bool MatrixTest::crossProductTest3by1External()
 
     const Matrix<float, 3, 1> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -10110,7 +9542,7 @@ bool MatrixTest::crossProductTest3by1Constant()
         { 3.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_CONSTANT> matrix1(values1);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix1(values1);
 
     // Items to test against
 
@@ -10121,7 +9553,7 @@ bool MatrixTest::crossProductTest3by1Constant()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1> matrix2(values2);
+    const Matrix<float, 3, 1> matrix2(values2);
 
     float values3[3][1] =
     {
@@ -10130,7 +9562,7 @@ bool MatrixTest::crossProductTest3by1Constant()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][1] =
     {
@@ -10139,7 +9571,7 @@ bool MatrixTest::crossProductTest3by1Constant()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
 
     const float values5[3][1] =
     {
@@ -10148,7 +9580,7 @@ bool MatrixTest::crossProductTest3by1Constant()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
 
     float values6[3][1] =
     {
@@ -10157,7 +9589,9 @@ bool MatrixTest::crossProductTest3by1Constant()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(3, values6);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(
+                                                                       3,
+                                                                       values6);
 
     const float values7[3][1] =
     {
@@ -10166,7 +9600,9 @@ bool MatrixTest::crossProductTest3by1Constant()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(3, values7);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(
+                                                                       3,
+                                                                       values7);
 
     // Test
 
@@ -10186,19 +9622,12 @@ bool MatrixTest::crossProductTest3by1Constant()
 
     const Matrix<float, 3, 1> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -10215,7 +9644,7 @@ bool MatrixTest::dotProductTestInternal()
         { 3.0 }
     };
 
-    Matrix<float, 3, 1> matrix1(values1);
+    const Matrix<float, 3, 1> matrix1(values1);
 
     // Items to test against
 
@@ -10226,7 +9655,7 @@ bool MatrixTest::dotProductTestInternal()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1> matrix2(values2);
+    const Matrix<float, 3, 1> matrix2(values2);
 
     float values3[3][1] =
     {
@@ -10235,7 +9664,7 @@ bool MatrixTest::dotProductTestInternal()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][1] =
     {
@@ -10244,7 +9673,7 @@ bool MatrixTest::dotProductTestInternal()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
 
     const float values5[3][1] =
     {
@@ -10253,7 +9682,7 @@ bool MatrixTest::dotProductTestInternal()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
 
     float values6[3][1] =
     {
@@ -10262,7 +9691,9 @@ bool MatrixTest::dotProductTestInternal()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(3, values6);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(
+                                                                       3,
+                                                                       values6);
 
     const float values7[3][1] =
     {
@@ -10271,32 +9702,19 @@ bool MatrixTest::dotProductTestInternal()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(3, values7);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(
+                                                                       3,
+                                                                       values7);
 
     // Test
 
-    const float result1 = matrix1.dot(matrix2);
-    const float result2 = matrix1.dot(matrix3);
-    const float result3 = matrix1.dot(matrix4);
-    const float result4 = matrix1.dot(matrix5);
-    const float result5 = matrix1.dot(matrix6);
-    const float result6 = matrix1.dot(matrix7);
-
-    const float expected = 32.0f;
-
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix2), 32.0f) &
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix3), 32.0f) &
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix4), 32.0f) &
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix5), 32.0f) &
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix6), 32.0f) &
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix7), 32.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -10313,7 +9731,7 @@ bool MatrixTest::dotProductTestExternal()
         { 3.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix1(values1);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix1(values1);
 
     // Items to test against
 
@@ -10324,7 +9742,7 @@ bool MatrixTest::dotProductTestExternal()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1> matrix2(values2);
+    const Matrix<float, 3, 1> matrix2(values2);
 
     float values3[3][1] =
     {
@@ -10333,7 +9751,7 @@ bool MatrixTest::dotProductTestExternal()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][1] =
     {
@@ -10342,7 +9760,7 @@ bool MatrixTest::dotProductTestExternal()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
 
     const float values5[3][1] =
     {
@@ -10351,7 +9769,7 @@ bool MatrixTest::dotProductTestExternal()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
 
     float values6[3][1] =
     {
@@ -10360,7 +9778,9 @@ bool MatrixTest::dotProductTestExternal()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(3, values6);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(
+                                                                       3,
+                                                                       values6);
 
     const float values7[3][1] =
     {
@@ -10369,32 +9789,19 @@ bool MatrixTest::dotProductTestExternal()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(3, values7);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(
+                                                                       3,
+                                                                       values7);
 
     // Test
 
-    const float result1 = matrix1.dot(matrix2);
-    const float result2 = matrix1.dot(matrix3);
-    const float result3 = matrix1.dot(matrix4);
-    const float result4 = matrix1.dot(matrix5);
-    const float result5 = matrix1.dot(matrix6);
-    const float result6 = matrix1.dot(matrix7);
-
-    const float expected = 32.0f;
-
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix2), 32.0f) &
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix3), 32.0f) &
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix4), 32.0f) &
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix5), 32.0f) &
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix6), 32.0f) &
+                       UNIT_TEST_CASE_EQUAL_FLOAT(matrix1.dot(matrix7), 32.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -10409,7 +9816,7 @@ bool MatrixTest::dotProductTestConstant()
         { 3.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_CONSTANT> matrix1(values1);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix1(values1);
 
     // Items to test against
 
@@ -10420,7 +9827,7 @@ bool MatrixTest::dotProductTestConstant()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1> matrix2(values2);
+    const Matrix<float, 3, 1> matrix2(values2);
 
     float values3[3][1] =
     {
@@ -10429,7 +9836,7 @@ bool MatrixTest::dotProductTestConstant()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[3][1] =
     {
@@ -10438,7 +9845,7 @@ bool MatrixTest::dotProductTestConstant()
         { 6.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
+    const Matrix<float, 3, 1, STORAGE_CONSTANT> matrix4(values4);
 
     const float values5[3][1] =
     {
@@ -10447,7 +9854,7 @@ bool MatrixTest::dotProductTestConstant()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1> matrix5(3, values5);
 
     float values6[3][1] =
     {
@@ -10456,7 +9863,9 @@ bool MatrixTest::dotProductTestConstant()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(3, values6);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_EXTERNAL> matrix6(
+                                                                       3,
+                                                                       values6);
 
     const float values7[3][1] =
     {
@@ -10465,32 +9874,18 @@ bool MatrixTest::dotProductTestConstant()
         { 6.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(3, values7);
+    const Matrix<float, DIMENSIONS_RUN_TIME, 1, STORAGE_CONSTANT> matrix7(
+                                                                       3,
+                                                                       values7);
 
     // Test
 
-    const float result1 = matrix1.dot(matrix2);
-    const float result2 = matrix1.dot(matrix3);
-    const float result3 = matrix1.dot(matrix4);
-    const float result4 = matrix1.dot(matrix5);
-    const float result5 = matrix1.dot(matrix6);
-    const float result6 = matrix1.dot(matrix7);
-
-    const float expected = 32.0f;
-
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(matrix1.dot(matrix2), 32.0f) &
+                            UNIT_TEST_CASE_EQUAL(matrix1.dot(matrix3), 32.0f) &
+                            UNIT_TEST_CASE_EQUAL(matrix1.dot(matrix4), 32.0f) &
+                            UNIT_TEST_CASE_EQUAL(matrix1.dot(matrix5), 32.0f) &
+                            UNIT_TEST_CASE_EQUAL(matrix1.dot(matrix6), 32.0f) &
+                            UNIT_TEST_CASE_EQUAL(matrix1.dot(matrix7), 32.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -10505,7 +9900,7 @@ bool MatrixTest::toCrossProductEquivalentMatrixTestInternal()
         { 3.0 }
     };
 
-    Matrix<float, 3, 1> matrix1(values1);
+    const Matrix<float, 3, 1> matrix1(values1);
 
     // Test
 
@@ -10522,11 +9917,8 @@ bool MatrixTest::toCrossProductEquivalentMatrixTestInternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -10541,7 +9933,7 @@ bool MatrixTest::toCrossProductEquivalentMatrixTestExternal()
         { 3.0 }
     };
 
-    Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix1(values1);
+    const Matrix<float, 3, 1, STORAGE_EXTERNAL> matrix1(values1);
 
     // Test
 
@@ -10558,11 +9950,8 @@ bool MatrixTest::toCrossProductEquivalentMatrixTestExternal()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -10594,11 +9983,8 @@ bool MatrixTest::toCrossProductEquivalentMatrixTestConstant()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -10613,7 +9999,7 @@ bool MatrixTest::printTestInternal()
         {   100.0, 1000.0, 10000.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     Matrice::print("\n");
     matrix.print();
@@ -10633,7 +10019,7 @@ bool MatrixTest::printTestExternal()
         {   100.0, 1000.0, 10000.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix(values);
 
     Matrice::print("\n");
     matrix.print();
@@ -10653,7 +10039,7 @@ bool MatrixTest::printTestConstant()
         {   100.0, 1000.0, 10000.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix(values);
 
     Matrice::print("\n");
     matrix.print();
@@ -10673,9 +10059,10 @@ bool MatrixTest::printTestInternalRunTime()
         {   100.0, 1000.0, 10000.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(3,
-                                                                   3,
-                                                                   values);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix(
+                                                                        3,
+                                                                        3,
+                                                                        values);
 
     Matrice::print("\n");
     matrix.print();
@@ -10695,10 +10082,10 @@ bool MatrixTest::printTestExternalRunTime()
         {   100.0, 1000.0, 10000.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix(3, 3, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix(3, 3, values);
 
     Matrice::print("\n");
     matrix.print();
@@ -10718,10 +10105,10 @@ bool MatrixTest::printTestConstantRunTime()
         {   100.0, 1000.0, 10000.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_CONSTANT> matrix(3, 3, values);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> matrix(3, 3, values);
 
     Matrice::print("\n");
     matrix.print();
@@ -10743,7 +10130,7 @@ bool MatrixTest::submatrixOperatorAddScalarTestExternal()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
 
     float values2[3][3] =
     {
@@ -10754,7 +10141,7 @@ bool MatrixTest::submatrixOperatorAddScalarTestExternal()
 
     Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix2, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix2, 1, 1);
 
     const float values3[3][3] =
     {
@@ -10767,7 +10154,7 @@ bool MatrixTest::submatrixOperatorAddScalarTestExternal()
                                                                     3,
                                                                     values3);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix3(matrix3, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix3(matrix3, 1, 1);
 
     float values4[3][3] =
     {
@@ -10781,7 +10168,7 @@ bool MatrixTest::submatrixOperatorAddScalarTestExternal()
            DIMENSIONS_RUN_TIME,
            STORAGE_EXTERNAL> matrix4(3, 3, values4);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix4(matrix4, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix4(matrix4, 1, 1);
 
     // Test
 
@@ -10798,15 +10185,10 @@ bool MatrixTest::submatrixOperatorAddScalarTestExternal()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare4, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -10821,7 +10203,7 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
 
@@ -10832,7 +10214,7 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix2(matrix2, 1, 1);
 
@@ -10843,7 +10225,7 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_CONSTANT> matrix3(values3);
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> matrix3(values3);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix3(matrix3, 1, 1);
 
@@ -10854,9 +10236,10 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(3,
-                                                                    3,
-                                                                    values4);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(
+                                                                       3,
+                                                                       3,
+                                                                       values4);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix4(matrix4, 1, 1);
 
@@ -10867,10 +10250,10 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix5(3, 3, values5);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix5(3, 3, values5);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix5(matrix5, 1, 1);
 
@@ -10881,10 +10264,10 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_CONSTANT> matrix6(3, 3, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> matrix6(3, 3, values6);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix6(matrix6, 1, 1);
 
@@ -10905,19 +10288,12 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstant()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -10934,10 +10310,10 @@ bool MatrixTest::submatrixOperatorAddScalarTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix1(2, 2, matrix1, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix1(2, 2, matrix1, 1, 1);
 
     float values2[3][3] =
     {
@@ -10948,10 +10324,10 @@ bool MatrixTest::submatrixOperatorAddScalarTestExternalRunTime()
 
     Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix2(2, 2, matrix2, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix2(2, 2, matrix2, 1, 1);
 
     const float values3[3][3] =
     {
@@ -10964,10 +10340,10 @@ bool MatrixTest::submatrixOperatorAddScalarTestExternalRunTime()
                                                                     3,
                                                                     values3);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix3(2, 2, matrix3, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix3(2, 2, matrix3, 1, 1);
 
     float values4[3][3] =
     {
@@ -10981,10 +10357,10 @@ bool MatrixTest::submatrixOperatorAddScalarTestExternalRunTime()
            DIMENSIONS_RUN_TIME,
            STORAGE_EXTERNAL> matrix4(3, 3, values4);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix4(2, 2, matrix4, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix4(2, 2, matrix4, 1, 1);
 
     // Test
 
@@ -11001,15 +10377,10 @@ bool MatrixTest::submatrixOperatorAddScalarTestExternalRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare4, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -11024,7 +10395,7 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -11038,7 +10409,7 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> matrix2(values2);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -11066,9 +10437,10 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(3,
-                                                                    3,
-                                                                    values4);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix4(
+                                                                       3,
+                                                                       3,
+                                                                       values4);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -11082,10 +10454,10 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix5(3, 3, values5);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix5(3, 3, values5);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix5(matrix5, 1, 1);
 
@@ -11123,19 +10495,12 @@ bool MatrixTest::submatrixOperatorAddScalarTestConstantRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &&
-                            UNIT_TEST_CASE_EQUAL(compare6, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -11154,7 +10519,7 @@ bool MatrixTest::submatrixOperatorAddTestExternal()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
 
     // Items to test against
 
@@ -11164,7 +10529,7 @@ bool MatrixTest::submatrixOperatorAddTestExternal()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -11172,7 +10537,7 @@ bool MatrixTest::submatrixOperatorAddTestExternal()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -11188,9 +10553,10 @@ bool MatrixTest::submatrixOperatorAddTestExternal()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(2,
-                                                                    2,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       2,
+                                                                       2,
+                                                                       values5);
 
     float values6[2][2] =
     {
@@ -11198,10 +10564,10 @@ bool MatrixTest::submatrixOperatorAddTestExternal()
         { 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(2, 2, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(2, 2, values6);
 
     const float values7[2][2] =
     {
@@ -11210,9 +10576,9 @@ bool MatrixTest::submatrixOperatorAddTestExternal()
     };
 
     const Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_CONSTANT> matrix7(2, 2, values7);
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> matrix7(2, 2, values7);
 
     const float values8[3][3] =
     {
@@ -11223,7 +10589,7 @@ bool MatrixTest::submatrixOperatorAddTestExternal()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     const float values9[3][3] =
     {
@@ -11232,7 +10598,7 @@ bool MatrixTest::submatrixOperatorAddTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix9(values9);
+    const Matrix<float, 3, 3> matrix9(values9);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix3(matrix9, 1, 1);
 
@@ -11245,10 +10611,10 @@ bool MatrixTest::submatrixOperatorAddTestExternal()
 
     Matrix<float, 3, 3> matrix10(values10);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix4(2, 2, matrix10, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix4(2, 2, matrix10, 1, 1);
 
     const float values11[3][3] =
     {
@@ -11257,7 +10623,7 @@ bool MatrixTest::submatrixOperatorAddTestExternal()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix11(values11);
+    const Matrix<float, 3, 3> matrix11(values11);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -11283,23 +10649,14 @@ bool MatrixTest::submatrixOperatorAddTestExternal()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-    const bool compare8 = (result8 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true) &
-                            UNIT_TEST_CASE_EQUAL(compare8, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected) &
+                            UNIT_TEST_CASE_EQUAL(result8, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -11318,7 +10675,7 @@ bool MatrixTest::submatrixOperatorAddTestConstant()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
 
     // Items to test against
 
@@ -11328,7 +10685,7 @@ bool MatrixTest::submatrixOperatorAddTestConstant()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -11336,7 +10693,7 @@ bool MatrixTest::submatrixOperatorAddTestConstant()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -11352,9 +10709,10 @@ bool MatrixTest::submatrixOperatorAddTestConstant()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(2,
-                                                                    2,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       2,
+                                                                       2,
+                                                                       values5);
 
     float values6[2][2] =
     {
@@ -11362,10 +10720,10 @@ bool MatrixTest::submatrixOperatorAddTestConstant()
         { 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(2, 2, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(2, 2, values6);
 
     const float values7[2][2] =
     {
@@ -11374,9 +10732,9 @@ bool MatrixTest::submatrixOperatorAddTestConstant()
     };
 
     const Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_CONSTANT> matrix7(2, 2, values7);
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> matrix7(2, 2, values7);
 
     const float values8[3][3] =
     {
@@ -11387,7 +10745,7 @@ bool MatrixTest::submatrixOperatorAddTestConstant()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     const float values9[3][3] =
     {
@@ -11396,7 +10754,7 @@ bool MatrixTest::submatrixOperatorAddTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix9(values9);
+    const Matrix<float, 3, 3> matrix9(values9);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix3(matrix9, 1, 1);
 
@@ -11409,10 +10767,10 @@ bool MatrixTest::submatrixOperatorAddTestConstant()
 
     Matrix<float, 3, 3> matrix10(values10);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix4(2, 2, matrix10, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix4(2, 2, matrix10, 1, 1);
 
     const float values11[3][3] =
     {
@@ -11421,7 +10779,7 @@ bool MatrixTest::submatrixOperatorAddTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix11(values11);
+    const Matrix<float, 3, 3> matrix11(values11);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -11447,23 +10805,14 @@ bool MatrixTest::submatrixOperatorAddTestConstant()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-    const bool compare8 = (result8 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true) &
-                            UNIT_TEST_CASE_EQUAL(compare8, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected) &
+                            UNIT_TEST_CASE_EQUAL(result8, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -11480,7 +10829,7 @@ bool MatrixTest::submatrixOperatorAddTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
 
     // Items to test against
 
@@ -11490,7 +10839,7 @@ bool MatrixTest::submatrixOperatorAddTestExternalRunTime()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -11498,7 +10847,7 @@ bool MatrixTest::submatrixOperatorAddTestExternalRunTime()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -11514,9 +10863,10 @@ bool MatrixTest::submatrixOperatorAddTestExternalRunTime()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(2,
-                                                                    2,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       2,
+                                                                       2,
+                                                                       values5);
 
     float values6[2][2] =
     {
@@ -11524,10 +10874,10 @@ bool MatrixTest::submatrixOperatorAddTestExternalRunTime()
         { 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(2, 2, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(2, 2, values6);
 
     const float values7[2][2] =
     {
@@ -11536,9 +10886,9 @@ bool MatrixTest::submatrixOperatorAddTestExternalRunTime()
     };
 
     const Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_CONSTANT> matrix7(2, 2, values7);
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> matrix7(2, 2, values7);
 
     const float values8[3][3] =
     {
@@ -11549,7 +10899,7 @@ bool MatrixTest::submatrixOperatorAddTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     const float values9[3][3] =
     {
@@ -11558,7 +10908,7 @@ bool MatrixTest::submatrixOperatorAddTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix9(values9);
+    const Matrix<float, 3, 3> matrix9(values9);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix3(matrix9, 1, 1);
 
@@ -11571,10 +10921,10 @@ bool MatrixTest::submatrixOperatorAddTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix10(values10);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix4(2, 2, matrix10, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix4(2, 2, matrix10, 1, 1);
 
     const float values11[3][3] =
     {
@@ -11583,7 +10933,7 @@ bool MatrixTest::submatrixOperatorAddTestExternalRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix11(values11);
+    const Matrix<float, 3, 3> matrix11(values11);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -11609,23 +10959,14 @@ bool MatrixTest::submatrixOperatorAddTestExternalRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-    const bool compare8 = (result8 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true) &
-                            UNIT_TEST_CASE_EQUAL(compare8, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected) &
+                            UNIT_TEST_CASE_EQUAL(result8, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -11640,7 +10981,7 @@ bool MatrixTest::submatrixOperatorAddTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
 
@@ -11652,7 +10993,7 @@ bool MatrixTest::submatrixOperatorAddTestConstantRunTime()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -11660,7 +11001,7 @@ bool MatrixTest::submatrixOperatorAddTestConstantRunTime()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -11676,9 +11017,10 @@ bool MatrixTest::submatrixOperatorAddTestConstantRunTime()
         { 8.0, 9.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(2,
-                                                                    2,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       2,
+                                                                       2,
+                                                                       values5);
 
     float values6[2][2] =
     {
@@ -11686,10 +11028,10 @@ bool MatrixTest::submatrixOperatorAddTestConstantRunTime()
         { 8.0, 9.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(2, 2, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(2, 2, values6);
 
     const float values7[2][2] =
     {
@@ -11698,9 +11040,9 @@ bool MatrixTest::submatrixOperatorAddTestConstantRunTime()
     };
 
     const Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_CONSTANT> matrix7(2, 2, values7);
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> matrix7(2, 2, values7);
 
     const float values8[3][3] =
     {
@@ -11711,7 +11053,7 @@ bool MatrixTest::submatrixOperatorAddTestConstantRunTime()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     const float values9[3][3] =
     {
@@ -11720,7 +11062,7 @@ bool MatrixTest::submatrixOperatorAddTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix9(values9);
+    const Matrix<float, 3, 3> matrix9(values9);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix3(matrix9, 1, 1);
 
@@ -11733,10 +11075,10 @@ bool MatrixTest::submatrixOperatorAddTestConstantRunTime()
 
     Matrix<float, 3, 3> matrix10(values10);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix4(2, 2, matrix10, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix4(2, 2, matrix10, 1, 1);
 
     const float values11[3][3] =
     {
@@ -11745,7 +11087,7 @@ bool MatrixTest::submatrixOperatorAddTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix11(values11);
+    const Matrix<float, 3, 3> matrix11(values11);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -11771,23 +11113,14 @@ bool MatrixTest::submatrixOperatorAddTestConstantRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-    const bool compare8 = (result8 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true) &
-                            UNIT_TEST_CASE_EQUAL(compare8, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected) &
+                            UNIT_TEST_CASE_EQUAL(result8, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -11829,11 +11162,8 @@ bool MatrixTest::submatrixOperatorAddEqualsScalarTestExternal()
     const Matrix<float, 2, 2> expected1(expectedValues1);
     const Matrix<float, 3, 3> expected2(expectedValues2);
 
-    const bool compare1 = (result1 == expected1);
-    const bool compare2 = (result2 == expected2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected1) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected2));
 }
 
 //------------------------------------------------------------------------------
@@ -11878,11 +11208,8 @@ bool MatrixTest::submatrixOperatorAddEqualsScalarTestExternalRunTime()
     const Matrix<float, 2, 2> expected1(expectedValues1);
     const Matrix<float, 3, 3> expected2(expectedValues2);
 
-    const bool compare1 = (result1 == expected1);
-    const bool compare2 = (result2 == expected2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected1) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected2));
 }
 
 //------------------------------------------------------------------------------
@@ -11911,7 +11238,7 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -11919,7 +11246,7 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -11935,7 +11262,7 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix5(values5);
+    const Matrix<float, 2, 2> matrix5(values5);
 
     float values6[2][2] =
     {
@@ -11943,7 +11270,7 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[2][2] =
     {
@@ -11962,7 +11289,7 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternal()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -12007,21 +11334,13 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternal()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12053,7 +11372,7 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -12061,7 +11380,7 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -12077,7 +11396,7 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix5(values5);
+    const Matrix<float, 2, 2> matrix5(values5);
 
     float values6[2][2] =
     {
@@ -12085,7 +11404,7 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[2][2] =
     {
@@ -12104,7 +11423,7 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -12149,21 +11468,13 @@ bool MatrixTest::submatrixOperatorAddEqualsTestExternalRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12180,7 +11491,7 @@ bool MatrixTest::submatrixOperatorUnaryMinusTestExternal()
 
     Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
 
     // Test
 
@@ -12194,9 +11505,7 @@ bool MatrixTest::submatrixOperatorUnaryMinusTestExternal()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12211,13 +11520,13 @@ bool MatrixTest::submatrixOperatorUnaryMinusTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
 
     // Test
 
-    Matrix<float, 2, 2> result = -submatrix;
+    const Matrix<float, 2, 2> result = -submatrix;
 
     const float expectedValues[2][2] =
     {
@@ -12225,11 +11534,9 @@ bool MatrixTest::submatrixOperatorUnaryMinusTestConstant()
         { -8.0, -9.0 }
     };
 
-    Matrix<float, 2, 2> expected(expectedValues);
+    const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12246,10 +11553,10 @@ bool MatrixTest::submatrixOperatorUnaryMinusTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
 
     // Test
 
@@ -12263,9 +11570,7 @@ bool MatrixTest::submatrixOperatorUnaryMinusTestExternalRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12280,7 +11585,7 @@ bool MatrixTest::submatrixOperatorUnaryMinusTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -12299,9 +11604,7 @@ bool MatrixTest::submatrixOperatorUnaryMinusTestConstantRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12318,11 +11621,11 @@ bool MatrixTest::submatrixOperatorSubtractScalarTestExternal()
 
     Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
 
     // Test
 
-    Matrix<float, 2, 2> result = submatrix - 1;
+    const Matrix<float, 2, 2> result = submatrix - 1;
 
     const float expectedValues[2][2] =
     {
@@ -12330,11 +11633,9 @@ bool MatrixTest::submatrixOperatorSubtractScalarTestExternal()
         { 7.0, 8.0 }
     };
 
-    Matrix<float, 2, 2> expected(expectedValues);
+    const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12349,13 +11650,13 @@ bool MatrixTest::submatrixOperatorSubtractScalarTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
 
     // Test
 
-    Matrix<float, 2, 2> result = submatrix - 1;
+    const Matrix<float, 2, 2> result = submatrix - 1;
 
     const float expectedValues[2][2] =
     {
@@ -12363,11 +11664,9 @@ bool MatrixTest::submatrixOperatorSubtractScalarTestConstant()
         { 7.0, 8.0 }
     };
 
-    Matrix<float, 2, 2> expected(expectedValues);
+    const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12384,14 +11683,14 @@ bool MatrixTest::submatrixOperatorSubtractScalarTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
 
     // Test
 
-    Matrix<float, 2, 2> result = submatrix - 1;
+    const Matrix<float, 2, 2> result = submatrix - 1;
 
     const float expectedValues[2][2] =
     {
@@ -12399,11 +11698,9 @@ bool MatrixTest::submatrixOperatorSubtractScalarTestExternalRunTime()
         { 7.0, 8.0 }
     };
 
-    Matrix<float, 2, 2> expected(expectedValues);
+    const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12418,16 +11715,16 @@ bool MatrixTest::submatrixOperatorSubtractScalarTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_CONSTANT> submatrix(2, 2, matrix, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_CONSTANT> submatrix(2, 2, matrix, 1, 1);
 
     // Test
 
-    Matrix<float, 2, 2> result = submatrix - 1;
+    const Matrix<float, 2, 2> result = submatrix - 1;
 
     const float expectedValues[2][2] =
     {
@@ -12435,11 +11732,9 @@ bool MatrixTest::submatrixOperatorSubtractScalarTestConstantRunTime()
         { 7.0, 8.0 }
     };
 
-    Matrix<float, 2, 2> expected(expectedValues);
+    const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12458,8 +11753,8 @@ bool MatrixTest::submatrixOperatorSubtractTestExternal()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
-    
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
+
     // Items to test against
 
     const float values2[2][2] =
@@ -12468,7 +11763,7 @@ bool MatrixTest::submatrixOperatorSubtractTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -12476,7 +11771,7 @@ bool MatrixTest::submatrixOperatorSubtractTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -12492,9 +11787,10 @@ bool MatrixTest::submatrixOperatorSubtractTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(2,
-                                                                    2,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       2,
+                                                                       2,
+                                                                       values5);
 
     float values6[2][2] =
     {
@@ -12502,10 +11798,10 @@ bool MatrixTest::submatrixOperatorSubtractTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(2, 2, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(2, 2, values6);
 
     const float values7[2][2] =
     {
@@ -12527,7 +11823,7 @@ bool MatrixTest::submatrixOperatorSubtractTestExternal()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -12547,21 +11843,13 @@ bool MatrixTest::submatrixOperatorSubtractTestExternal()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12578,10 +11866,10 @@ bool MatrixTest::submatrixOperatorSubtractTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
-    
+
     // Items to test against
 
     const float values2[2][2] =
@@ -12590,7 +11878,7 @@ bool MatrixTest::submatrixOperatorSubtractTestConstant()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -12598,7 +11886,7 @@ bool MatrixTest::submatrixOperatorSubtractTestConstant()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -12614,9 +11902,10 @@ bool MatrixTest::submatrixOperatorSubtractTestConstant()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(2,
-                                                                    2,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       2,
+                                                                       2,
+                                                                       values5);
 
     float values6[2][2] =
     {
@@ -12624,10 +11913,10 @@ bool MatrixTest::submatrixOperatorSubtractTestConstant()
         { 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(2, 2, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(2, 2, values6);
 
     const float values7[2][2] =
     {
@@ -12649,7 +11938,7 @@ bool MatrixTest::submatrixOperatorSubtractTestConstant()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -12669,21 +11958,13 @@ bool MatrixTest::submatrixOperatorSubtractTestConstant()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12702,11 +11983,11 @@ bool MatrixTest::submatrixOperatorSubtractTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix1(2, 2, matrix1, 1, 1);
-    
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix1(2, 2, matrix1, 1, 1);
+
     // Items to test against
 
     const float values2[2][2] =
@@ -12715,7 +11996,7 @@ bool MatrixTest::submatrixOperatorSubtractTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -12723,7 +12004,7 @@ bool MatrixTest::submatrixOperatorSubtractTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -12739,9 +12020,10 @@ bool MatrixTest::submatrixOperatorSubtractTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(2,
-                                                                    2,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       2,
+                                                                       2,
+                                                                       values5);
 
     float values6[2][2] =
     {
@@ -12749,10 +12031,10 @@ bool MatrixTest::submatrixOperatorSubtractTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(2, 2, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(2, 2, values6);
 
     const float values7[2][2] =
     {
@@ -12774,7 +12056,7 @@ bool MatrixTest::submatrixOperatorSubtractTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -12794,21 +12076,13 @@ bool MatrixTest::submatrixOperatorSubtractTestExternalRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12825,7 +12099,7 @@ bool MatrixTest::submatrixOperatorSubtractTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -12840,7 +12114,7 @@ bool MatrixTest::submatrixOperatorSubtractTestConstantRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -12848,7 +12122,7 @@ bool MatrixTest::submatrixOperatorSubtractTestConstantRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -12864,9 +12138,10 @@ bool MatrixTest::submatrixOperatorSubtractTestConstantRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(2,
-                                                                    2,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       2,
+                                                                       2,
+                                                                       values5);
 
     float values6[2][2] =
     {
@@ -12874,10 +12149,10 @@ bool MatrixTest::submatrixOperatorSubtractTestConstantRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(2, 2, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(2, 2, values6);
 
     const float values7[2][2] =
     {
@@ -12899,7 +12174,7 @@ bool MatrixTest::submatrixOperatorSubtractTestConstantRunTime()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -12919,21 +12194,13 @@ bool MatrixTest::submatrixOperatorSubtractTestConstantRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -12975,11 +12242,8 @@ bool MatrixTest::submatrixOperatorSubtractEqualsScalarTestExternal()
     const Matrix<float, 2, 2> expected1(expectedValues1);
     const Matrix<float, 3, 3> expected2(expectedValues2);
 
-    const bool compare1 = (result1 == expected1);
-    const bool compare2 = (result2 == expected2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected1) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected2));
 }
 
 //------------------------------------------------------------------------------
@@ -13024,11 +12288,8 @@ bool MatrixTest::submatrixOperatorSubtractEqualsScalarTestExternalRunTime()
     const Matrix<float, 2, 2> expected1(expectedValues1);
     const Matrix<float, 3, 3> expected2(expectedValues2);
 
-    const bool compare1 = (result1 == expected1);
-    const bool compare2 = (result2 == expected2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected1) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected2));
 }
 
 //------------------------------------------------------------------------------
@@ -13057,7 +12318,7 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -13065,7 +12326,7 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -13081,9 +12342,10 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(2,
-                                                                    2,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       2,
+                                                                       2,
+                                                                       values5);
 
     float values6[2][2] =
     {
@@ -13091,10 +12353,10 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternal()
         { 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(2, 2, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(2, 2, values6);
 
     const float values7[2][2] =
     {
@@ -13116,7 +12378,7 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternal()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -13161,21 +12423,13 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternal()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -13207,7 +12461,7 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -13215,7 +12469,7 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -13231,9 +12485,10 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(2,
-                                                                    2,
-                                                                    values5);
+    const Matrix<float, DIMENSIONS_RUN_TIME, DIMENSIONS_RUN_TIME> matrix5(
+                                                                       2,
+                                                                       2,
+                                                                       values5);
 
     float values6[2][2] =
     {
@@ -13241,10 +12496,10 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternalRunTime()
         { 2.0, 1.0 }
     };
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> matrix6(2, 2, values6);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> matrix6(2, 2, values6);
 
     const float values7[2][2] =
     {
@@ -13266,7 +12521,7 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -13311,21 +12566,13 @@ bool MatrixTest::submatrixOperatorSubtractEqualsTestExternalRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -13342,7 +12589,7 @@ bool MatrixTest::submatrixOperatorMultiplyScalarTestExternal()
 
     Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
 
     // Test
 
@@ -13356,9 +12603,7 @@ bool MatrixTest::submatrixOperatorMultiplyScalarTestExternal()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -13373,7 +12618,7 @@ bool MatrixTest::submatrixOperatorMultiplyScalarTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
 
@@ -13389,9 +12634,7 @@ bool MatrixTest::submatrixOperatorMultiplyScalarTestConstant()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -13408,10 +12651,10 @@ bool MatrixTest::submatrixOperatorMultiplyScalarTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
 
     // Test
 
@@ -13425,9 +12668,7 @@ bool MatrixTest::submatrixOperatorMultiplyScalarTestExternalRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -13442,7 +12683,7 @@ bool MatrixTest::submatrixOperatorMultiplyScalarTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -13461,9 +12702,7 @@ bool MatrixTest::submatrixOperatorMultiplyScalarTestConstantRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = (result == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -13482,7 +12721,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimes2By2()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix1(matrix1, 1, 1);
 
     // Items to test against
 
@@ -13492,7 +12731,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -13500,7 +12739,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -13516,7 +12755,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix5(values5);
+    const Matrix<float, 2, 2> matrix5(values5);
 
     float values6[2][2] =
     {
@@ -13524,7 +12763,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[2][2] =
     {
@@ -13543,7 +12782,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimes2By2()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -13561,23 +12800,15 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimes2By2()
         { 50.0, 33.0 }
     };
 
-    Matrix<float, 2, 2> expected(expectedValues);
+    const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -13594,7 +12825,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimes2By2()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix1(matrix1, 1, 1);
 
@@ -13606,7 +12837,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -13614,7 +12845,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -13630,7 +12861,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix5(values5);
+    const Matrix<float, 2, 2> matrix5(values5);
 
     float values6[2][2] =
     {
@@ -13638,7 +12869,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[2][2] =
     {
@@ -13657,7 +12888,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimes2By2()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -13675,23 +12906,15 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimes2By2()
         { 50.0, 33.0 }
     };
 
-    Matrix<float, 2, 2> expected(expectedValues);
+    const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -13710,10 +12933,10 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimes2By2()
 
     Matrix<float, 3, 3> matrix1(values1);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix1(2, 2, matrix1, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix1(2, 2, matrix1, 1, 1);
 
     // Items to test against
 
@@ -13723,7 +12946,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -13731,7 +12954,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -13747,7 +12970,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix5(values5);
+    const Matrix<float, 2, 2> matrix5(values5);
 
     float values6[2][2] =
     {
@@ -13755,7 +12978,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[2][2] =
     {
@@ -13774,7 +12997,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimes2By2()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -13792,23 +13015,15 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimes2By2()
         { 50.0, 33.0 }
     };
 
-    Matrix<float, 2, 2> expected(expectedValues);
+    const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -13825,7 +13040,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimes2By2()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix1(values1);
+    const Matrix<float, 3, 3> matrix1(values1);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -13840,7 +13055,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix2(values2);
+    const Matrix<float, 2, 2> matrix2(values2);
 
     float values3[2][2] =
     {
@@ -13848,7 +13063,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix3(values3);
 
     const float values4[2][2] =
     {
@@ -13864,7 +13079,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2> matrix5(values5);
+    const Matrix<float, 2, 2> matrix5(values5);
 
     float values6[2][2] =
     {
@@ -13872,7 +13087,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimes2By2()
         { 2.0, 1.0 }
     };
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> matrix6(values6);
 
     const float values7[2][2] =
     {
@@ -13891,7 +13106,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimes2By2()
 
     Matrix<float, 3, 3> matrix8(values8);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix2(matrix8, 1, 1);
 
     // Test
 
@@ -13909,23 +13124,15 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimes2By2()
         { 50.0, 33.0 }
     };
 
-    Matrix<float, 2, 2> expected(expectedValues);
+    const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected) &
+                            UNIT_TEST_CASE_EQUAL(result3, expected) &
+                            UNIT_TEST_CASE_EQUAL(result4, expected) &
+                            UNIT_TEST_CASE_EQUAL(result5, expected) &
+                            UNIT_TEST_CASE_EQUAL(result6, expected) &
+                            UNIT_TEST_CASE_EQUAL(result7, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -13944,7 +13151,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimesVector()
 
     Matrix<float, 3, 3> matrix(values1);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
 
     // Items to test against
 
@@ -13954,7 +13161,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimesVector()
         1.0
     };
 
-    Vector<float, 2> vector1(values2);
+    const Vector<float, 2> vector1(values2);
 
     float values3[2] =
     {
@@ -13962,7 +13169,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimesVector()
         1.0
     };
 
-    Vector<float, 2, STORAGE_EXTERNAL> vector2(values3);
+    const Vector<float, 2, STORAGE_EXTERNAL> vector2(values3);
 
     const float values4[2] =
     {
@@ -13978,7 +13185,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME> vector4(2, values5);
+    const Vector<float, DIMENSIONS_RUN_TIME> vector4(2, values5);
 
     float values6[2] =
     {
@@ -13986,7 +13193,8 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(2, values6);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(2,
+                                                                       values6);
 
     const float values7[2] =
     {
@@ -14006,7 +13214,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimesVector()
 
     Vector<float, 3> vector7(values8);
 
-    Vector<float, 2, STORAGE_EXTERNAL> subvector1(vector7, 1);
+    const Vector<float, 2, STORAGE_EXTERNAL> subvector1(vector7, 1);
 
     const float values9[3] =
     {
@@ -14017,7 +13225,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimesVector()
 
     Vector<float, 3> vector8(values9);
 
-    Vector<float, 2, STORAGE_CONSTANT> subvector2(vector8, 1);
+    const Vector<float, 2, STORAGE_CONSTANT> subvector2(vector8, 1);
 
     const float values10[3] =
     {
@@ -14028,9 +13236,10 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimesVector()
 
     Vector<float, 3> vector9(values10);
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> subvector3(2,
-                                                                    vector9,
-                                                                    1);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> subvector3(
+                                                                        2,
+                                                                        vector9,
+                                                                        1);
 
     const float values11[3] =
     {
@@ -14041,9 +13250,10 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimesVector()
 
     Vector<float, 3> vector10(values11);
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_CONSTANT> subvector4(2,
-                                                                    vector10,
-                                                                    1);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_CONSTANT> subvector4(
+                                                                       2,
+                                                                       vector10,
+                                                                       1);
 
     // Test
 
@@ -14066,27 +13276,16 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalTimesVector()
 
     const Vector<float, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-    const bool compare8 = (result8 == expected);
-    const bool compare9 = (result9 == expected);
-    const bool compare10 = (result10 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true) &
-                            UNIT_TEST_CASE_EQUAL(compare8, true) &
-                            UNIT_TEST_CASE_EQUAL(compare9, true) &
-                            UNIT_TEST_CASE_EQUAL(compare10, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result2,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result3,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result4,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result5,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result6,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result7,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result8,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result9,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result10, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -14103,7 +13302,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimesVector()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values1);
+    const Matrix<float, 3, 3> matrix(values1);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
 
@@ -14115,7 +13314,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimesVector()
         1.0
     };
 
-    Vector<float, 2> vector1(values2);
+    const Vector<float, 2> vector1(values2);
 
     float values3[2] =
     {
@@ -14123,7 +13322,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimesVector()
         1.0
     };
 
-    Vector<float, 2, STORAGE_EXTERNAL> vector2(values3);
+    const Vector<float, 2, STORAGE_EXTERNAL> vector2(values3);
 
     const float values4[2] =
     {
@@ -14139,7 +13338,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME> vector4(2, values5);
+    const Vector<float, DIMENSIONS_RUN_TIME> vector4(2, values5);
 
     float values6[2] =
     {
@@ -14147,7 +13346,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(2, values6);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(2, values6);
 
     const float values7[2] =
     {
@@ -14167,7 +13366,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimesVector()
 
     Vector<float, 3> vector7(values8);
 
-    Vector<float, 2, STORAGE_EXTERNAL> subvector1(vector7, 1);
+    const Vector<float, 2, STORAGE_EXTERNAL> subvector1(vector7, 1);
 
     const float values9[3] =
     {
@@ -14178,7 +13377,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimesVector()
 
     Vector<float, 3> vector8(values9);
 
-    Vector<float, 2, STORAGE_CONSTANT> subvector2(vector8, 1);
+    const Vector<float, 2, STORAGE_CONSTANT> subvector2(vector8, 1);
 
     const float values10[3] =
     {
@@ -14189,9 +13388,10 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimesVector()
 
     Vector<float, 3> vector9(values10);
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> subvector3(2,
-                                                                    vector9,
-                                                                    1);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> subvector3(
+                                                                        2,
+                                                                        vector9,
+                                                                        1);
 
     const float values11[3] =
     {
@@ -14202,9 +13402,10 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimesVector()
 
     Vector<float, 3> vector10(values11);
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_CONSTANT> subvector4(2,
-                                                                    vector10,
-                                                                    1);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_CONSTANT> subvector4(
+                                                                       2,
+                                                                       vector10,
+                                                                       1);
 
     // Test
 
@@ -14227,27 +13428,16 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantTimesVector()
 
     const Vector<float, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-    const bool compare8 = (result8 == expected);
-    const bool compare9 = (result9 == expected);
-    const bool compare10 = (result10 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true) &
-                            UNIT_TEST_CASE_EQUAL(compare8, true) &
-                            UNIT_TEST_CASE_EQUAL(compare9, true) &
-                            UNIT_TEST_CASE_EQUAL(compare10, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result2,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result3,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result4,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result5,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result6,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result7,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result8,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result9,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result10, expected));
 }
 //------------------------------------------------------------------------------
 bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimesVector()
@@ -14265,10 +13455,10 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimesVector()
 
     Matrix<float, 3, 3> matrix(values1);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
 
     // Items to test against
 
@@ -14278,7 +13468,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, 2> vector1(values2);
+    const Vector<float, 2> vector1(values2);
 
     float values3[2] =
     {
@@ -14286,7 +13476,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, 2, STORAGE_EXTERNAL> vector2(values3);
+    const Vector<float, 2, STORAGE_EXTERNAL> vector2(values3);
 
     const float values4[2] =
     {
@@ -14302,7 +13492,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME> vector4(2, values5);
+    const Vector<float, DIMENSIONS_RUN_TIME> vector4(2, values5);
 
     float values6[2] =
     {
@@ -14310,7 +13500,8 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(2, values6);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(2,
+                                                                       values6);
 
     const float values7[2] =
     {
@@ -14330,7 +13521,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimesVector()
 
     Vector<float, 3> vector7(values8);
 
-    Vector<float, 2, STORAGE_EXTERNAL> subvector1(vector7, 1);
+    const Vector<float, 2, STORAGE_EXTERNAL> subvector1(vector7, 1);
 
     const float values9[3] =
     {
@@ -14341,7 +13532,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimesVector()
 
     Vector<float, 3> vector8(values9);
 
-    Vector<float, 2, STORAGE_CONSTANT> subvector2(vector8, 1);
+    const Vector<float, 2, STORAGE_CONSTANT> subvector2(vector8, 1);
 
     const float values10[3] =
     {
@@ -14352,9 +13543,10 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimesVector()
 
     Vector<float, 3> vector9(values10);
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> subvector3(2,
-                                                                    vector9,
-                                                                    1);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> subvector3(
+                                                                        2,
+                                                                        vector9,
+                                                                        1);
 
     const float values11[3] =
     {
@@ -14365,9 +13557,10 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimesVector()
 
     Vector<float, 3> vector10(values11);
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_CONSTANT> subvector4(2,
-                                                                    vector10,
-                                                                    1);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_CONSTANT> subvector4(
+                                                                       2,
+                                                                       vector10,
+                                                                       1);
 
     // Test
 
@@ -14390,27 +13583,16 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ExternalRunTimeTimesVector()
 
     const Vector<float, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-    const bool compare8 = (result8 == expected);
-    const bool compare9 = (result9 == expected);
-    const bool compare10 = (result10 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true) &
-                            UNIT_TEST_CASE_EQUAL(compare8, true) &
-                            UNIT_TEST_CASE_EQUAL(compare9, true) &
-                            UNIT_TEST_CASE_EQUAL(compare10, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result2,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result3,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result4,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result5,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result6,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result7,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result8,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result9,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result10, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -14427,7 +13609,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimesVector()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values1);
+    const Matrix<float, 3, 3> matrix(values1);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -14442,7 +13624,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, 2> vector1(values2);
+    const Vector<float, 2> vector1(values2);
 
     float values3[2] =
     {
@@ -14450,7 +13632,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, 2, STORAGE_EXTERNAL> vector2(values3);
+    const Vector<float, 2, STORAGE_EXTERNAL> vector2(values3);
 
     const float values4[2] =
     {
@@ -14466,7 +13648,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME> vector4(2, values5);
+    const Vector<float, DIMENSIONS_RUN_TIME> vector4(2, values5);
 
     float values6[2] =
     {
@@ -14474,7 +13656,8 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimesVector()
         1.0
     };
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(2, values6);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> vector5(2,
+                                                                       values6);
 
     const float values7[2] =
     {
@@ -14494,7 +13677,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimesVector()
 
     Vector<float, 3> vector7(values8);
 
-    Vector<float, 2, STORAGE_EXTERNAL> subvector1(vector7, 1);
+    const Vector<float, 2, STORAGE_EXTERNAL> subvector1(vector7, 1);
 
     const float values9[3] =
     {
@@ -14505,7 +13688,7 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimesVector()
 
     Vector<float, 3> vector8(values9);
 
-    Vector<float, 2, STORAGE_CONSTANT> subvector2(vector8, 1);
+    const Vector<float, 2, STORAGE_CONSTANT> subvector2(vector8, 1);
 
     const float values10[3] =
     {
@@ -14516,9 +13699,10 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimesVector()
 
     Vector<float, 3> vector9(values10);
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> subvector3(2,
-                                                                    vector9,
-                                                                    1);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_EXTERNAL> subvector3(
+                                                                        2,
+                                                                        vector9,
+                                                                        1);
 
     const float values11[3] =
     {
@@ -14529,9 +13713,10 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimesVector()
 
     Vector<float, 3> vector10(values11);
 
-    Vector<float, DIMENSIONS_RUN_TIME, STORAGE_CONSTANT> subvector4(2,
-                                                                    vector10,
-                                                                    1);
+    const Vector<float, DIMENSIONS_RUN_TIME, STORAGE_CONSTANT> subvector4(
+                                                                       2,
+                                                                       vector10,
+                                                                       1);
 
     // Test
 
@@ -14554,27 +13739,16 @@ bool MatrixTest::submatrixOperatorMultiplyTest2By2ConstantRunTimeTimesVector()
 
     const Vector<float, 2> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-    const bool compare3 = (result3 == expected);
-    const bool compare4 = (result4 == expected);
-    const bool compare5 = (result5 == expected);
-    const bool compare6 = (result6 == expected);
-    const bool compare7 = (result7 == expected);
-    const bool compare8 = (result8 == expected);
-    const bool compare9 = (result9 == expected);
-    const bool compare10 = (result10 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true) &
-                            UNIT_TEST_CASE_EQUAL(compare3, true) &
-                            UNIT_TEST_CASE_EQUAL(compare4, true) &
-                            UNIT_TEST_CASE_EQUAL(compare5, true) &
-                            UNIT_TEST_CASE_EQUAL(compare6, true) &
-                            UNIT_TEST_CASE_EQUAL(compare7, true) &
-                            UNIT_TEST_CASE_EQUAL(compare8, true) &
-                            UNIT_TEST_CASE_EQUAL(compare9, true) &
-                            UNIT_TEST_CASE_EQUAL(compare10, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result2,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result3,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result4,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result5,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result6,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result7,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result8,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result9,  expected) &
+                            UNIT_TEST_CASE_EQUAL(result10, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -14616,11 +13790,8 @@ bool MatrixTest::submatrixOperatorMultiplyTestEqualsScalarExternal()
     const Matrix<float, 2, 2> expected1(expectedValues1);
     const Matrix<float, 3, 3> expected2(expectedValues2);
 
-    const bool compare1 = (result1 == expected1);
-    const bool compare2 = (result2 == expected2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected1) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected2));
 }
 
 //------------------------------------------------------------------------------
@@ -14646,8 +13817,8 @@ bool MatrixTest::submatrixOperatorMultiplyTestEqualsScalarExternalRunTime()
 
     submatrix *= 2;
 
-    Matrix<float, 2, 2> result1 = submatrix;
-    Matrix<float, 3, 3> result2 = matrix;
+    const Matrix<float, 2, 2> result1 = submatrix;
+    const Matrix<float, 3, 3> result2 = matrix;
 
     const float expectedValues1[2][2] =
     {
@@ -14665,11 +13836,8 @@ bool MatrixTest::submatrixOperatorMultiplyTestEqualsScalarExternalRunTime()
     const Matrix<float, 2, 2> expected1(expectedValues1);
     const Matrix<float, 3, 3> expected2(expectedValues2);
 
-    const bool compare1 = (result1 == expected1);
-    const bool compare2 = (result2 == expected2);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected1) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected2));
 }
 
 //------------------------------------------------------------------------------
@@ -14686,19 +13854,15 @@ bool MatrixTest::submatrixGetValueTestExternal()
 
     Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
 
     // Test
 
-    const float result1 = submatrix.getValue(0, 0);
-    const float result2 = submatrix.getValue(0, 1);
-    const float result3 = submatrix.getValue(1, 0);
-    const float result4 = submatrix.getValue(1, 1);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 5.0f) &
-                            UNIT_TEST_CASE_EQUAL(result2, 6.0f) &
-                            UNIT_TEST_CASE_EQUAL(result3, 8.0f) &
-                            UNIT_TEST_CASE_EQUAL(result4, 9.0f));
+    return UNIT_TEST_REPORT(
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(0, 0), 5.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(0, 1), 6.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(1, 0), 8.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(1, 1), 9.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -14713,21 +13877,17 @@ bool MatrixTest::submatrixGetValueTestConstant()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
 
     // Test
 
-    const float result1 = submatrix.getValue(0, 0);
-    const float result2 = submatrix.getValue(0, 1);
-    const float result3 = submatrix.getValue(1, 0);
-    const float result4 = submatrix.getValue(1, 1);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 5.0f) &
-                            UNIT_TEST_CASE_EQUAL(result2, 6.0f) &
-                            UNIT_TEST_CASE_EQUAL(result3, 8.0f) &
-                            UNIT_TEST_CASE_EQUAL(result4, 9.0f));
+    return UNIT_TEST_REPORT(
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(0, 0), 5.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(0, 1), 6.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(1, 0), 8.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(1, 1), 9.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -14744,22 +13904,18 @@ bool MatrixTest::submatrixGetValueTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
 
     // Test
 
-    const float result1 = submatrix.getValue(0, 0);
-    const float result2 = submatrix.getValue(0, 1);
-    const float result3 = submatrix.getValue(1, 0);
-    const float result4 = submatrix.getValue(1, 1);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 5.0f) &
-                            UNIT_TEST_CASE_EQUAL(result2, 6.0f) &
-                            UNIT_TEST_CASE_EQUAL(result3, 8.0f) &
-                            UNIT_TEST_CASE_EQUAL(result4, 9.0f));
+    return UNIT_TEST_REPORT(
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(0, 0), 5.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(0, 1), 6.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(1, 0), 8.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(1, 1), 9.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -14774,7 +13930,7 @@ bool MatrixTest::submatrixGetValueTestConstantRunTime()
         { 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -14783,15 +13939,11 @@ bool MatrixTest::submatrixGetValueTestConstantRunTime()
 
     // Test
 
-    const float result1 = submatrix.getValue(0, 0);
-    const float result2 = submatrix.getValue(0, 1);
-    const float result3 = submatrix.getValue(1, 0);
-    const float result4 = submatrix.getValue(1, 1);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, 5.0f) &
-                            UNIT_TEST_CASE_EQUAL(result2, 6.0f) &
-                            UNIT_TEST_CASE_EQUAL(result3, 8.0f) &
-                            UNIT_TEST_CASE_EQUAL(result4, 9.0f));
+    return UNIT_TEST_REPORT(
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(0, 0), 5.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(0, 1), 6.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(1, 0), 8.0f) &
+                          UNIT_TEST_CASE_EQUAL(submatrix.getValue(1, 1), 9.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -14814,9 +13966,9 @@ bool MatrixTest::submatrixSetValueTestExternal()
 
     submatrix.setValue(1, 0, 10.0f);
 
-    const float result = submatrix.getValue(1, 0);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(
+                         UNIT_TEST_CASE_EQUAL(submatrix.getValue(1, 0), 10.0f) &
+                         UNIT_TEST_CASE_EQUAL(matrix.getValue(2, 1),    10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -14842,9 +13994,9 @@ bool MatrixTest::submatrixSetValueTestExternalRunTime()
 
     submatrix.setValue(1, 0, 10.0f);
 
-    const float result = submatrix.getValue(1, 0);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result, 10.0f));
+    return UNIT_TEST_REPORT(
+                         UNIT_TEST_CASE_EQUAL(submatrix.getValue(1, 0), 10.0f) &
+                         UNIT_TEST_CASE_EQUAL(matrix.getValue(2, 1),    10.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -14860,7 +14012,8 @@ bool MatrixTest::submatrixTransposeTestExternal()
     };
 
     Matrix<float, 3, 6> matrix(values);
-    Matrix<float, 3, 3, STORAGE_EXTERNAL> submatrix(matrix, 0, 3);
+
+    const Matrix<float, 3, 3, STORAGE_EXTERNAL> submatrix(matrix, 0, 3);
 
     // Test
 
@@ -14875,12 +14028,9 @@ bool MatrixTest::submatrixTransposeTestExternal()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -14895,8 +14045,8 @@ bool MatrixTest::submatrixTransposeTestConstant()
         { 0.0, 0.0, 0.0, 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 6> matrix(values);
-    Matrix<float, 3, 3, STORAGE_CONSTANT> submatrix(matrix, 0, 3);
+    const Matrix<float, 3, 6> matrix(values);
+    const Matrix<float, 3, 3, STORAGE_CONSTANT> submatrix(matrix, 0, 3);
 
     // Test
 
@@ -14911,12 +14061,9 @@ bool MatrixTest::submatrixTransposeTestConstant()
     };
 
     const Matrix<float, 3, 3> expected(expectedValues);
-    
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
 
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(result1, expected) &
+                            UNIT_TEST_CASE_EQUAL(result2, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -14932,15 +14079,12 @@ bool MatrixTest::submatrixTransposeTestExternalRunTime()
     };
 
     Matrix<float, 3, 6> matrix(values);
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix(3, 3, matrix, 0, 3);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix(3, 3, matrix, 0, 3);
 
     // Test
-
-    const Matrix<float, 3, 3> result1 = submatrix.transpose();
-    const Matrix<float, 3, 3> result2 = submatrix.T();
 
     const float expectedValues[3][3] =
     {
@@ -14951,11 +14095,9 @@ bool MatrixTest::submatrixTransposeTestExternalRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(
+                         UNIT_TEST_CASE_EQUAL(submatrix.transpose(), expected) &
+                         UNIT_TEST_CASE_EQUAL(submatrix.T(),         expected));
 }
 
 //------------------------------------------------------------------------------
@@ -14970,16 +14112,13 @@ bool MatrixTest::submatrixTransposeTestConstantRunTime()
         { 0.0, 0.0, 0.0, 7.0, 8.0, 9.0 }
     };
 
-    Matrix<float, 3, 6> matrix(values);
+    const Matrix<float, 3, 6> matrix(values);
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
                  DIMENSIONS_RUN_TIME,
                  STORAGE_CONSTANT> submatrix(3, 3, matrix, 0, 3);
 
     // Test
-
-    const Matrix<float, 3, 3> result1 = submatrix.transpose();
-    const Matrix<float, 3, 3> result2 = submatrix.T();
 
     const float expectedValues[3][3] =
     {
@@ -14990,11 +14129,9 @@ bool MatrixTest::submatrixTransposeTestConstantRunTime()
 
     const Matrix<float, 3, 3> expected(expectedValues);
 
-    const bool compare1 = (result1 == expected);
-    const bool compare2 = (result2 == expected);
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare1, true) &
-                            UNIT_TEST_CASE_EQUAL(compare2, true));
+    return UNIT_TEST_REPORT(
+                         UNIT_TEST_CASE_EQUAL(submatrix.transpose(), expected) &
+                         UNIT_TEST_CASE_EQUAL(submatrix.T(),         expected));
 }
 
 //------------------------------------------------------------------------------
@@ -15011,7 +14148,7 @@ bool MatrixTest::submatrixPrintTestExternal()
 
     Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
 
     Matrice::print("\n");
     submatrix.print();
@@ -15031,9 +14168,9 @@ bool MatrixTest::submatrixPrintTestConstant()
         {   100.0, 1000.0, 10000.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_CONSTANT> submatrix(matrix, 1, 1);
 
     Matrice::print("\n");
     submatrix.print();
@@ -15055,10 +14192,10 @@ bool MatrixTest::submatrixPrintTestExternalRunTime()
 
     Matrix<float, 3, 3> matrix(values);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
+    const Matrix<float,
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix(2, 2, matrix, 1, 1);
 
     Matrice::print("\n");
     submatrix.print();
@@ -15078,7 +14215,7 @@ bool MatrixTest::submatrixPrintTestConstantRunTime()
         {   100.0, 1000.0, 10000.0 }
     };
 
-    Matrix<float, 3, 3> matrix(values);
+    const Matrix<float, 3, 3> matrix(values);
 
     const Matrix<float,
                  DIMENSIONS_RUN_TIME,
@@ -15109,10 +14246,12 @@ bool MatrixTest::nestedSubmatrixOperatorEqualsTestExternal()
 
     Matrix<float, 4, 4, STORAGE_EXTERNAL> submatrix(matrix, 1, 1);
 
-    Matrix<float, 2, 2, STORAGE_EXTERNAL> nestedSubmatrix(submatrix, 1, 1);
+    const Matrix<float, 2, 2, STORAGE_EXTERNAL> nestedSubmatrix(submatrix,
+                                                                1,
+                                                                1);
 
     // Test
-    
+
     const float expectedValues[2][2] =
     {
         { 5.0, 4.0 },
@@ -15121,9 +14260,7 @@ bool MatrixTest::nestedSubmatrixOperatorEqualsTestExternal()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = nestedSubmatrix == expected;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(nestedSubmatrix, expected));
 }
 
 //------------------------------------------------------------------------------
@@ -15143,14 +14280,14 @@ bool MatrixTest::nestedSubmatrixOperatorEqualsTestExternalRunTime()
     Matrix<float, 5, 5> matrix(values);
 
     Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> submatrix(4, 4, matrix, 1, 1);
+                 DIMENSIONS_RUN_TIME,
+                 DIMENSIONS_RUN_TIME,
+                 STORAGE_EXTERNAL> submatrix(4, 4, matrix, 1, 1);
 
-    Matrix<float,
-           DIMENSIONS_RUN_TIME,
-           DIMENSIONS_RUN_TIME,
-           STORAGE_EXTERNAL> nestedSubmatrix(2, 2, submatrix, 1, 1);
+    const Matrix<float,
+                DIMENSIONS_RUN_TIME,
+                DIMENSIONS_RUN_TIME,
+                STORAGE_EXTERNAL> nestedSubmatrix(2, 2, submatrix, 1, 1);
 
     // Test
     
@@ -15162,7 +14299,5 @@ bool MatrixTest::nestedSubmatrixOperatorEqualsTestExternalRunTime()
 
     const Matrix<float, 2, 2> expected(expectedValues);
 
-    const bool compare = nestedSubmatrix == expected;
-
-    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(compare, true));
+    return UNIT_TEST_REPORT(UNIT_TEST_CASE_EQUAL(nestedSubmatrix, expected));
 }

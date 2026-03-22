@@ -33,7 +33,11 @@
             "linux": {
                 "command": "${workspaceRoot}/Tests/Matrice_Test_App/Build/Matrice_Test_App",
             },
-            "problemMatcher": []
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "Matrice_Test_App - Docker build",

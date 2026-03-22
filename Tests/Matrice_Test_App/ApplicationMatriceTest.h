@@ -73,8 +73,15 @@ public:
 
     virtual ~ApplicationMatriceTest();
 
+protected:
+
+    //--------------------------------------------------------------------------
+    // Protected virtual methods overridden for Plat4m::Application
+    //--------------------------------------------------------------------------
+
+    virtual int subclassRun(int argc, char** argv) override;
+
 private:
-    
 
     //--------------------------------------------------------------------------
     // Private data members
@@ -103,12 +110,6 @@ private:
                                       const char* filename,
                                       const char* functionName,
                                       const std::uint32_t lineNumber);
-
-    //--------------------------------------------------------------------------
-    // Private methods implemented from Application
-    //--------------------------------------------------------------------------
-
-    void driverRun();
 
     //--------------------------------------------------------------------------
     // Private methods

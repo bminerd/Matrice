@@ -178,7 +178,10 @@ public:
     // Public methods
     //--------------------------------------------------------------------------
 
-    using MatrixBase<ValueType>::setValues;
+    void setValues(const ValueType value)
+    {
+        MatrixBase<ValueType>::setValues(value);
+    }
 
     //--------------------------------------------------------------------------
     ValueType& getValue(const std::uint32_t row)
@@ -214,6 +217,12 @@ public:
     void setValues(const ValueType values[N])
     {
         MatrixBase<ValueType>::setValuesProtected(values);
+    }
+    
+    //--------------------------------------------------------------------------
+    void swapElements(const std::uint32_t indexA, const std::uint32_t indexB)
+    {
+        MatrixBase<ValueType>::swapElements(indexA, 0, indexB, 0);
     }
 };
 
@@ -349,7 +358,10 @@ public:
     // Public methods
     //--------------------------------------------------------------------------
 
-    using MatrixBase<ValueType>::setValues;
+    void setValues(const ValueType value)
+    {
+        MatrixBase<ValueType>::setValues(value);
+    }
 
     //--------------------------------------------------------------------------
     ValueType& getValue(const std::uint32_t row)
@@ -385,6 +397,12 @@ public:
     void setValues(const ValueType values[N])
     {
         MatrixBase<ValueType>::setValuesProtected(values);
+    }
+
+    //--------------------------------------------------------------------------
+    void swapElements(const std::uint32_t indexA, const std::uint32_t indexB)
+    {
+        MatrixBase<ValueType>::swapElements(indexA, 0, indexB, 0);
     }
 };
 
@@ -679,7 +697,10 @@ public:
     // Public methods
     //--------------------------------------------------------------------------
 
-    using MatrixBase<ValueType>::setValues;
+    void setValues(const ValueType value)
+    {
+        MatrixBase<ValueType>::setValues(value);
+    }
 
     //--------------------------------------------------------------------------
     ValueType& getValue(const std::uint32_t row)
@@ -715,6 +736,12 @@ public:
     void setValues(const ValueType values[])
     {
         MatrixBase<ValueType>::setValuesProtected(values);
+    }
+
+    //--------------------------------------------------------------------------
+    void swapElements(const std::uint32_t indexA, const std::uint32_t indexB)
+    {
+        MatrixBase<ValueType>::swapElements(indexA, 0, indexB, 0);
     }
 };
 
@@ -879,8 +906,10 @@ public:
     //--------------------------------------------------------------------------
     // Public methods
     //--------------------------------------------------------------------------
-
-    using MatrixBase<ValueType>::setValues;
+    void setValues(const ValueType value)
+    {
+        MatrixBase<ValueType>::setValues(value);
+    }
 
     //--------------------------------------------------------------------------
     ValueType& getValue(const std::uint32_t row)
@@ -916,6 +945,12 @@ public:
     void setValues(const ValueType values[])
     {
         MatrixBase<ValueType>::setValuesProtected(values);
+    }
+
+    //--------------------------------------------------------------------------
+    void swapElements(const std::uint32_t indexA, const std::uint32_t indexB)
+    {
+        MatrixBase<ValueType>::swapElements(indexA, 0, indexB, 0);
     }
 };
 

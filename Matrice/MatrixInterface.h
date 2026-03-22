@@ -189,6 +189,24 @@ public:
         return MatrixBase<ValueType, ValuePointerType>::operatorEquals(matrix);
     }
 
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    bool operator!=(
+        const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) const
+    {
+        return !(operator==(matrix));
+    }
+
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    bool operator!=(const MatrixInterface<ValueType,
+                                          DIMENSIONS_RUN_TIME,
+                                          DIMENSIONS_RUN_TIME,
+                                          ValuePointerType2>& matrix) const
+    {
+        return !(operator==(matrix));
+    }
+
     // Unary plus operator
     //--------------------------------------------------------------------------
     Matrix<ValueType, N, M, STORAGE_INTERNAL> operator+() const
@@ -486,6 +504,12 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    void setValues(const ValueType value)
+    {
+        MatrixBase<ValueType, ValuePointerType>::setValues(value);
+    }
+
+    //--------------------------------------------------------------------------
     Matrix<ValueType, 1, M, STORAGE_EXTERNAL> getRow(const std::uint32_t row)
     {
         Matrix<ValueType, 1, M, STORAGE_EXTERNAL> matrix(*this, row, 0);
@@ -562,6 +586,32 @@ public:
     Matrix<ValueType, M, N, STORAGE_INTERNAL> T() const
     {
         return transpose();
+    }
+
+    //--------------------------------------------------------------------------
+    void swapElements(const std::uint32_t rowIndexA,
+                      const std::uint32_t colIndexA,
+                      const std::uint32_t rowIndexB,
+                      const std::uint32_t colIndexB)
+    {
+        MatrixBase<ValueType, ValuePointerType>::swapElements(
+                                    rowIndexA, colIndexA, rowIndexB, colIndexB);
+    }
+
+    //--------------------------------------------------------------------------
+    void swapRows(const std::uint32_t rowIndexA,
+                  const std::uint32_t rowIndexB)
+    {
+        MatrixBase<ValueType, ValuePointerType>::swapRows(
+                                                          rowIndexA, rowIndexB);
+    }
+
+    //--------------------------------------------------------------------------
+    void swapColumns(const std::uint32_t columnIndexA,
+                     const std::uint32_t columnIndexB)
+    {
+        MatrixBase<ValueType, ValuePointerType>::swapColumns(
+                                                    columnIndexA, columnIndexB);
     }
 
 protected:
@@ -766,6 +816,24 @@ public:
                                           ValuePointerType2>& matrix) const
     {
         return MatrixBase<ValueType, const ValueType>::operatorEquals(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    bool operator!=(
+        const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) const
+    {
+        return !(operator==(matrix));
+    }
+
+    //--------------------------------------------------------------------------
+    template <typename ValuePointerType2>
+    bool operator!=(const MatrixInterface<ValueType,
+                                          DIMENSIONS_RUN_TIME,
+                                          DIMENSIONS_RUN_TIME,
+                                          ValuePointerType2>& matrix) const
+    {
+        return !(operator==(matrix));
     }
 
     // Unary plus operator
@@ -1218,6 +1286,14 @@ public:
         return MatrixBase<ValueType, ValuePointerType>::operatorEquals(matrix);
     }
 
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M, typename ValuePointerType2>
+    bool operator!=(
+        const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) const
+    {
+        return !(operator==(matrix));
+    }
+
     // Unary plus operator
     //--------------------------------------------------------------------------
     Matrix<ValueType,
@@ -1501,6 +1577,12 @@ public:
     }
 
     //--------------------------------------------------------------------------
+    void setValues(const ValueType value)
+    {
+        MatrixBase<ValueType, ValuePointerType>::setValues(value);
+    }
+
+    //--------------------------------------------------------------------------
     Matrix<ValueType,
            DIMENSIONS_RUN_TIME,
            DIMENSIONS_RUN_TIME,
@@ -1622,6 +1704,32 @@ public:
            STORAGE_INTERNAL> T() const
     {
         return transpose();
+    }
+
+    //--------------------------------------------------------------------------
+    void swapElements(const std::uint32_t rowIndexA,
+                      const std::uint32_t colIndexA,
+                      const std::uint32_t rowIndexB,
+                      const std::uint32_t colIndexB)
+    {
+        MatrixBase<ValueType, ValuePointerType>::swapElements(
+                                    rowIndexA, colIndexA, rowIndexB, colIndexB);
+    }
+
+    //--------------------------------------------------------------------------
+    void swapRows(const std::uint32_t rowIndexA,
+                  const std::uint32_t rowIndexB)
+    {
+        MatrixBase<ValueType, ValuePointerType>::swapRows(
+                                                          rowIndexA, rowIndexB);
+    }
+
+    //--------------------------------------------------------------------------
+    void swapColumns(const std::uint32_t columnIndexA,
+                     const std::uint32_t columnIndexB)
+    {
+        MatrixBase<ValueType, ValuePointerType>::swapColumns(
+                                                    columnIndexA, columnIndexB);
     }
 
 protected:
@@ -1847,6 +1955,14 @@ public:
         const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) const
     {
         return MatrixBase<ValueType, const ValueType>::operatorEquals(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    template <std::uint32_t N, std::uint32_t M, typename ValuePointerType2>
+    bool operator!=(
+        const MatrixInterface<ValueType, N, M, ValuePointerType2>& matrix) const
+    {
+        return !(operator==(matrix));
     }
 
     // Unary plus operator

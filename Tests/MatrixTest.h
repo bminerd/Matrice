@@ -56,7 +56,7 @@ namespace Matrice
 class MatrixTest : public Plat4m::UnitTest
 {
 public:
-    
+
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
@@ -72,23 +72,6 @@ public:
     //--------------------------------------------------------------------------
     // Public static methods
     //--------------------------------------------------------------------------
-
-    template <typename ValueType,
-              std::uint32_t N1,
-              std::uint32_t M1,
-              std::uint32_t N2,
-              std::uint32_t M2,
-              std::uint32_t N3,
-              std::uint32_t M3,
-              typename ValuePointerType1,
-              typename ValuePointerType2>
-    static void testFunction(
-             const MatrixInterface<ValueType, N1, M1, ValuePointerType1>& matrix1,
-             const MatrixInterface<ValueType, N2, M2, ValuePointerType2>& matrix2,
-             MatrixInterface<ValueType, N3, M3>& result)
-    {
-        result = matrix1 * matrix2;
-    }
 
     static bool operatorValueTypeCastTestInternal();
     static bool operatorValueTypeCastTestExternal();
