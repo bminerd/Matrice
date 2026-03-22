@@ -9,7 +9,7 @@
 	// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
 	// "dockerFile": "../Dockerfile",
 
-	"image": "bminerd/plat4m_linux_dev:1.1.0",
+	"image": "bminerd/plat4m_linux_dev:2.0.0",
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 

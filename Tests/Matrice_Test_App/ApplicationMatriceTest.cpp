@@ -39,7 +39,7 @@
 
 #include <iostream>
 
-using Matrice::ApplicationMatriceTest;
+using namespace Matrice;
 
 //------------------------------------------------------------------------------
 // Public constructors
@@ -71,13 +71,25 @@ ApplicationMatriceTest::~ApplicationMatriceTest()
 }
 
 //------------------------------------------------------------------------------
+// Protected virtual methods overridden for Application
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+int ApplicationMatriceTest::subclassRun(int argc, char** argv)
+{
+    initializeSystem();
+
+    return (runParentApplication());
+}
+
+//------------------------------------------------------------------------------
 // Private static methods
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 void ApplicationMatriceTest::printCallbackFunction(const char* string)
 {
-    cout << string << "\n";
+    std::cout << string << "\n";
 }
 
 //------------------------------------------------------------------------------
@@ -88,21 +100,9 @@ void ApplicationMatriceTest::errorCallbackFunction(
                                                  const char* functionName,
                                                  const std::uint32_t lineNumber)
 {
-    cerr << "\n\nError: " << errorName
-         << "\nFilenanme: " << filename << ":" <<  lineNumber
-         << "\nFunction name: " << functionName << "()\n\n";
-}
-
-//------------------------------------------------------------------------------
-// Private methods implemented from Application
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-void ApplicationMatriceTest::driverRun()
-{
-    initializeSystem();
-
-    runParentApplication();
+    std::cerr << "\n\nError: " << errorName
+              << "\nFilenanme: " << filename << ":" <<  lineNumber
+              << "\nFunction name: " << functionName << "()\n\n";
 }
 
 //------------------------------------------------------------------------------

@@ -32,11 +32,9 @@
 #include <ApplicationMatriceTest.h>
 
 //------------------------------------------------------------------------------
-int main()
+int main(int argc, char** argv)
 {
     static Matrice::ApplicationMatriceTest applicationMatriceTest;
 
-    applicationMatriceTest.run();
-
-    return 0;
+    return (applicationMatriceTest.run(argc, argv));
 }

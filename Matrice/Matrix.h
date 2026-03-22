@@ -747,6 +747,52 @@ public:
         return dotProduct(matrix);
     }
 
+    //--------------------------------------------------------------------------
+    // Modify the array in-place and return indexing.
+    void sortInPlace(const std::uint32_t leading_n)
+    {
+        if ((leading_n > N))
+        {
+            MATRICE_REPORT_ERROR(ERROR_DIMENSIONS_INVALID);
+        }
+
+        // Shell sort using gap sequence 1, 4, 13, 40, 121, ...
+        // This is the sequence h(k) = 3*h(k-1) + 1, with h(0) = 1
+        std::uint32_t gap = 1;
+        while (gap < leading_n / 3)
+        {
+            gap = 3 * gap + 1;
+        }
+
+        // Shell sort with decreasing gaps
+        while (gap > 0)
+        {
+            for (std::uint32_t i = gap; i < leading_n; i++)
+            {
+                // Use standard insertion sort for each gap segment
+                for (std::uint32_t j = i; j >= gap; j -= gap)
+                {
+                    ValueType valCurrent = MatrixBase<ValueType>::getValueFast(j, 0);
+                    ValueType valPrev = MatrixBase<ValueType>::getValueFast(j - gap, 0);
+
+                    // If current value is less than value at gap, swap elements
+                    if (valCurrent < valPrev)
+                    {
+                        MatrixBase<ValueType>::swapElements(j, 0, j - gap, 0);
+                    }
+                    else
+                    {
+                        // Found correct position, break inner loop
+                        break;
+                    }
+                }
+            }
+
+            // Decrease gap
+            gap /= 3;
+        }
+    }
+
 private:
 
     //--------------------------------------------------------------------------
@@ -864,6 +910,52 @@ public:
     ValueType dot(const Matrix<ValueType, N, 1, StorageOption2>& matrix)
     {
         return dotProduct(matrix);
+    }
+
+    //--------------------------------------------------------------------------
+    // Modify the array in-place and return indexing.
+    void sortInPlace(const std::uint32_t leading_n)
+    {
+        if ((leading_n > N))
+        {
+            MATRICE_REPORT_ERROR(ERROR_DIMENSIONS_INVALID);
+        }
+
+        // Shell sort using gap sequence 1, 4, 13, 40, 121, ...
+        // This is the sequence h(k) = 3*h(k-1) + 1, with h(0) = 1
+        std::uint32_t gap = 1;
+        while (gap < leading_n / 3)
+        {
+            gap = 3 * gap + 1;
+        }
+
+        // Shell sort with decreasing gaps
+        while (gap > 0)
+        {
+            for (std::uint32_t i = gap; i < leading_n; i++)
+            {
+                // Use standard insertion sort for each gap segment
+                for (std::uint32_t j = i; j >= gap; j -= gap)
+                {
+                    ValueType valCurrent = MatrixBase<ValueType>::getValueFast(j, 0);
+                    ValueType valPrev = MatrixBase<ValueType>::getValueFast(j - gap, 0);
+
+                    // If current value is less than value at gap, swap elements
+                    if (valCurrent < valPrev)
+                    {
+                        MatrixBase<ValueType>::swapElements(j, 0, j - gap, 0);
+                    }
+                    else
+                    {
+                        // Found correct position, break inner loop
+                        break;
+                    }
+                }
+            }
+
+            // Decrease gap
+            gap /= 3;
+        }
     }
 };
 
@@ -1045,7 +1137,7 @@ public:
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
     Matrix<ValueType, 3, 1> crossProduct(
-                          const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
+                    const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
     {
         Matrix<ValueType, 3, 1> resultMatrix;
 
@@ -1057,7 +1149,10 @@ public:
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
     Matrix<ValueType, 3, 1> crossProduct(
-        const Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, StorageOption2>& matrix)
+                                     const Matrix<ValueType,
+                                                  DIMENSIONS_RUN_TIME,
+                                                  1,
+                                                  StorageOption2>& matrix) const
     {
         if (matrix.getRows() != 3)
         {
@@ -1074,30 +1169,35 @@ public:
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
     Matrix<ValueType, 3, 1> cross(
-                          const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
+                    const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
     {
         return crossProduct(matrix);
     }
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
-    Matrix<ValueType, 3, 1> cross(
-        const Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, StorageOption2>& matrix)
+    Matrix<ValueType, 3, 1> cross(const Matrix<ValueType,
+                                               DIMENSIONS_RUN_TIME,
+                                               1,
+                                               StorageOption2>& matrix) const
     {
         return crossProduct(matrix);
     }
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
-    ValueType dotProduct(const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
+    ValueType dotProduct(
+                    const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
     {
         return MatrixBase<ValueType>::dotProductVector(matrix);
     }
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
-    ValueType dotProduct(
-        const Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, StorageOption2>& matrix)
+    ValueType dotProduct(const Matrix<ValueType,
+                                      DIMENSIONS_RUN_TIME,
+                                      1,
+                                      StorageOption2>& matrix) const
     {
         if (matrix.getRows() != 3)
         {
@@ -1109,15 +1209,17 @@ public:
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
-    ValueType dot(const Matrix<ValueType, 3, 1, StorageOption2>& matrix)
+    ValueType dot(const Matrix<ValueType, 3, 1, StorageOption2>& matrix) const
     {
         return dotProduct(matrix);
     }
 
     //--------------------------------------------------------------------------
     template <Storage StorageOption2>
-    ValueType dot(
-        const Matrix<ValueType, DIMENSIONS_RUN_TIME, 1, StorageOption2>& matrix)
+    ValueType dot(const Matrix<ValueType,
+                               DIMENSIONS_RUN_TIME,
+                               1,
+                               StorageOption2>& matrix) const
     {
         return dotProduct(matrix);
     }

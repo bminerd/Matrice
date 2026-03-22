@@ -65,7 +65,8 @@ public:
     AllocatorStatic() :
         Allocator(),
         myMemory(),
-        myMemoryIndex(0)
+        myMemoryIndex(0),
+        myMemoryWatermark(0)
     {
     }
 
@@ -78,6 +79,15 @@ public:
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Public methods
+    //--------------------------------------------------------------------------
+
+    std::uint32_t getWatermark()
+    {
+        return myMemoryWatermark;
+    }
+
 private:
 
     //--------------------------------------------------------------------------
@@ -87,6 +97,7 @@ private:
     std::uint8_t myMemory[AllocationByteCount];
 
     std::uint32_t myMemoryIndex;
+    std::uint32_t myMemoryWatermark;
 
     //--------------------------------------------------------------------------
     // Private virtual methods overridden for Allocator
@@ -104,6 +115,11 @@ private:
         
         memory = &(myMemory[myMemoryIndex]);
         myMemoryIndex += count;
+
+        if (myMemoryIndex > myMemoryWatermark)
+        {
+            myMemoryWatermark = myMemoryIndex;
+        }
         
         return memory;
     }

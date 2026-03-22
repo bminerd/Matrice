@@ -8,6 +8,7 @@ pushd . > /dev/null
 cd "${0%/*}"
 
 cd Build
-ctest .. --verbose
+
+./Matrice_Test_App
 
 popd > /dev/null
